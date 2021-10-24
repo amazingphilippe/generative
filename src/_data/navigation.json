@@ -1,0 +1,28 @@
+{
+  "fr": {
+    "name": "Menu principal",
+    "items": [
+      {
+        "text": "Directions",
+        "url": "/fr/directions/"
+      },
+      {
+        "text": "Études de cas",
+        "url": "/fr/etudes-de-cas/"
+      }
+    ]
+  },
+  "en": {
+    "name": "Main menu",
+    "items": [
+      {
+        "text": "Directions",
+        "url": "/en/directions/"
+      },
+      {
+        "text": "Case studies",
+        "url": "/en/case-studies/"
+      }
+    ]
+  }
+}

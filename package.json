@@ -1,0 +1,38 @@
+{
+  "name": "philippecaron",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eleventy.js",
+  "scripts": {
+    "start": "npx gulp && concurrently \"npx gulp watch\" \"npx eleventy --serve\"",
+    "production": "NODE_ENV=production npx gulp && NODE_ENV=production npx eleventy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^0.12.1",
+    "@gerhobbelt/markdown-it-regexp": "^0.6.0-15",
+    "animejs": "^3.2.1",
+    "chroma-js": "^2.1.0",
+    "concurrently": "^6.2.0",
+    "gorko": "^0.4.1",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-esbuild": "^0.8.3",
+    "gulp-sass": "^4.1.0",
+    "markdown-it": "^12.1.0",
+    "markdown-it-anchor": "^8.1.2",
+    "sass": "^1.35.1"
+  },
+  "devDependencies": {
+    "@11ty/eleventy-img": "^0.10.0",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "eleventy-plugin-vibrant": "^1.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-plumber": "^1.2.1",
+    "prettier": "2.3.1"
+  }
+}

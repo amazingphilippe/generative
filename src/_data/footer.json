@@ -1,0 +1,82 @@
+{
+  "fr": {
+    "navs": [
+      {
+        "name": "internet-nav",
+        "heading": "Sur les internets",
+        "items": [
+          {
+            "text": "Github",
+            "url": "https://github.com/amazingphilippe"
+          },
+          {
+            "text": "Twitter",
+            "url": "https://twitter.com/philippecaron"
+          },
+          {
+            "text": "Dribbble",
+            "url": "https://dribbble.com/philippecaron"
+          },
+          {
+            "text": "Linkedin",
+            "url": "https://www.linkedin.com/in/amazingphilippe/"
+          }
+        ]
+      },
+      {
+        "name": "everything-else-nav",
+        "heading": "Cyber sous sol",
+        "items": [
+          {
+            "text": "Archive",
+            "url": "http://rundle.philippecaron.ca/index.html"
+          },
+          {
+            "text": "Gossage",
+            "url": "https://ex.philippecaron.ca/"
+          }
+        ]
+      }
+    ]
+  },
+  "en": {
+    "navs": [
+      {
+        "name": "internet-nav",
+        "heading": "On the internets",
+        "items": [
+          {
+            "text": "Github",
+            "url": "https://github.com/amazingphilippe"
+          },
+          {
+            "text": "Twitter",
+            "url": "https://twitter.com/philippecaron"
+          },
+          {
+            "text": "Dribbble",
+            "url": "https://dribbble.com/philippecaron"
+          },
+          {
+            "text": "Linkedin",
+            "url": "https://www.linkedin.com/in/amazingphilippe/"
+          }
+        ]
+      },
+      {
+        "name": "everything-else-nav",
+        "heading": "Cyber attic",
+        "items": [
+          {
+            "text": "Archive",
+            "url": "http://rundle.philippecaron.ca/index.html"
+          },
+          {
+            "text": "Tinkering",
+            "url": "https://ex.philippecaron.ca/"
+          }
+        ]
+      }
+    ]
+  }
+}

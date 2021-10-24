@@ -1,0 +1,31 @@
+
+.canvas {
+  width: 75vmin;
+  height: 50vmin;
+  background: hsl(0, 0%, 100%);
+  user-select: none;
+}
+
+
+@keyframes move {
+  from {
+    transform: translateX(0%) rotate(45deg);
+  }
+  to {
+    transform: translateX(33%) translateY(6%) rotate(54deg);
+  }
+}
+
+.canvas .b {
+  transform-origin: 266.66px 150px;
+  animation-duration: 30s;
+  animation-name: move;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(2, jump-none);
+  animation-direction: alternate;
+}
+
+.canvas .a {
+  transform-origin: 133.33px 150px;
+  transform: rotate(45deg);
+}

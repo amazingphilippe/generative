@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<main class="pad-400">
+  <ul>
+    {% for thing in collections.generative | reverse %}
+      {% if thing.data.title !== title %}
+      <li role="list">
+        <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">{{ thing.data.title or "Untitled" }}</a>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</main>
+
+{% endblock %}

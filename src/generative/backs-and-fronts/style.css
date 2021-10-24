@@ -1,0 +1,7 @@
+
+.canvas {
+  width: 75vmin;
+  height: 50vmin;
+  background: none;
+  user-select: none;
+}

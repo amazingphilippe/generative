@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+@import "_reset";
+@import "_config";
+@import "../../node_modules/gorko/gorko";
+
+:root {
+  font-size: 93.8%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+[role="list"] {
+  list-style: none;
+}
+
+.sr:not(:focus) {
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+}
+
+.skip-link:focus {
+  position: absolute;
+  z-index: 20;
+  top: var(--flow-space, 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+body {
+  min-height: 100vh;
+  background-color: get-color("light");
+  color: get-color("primary-shade");
+}
+
+header {
+  padding: 1rem;
+  padding-bottom: 0;
+  width: 100%;
+}
+
+h1 {
+  font-size: get-size("600");
+  font-family: sans-serif;
+  font-weight: 200;
+  color: get-color("primary");
+}
+button {
+  font-weight: 600;
+  border: none;
+  padding: 0 2rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button:focus {
+  outline: 4px solid #{get-color("focus")};
+}
+button:hover {
+  background-color: #{get-color("primary-light")};
+}
+button:active {
+  height: 40px;
+  border-top: 4px solid #{get-color("primary-shade")};
+}
+p {
+  font-weight: 500;
+  font-family: 'Rowan', Georgia;
+  font-size: 1rem;
+  line-height: 1.4;
+  max-width: 50ch;
+  + p {
+    text-indent: 1rem;
+    margin: 0;
+  }
+}
+
+@import "compositions/art";
+@import "utilities/flow";

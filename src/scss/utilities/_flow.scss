@@ -1,0 +1,8 @@
+.flow {
+  > span {
+    display: inline-block;
+  }
+  > * + * {
+    margin-top: var(--flow-space, 1rem);
+  }
+}

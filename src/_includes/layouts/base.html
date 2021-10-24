@@ -1,0 +1,45 @@
+{% set assetHash = global.random() %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <meta name="title" content="{{ title or 'Generative Art' }}" />
+    <meta name="description" content="{{ site[locale].metaDescription }}" />
+    <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    <title>{{ title }}</title>
+
+    <style>
+      {% include "css/index.css" %}
+    </style>
+
+    {% if pageStylesheets %}
+      {% for item in pageStylesheets %}
+        <link
+          rel="stylesheet"
+          href="/{{ item }}?{{ assetHash }}"
+        />
+      {% endfor %}
+    {% endif %}
+
+    {% if pageScripts %}
+      {% for item in pageScripts %}
+        <script type="module" src="/{{ item }}?{{ assetHash }}" ></script>
+      {% endfor %}
+    {% endif %}
+  </head>
+  <body>
+    <a class="sr skip-link container bg-dark color-light text-500 " href="#main">{{ site.skip }}</a>
+    {% include "partials/site-head.html" %}
+
+    {% block content %}{% endblock %}
+
+    {% include "partials/site-foot.html" %}
+
+
+  </body>
+</html>

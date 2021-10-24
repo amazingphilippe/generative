@@ -1,0 +1,6 @@
+@font-face {
+  font-family: "Rowan";
+  font-weight: 300 700;
+  src: url("type/Rowan-Variable.woff2") format("woff2 supports-variations"), url("type/Rowan-Variable.woff2") format("woff2-variations"),
+    url("type/Rowan-Variable.woff") format("woff");
+}

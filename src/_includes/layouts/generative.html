@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% set pageScripts = ["generative/" + page.fileSlug + "/script.js"] %}
+{% set pageStylesheets = ["generative/" + page.fileSlug + "/style.css"] %}
+
+{% block content %}
+
+<main class="art">
+  {% if svg %}
+  <svg class="canvas" viewBox="0 0 {{ width }} {{ height }}" overflow="{{ 'visible' if overflow }}"></svg>
+  {% endif %}
+  {% if canvas %}
+  <canvas style="display:none;width:{{ width }}px;height:{{ height }}px" id="shadow" ></canvas>
+  {% endif %}
+
+  <aside id="info" class="flow">
+    <h1>{{ title or "Untitled" }}</h1>
+    <div>
+      {{ content | safe}}
+    </div>
+    <button class="bg-primary font-base color-light text-400">Regenerate</button>
+  </aside>
+</main>
+
+{% endblock %}

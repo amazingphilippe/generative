@@ -1,0 +1,6 @@
+
+.canvas {
+  width: 75vmin;
+  height: 37.5vmin;
+  background: hsl(0, 0%, 100%);
+}
