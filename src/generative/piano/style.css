@@ -1,0 +1,15 @@
+
+.canvas {
+  /*min-width: 45vmin;
+  min-height: 75vmin;
+  max-width: 75vmax;
+  max-height: 45vmax;*/
+  width: min(45vmax, 100vw);
+  height: min(75vmin, 75vw);
+  background: white;
+  user-select: none;
+}
+
+#info {
+  width: 45vmin
+}

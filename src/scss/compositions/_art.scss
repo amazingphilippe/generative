@@ -1,17 +1,25 @@
 .art {
 
-  display: grid;
   gap: 1rem;
   padding: 1rem;
-  place-items: center;
   width: 100%;
-  grid-auto-rows: 85vh 1fr;
+  user-select: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-top: auto;
+  margin-bottom: auto;
 
   svg {
-
   }
 
   aside {
-    
+    width: 75vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
   }
 }

@@ -1,0 +1,8 @@
+{
+  "svg": true,
+  "canvas": false,
+  "overflow": false,
+  "width": 400,
+  "height": 300,
+  "layout": "layouts/generative.html"
+}
