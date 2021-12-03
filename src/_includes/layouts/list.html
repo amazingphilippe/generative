@@ -2,7 +2,7 @@
 
 {% block content %}
 <main class="pad-400">
-  <ul>
+  <ul class="generative-list">
     {% for thing in collections.generative | reverse %}
       {% if thing.data.title !== title %}
       <li role="list">

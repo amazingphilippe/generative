@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope&display=swap");
 @import "_reset";
 @import "_config";
 @import "../../node_modules/gorko/gorko";
@@ -23,7 +23,7 @@
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
 }
 
 .skip-link:focus {
@@ -32,7 +32,6 @@
   top: var(--flow-space, 1rem);
   left: 50%;
   transform: translateX(-50%);
-
 }
 
 body {
@@ -47,6 +46,13 @@ header {
   padding: 1rem;
   padding-bottom: 0;
   width: 100%;
+}
+
+.logo {
+  &:hover {
+    background: get-color("focus");
+    box-shadow: 0 0 0 1rem #{get-color("focus")};
+  }
 }
 
 h1 {
@@ -76,15 +82,62 @@ button:active {
   height: 40px;
   border-top: 4px solid #{get-color("primary-shade")};
 }
+
+a {
+  color: get-color("primary");
+  text-decoration-style: solid;
+  text-decoration-thickness: 2px;
+
+  &:hover {
+    text-decoration-color: get-color("focus");
+    color: get-color("primary-dark");
+  }
+
+  &:focus {
+    outline-offset: 2px;
+    outline: 2px solid #{get-color("focus")};
+  }
+}
+
 p {
   font-weight: 500;
-  font-family: 'Rowan', Georgia;
+  font-family: "Rowan", Georgia;
   font-size: 1rem;
   line-height: 1.4;
   max-width: 50ch;
   + p {
     text-indent: 1rem;
     margin: 0;
+  }
+}
+
+.generative-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  li a {
+    display: block;
+  }
+  @include media-query("md") {
+    li a {
+      margin-right: calc(15rem * var(--seed));
+    }
+  }
+
+  li:nth-child(1n) a {
+    padding: calc(3rem * var(--seed) + 1rem) calc(7rem * var(--seed) + 1rem)
+      calc(5rem * var(--seed) + 1rem) calc(3rem * var(--seed) + 1rem);
+  }
+
+  li:nth-child(3n) a {
+    padding: calc(5rem * var(--seed) + 1rem) calc(3rem * var(--seed) + 1rem)
+      calc(7rem * var(--seed) + 1rem) calc(5rem * var(--seed) + 1rem);
+  }
+
+  li:nth-child(5n) a {
+    padding: calc(3rem * var(--seed) + 1rem) calc(5rem * var(--seed) + 1rem)
+      calc(5rem * var(--seed) + 1rem) calc(7rem * var(--seed) + 1rem);
   }
 }
 
