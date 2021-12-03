@@ -7,4 +7,4 @@ svg: true
 canvas: false
 
 ---
-Draw 8 equal stripes using a palette of 5 colors. This is how it begins.
+Make a composition that is dynamique, in movement, leading the eye in different directions. The composition is successful if the eye is led from one shape to another. A dynamic composition requires intention. Can generative works be intentional?
