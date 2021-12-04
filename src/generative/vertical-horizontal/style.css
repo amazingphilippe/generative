@@ -1,0 +1,10 @@
+
+.canvas {
+  width: 56.25vmin;
+  height: 75vmin;
+  background: white;
+  user-select: none;
+}
+#info {
+  width: 56.25vmin
+}
