@@ -10,8 +10,6 @@ import {
 import chroma from "https://cdn.skypack.dev/chroma-js";
 import paper from "https://cdn.skypack.dev/paper";
 
-import svgCrowbar from 'https://cdn.skypack.dev/svg-crowbar';
-
 const svg = SVG(".canvas");
 
 const btn = document.querySelector("button");
