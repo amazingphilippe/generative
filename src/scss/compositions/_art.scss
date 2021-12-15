@@ -12,6 +12,44 @@
   margin-bottom: auto;
 
   svg {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  figure {
+    display: grid;
+    grid-template-columns: 1;
+    grid-auto-rows: 1;
+  }
+
+  figcaption {
+    height: min-content;
+    align-self: end;
+    justify-self: end;
+    grid-row: 1;
+    grid-column: 1;
+    display: inline-flex;
+    flex-direction: column;
+    width: 3ch;
+    text-align: center;
+    transform: translateX(-1em) rotate(-45deg);
+    font-family: "Rowan", Georgia;
+    &:before {
+      counter-reset: i var(--item);
+      content: counter(i);
+      transform: rotate(45deg);
+      color: get-color("shade");
+        display: block;
+    }
+    span {
+      border-bottom: 1px solid #{get-color("shade")};
+    }
+    &:after {
+      counter-reset: i var(--total);
+      content: counter(i);
+      transform: rotate(45deg);
+      color: get-color("shade");
+    }
   }
 
   aside {

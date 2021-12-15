@@ -1,0 +1,13 @@
+
+.art {
+  --canvas-bg: white;
+}
+.canvas {
+  width: 53.5714vmin;
+  height: 75vmin;
+  background: var(--canvas-bg);
+  user-select: none;
+}
+#info {
+  width: 56.25vmin
+}

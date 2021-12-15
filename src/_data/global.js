@@ -6,6 +6,6 @@ module.exports = {
     return `${segment()}-${segment()}-${segment()}`;
   },
   seed() {
-    return Math.random()
+    return Math.random();
   }
 };

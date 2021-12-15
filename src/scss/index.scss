@@ -118,6 +118,9 @@ p {
   justify-content: center;
   li a {
     display: block;
+    &:hover {
+      outline: 2px dashed #{get-color("shade")};
+    }
   }
   @include media-query("md") {
     li a {
@@ -138,6 +141,21 @@ p {
   li:nth-child(5n) a {
     padding: calc(3rem * var(--seed) + 1rem) calc(5rem * var(--seed) + 1rem)
       calc(5rem * var(--seed) + 1rem) calc(7rem * var(--seed) + 1rem);
+  }
+  img {
+    position: absolute;
+    display: none;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  li:hover img {
+    display: block;
   }
 }
 
