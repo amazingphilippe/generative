@@ -7,15 +7,15 @@
     "sass": "sass --style=compressed src/scss/index.scss src/_includes/css/index.css",
     "watch:eleventy": "eleventy --serve",
     "watch:sass": "npm run sass -- --watch",
-    "screenshot": "node example.js",
+    "watch:screenshot": "node screenshot.js",
     "start": "npm-run-all sass --parallel watch:*",
-    "production": "NODE_ENV=production npm run sass && eleventy"
+    "production": "NODE_ENV=production npm run sass && eleventy && node screenshot.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@11ty/eleventy": "^0.12.1",
+    "@11ty/eleventy": "^1.0.0",
     "chroma-js": "^2.1.0",
     "gorko": "^0.4.1",
     "puppeteer": "^12.0.1",

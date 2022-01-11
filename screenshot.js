@@ -14,11 +14,11 @@ const path = require("path");
     const segments = art.url.split("/");
     console.log(segments);
     const slug = segments[segments.length - 2];
-    console.log("http://localhost:8080" + art.url, slug);
+    console.log("http://cliqu.art" + art.url, slug);
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto("http://localhost:8080" + art.url);
+    await page.goto("http://cliqu.art" + art.url);
     await page.waitForSelector("main svg");
     await page.setViewport({
       width: 900,
