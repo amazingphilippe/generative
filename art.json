@@ -24,5 +24,7 @@
    {"url":"/generative/halves/"}
    ,
    {"url":"/generative/tree/"}
+   ,
+   {"url":"/generative/packing/"}
    
 ]
