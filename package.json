@@ -9,7 +9,7 @@
     "watch:sass": "npm run sass -- --watch",
     "watch:screenshot": "node screenshot.js",
     "start": "npm-run-all sass --parallel watch:*",
-    "production": "NODE_ENV=production npm run sass && eleventy"
+    "production": "NODE_ENV=production npm run sass && eleventy && node screenshot.js"
   },
   "keywords": [],
   "author": "",
