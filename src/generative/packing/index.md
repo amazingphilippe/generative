@@ -6,4 +6,4 @@ canvas: true
 ---
 
 
-Draw a square along the bottom edge of the canvas. Draw another, but if it intersects with another square, place it on top of the intersecting square. Repeat for 126 iterations.
+Draw a square or a rectangle along the bottom edge of the canvas. Draw another, but if it intersects with another square, place it on top of the intersecting square. Repeat for 404 iterations.

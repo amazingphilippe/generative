@@ -77,4 +77,4 @@ function draw() {
       width: 1.1,
     });
 }
-generate(false);
+generate();
