@@ -1,0 +1,12 @@
+
+.art {
+  --canvas-bg: #DADDD8;
+}
+.canvas {
+  width: 75vmin;
+  background: var(--canvas-bg);
+  user-select: none;
+}
+#info {
+  width: 75vmin;
+}
