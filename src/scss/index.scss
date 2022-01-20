@@ -38,8 +38,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: get-color("light");
-  color: get-color("primary-shade");
+  --bg: #{get-color("light")};
+  --color: #{get-color("primary-shade")};
+  background-color: var(--bg);
+  color: var(--color);
 }
 
 header {
@@ -90,7 +92,7 @@ button:active {
 a {
   color: get-color("primary");
   text-decoration-style: solid;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
 
   &:hover {
     text-decoration-color: get-color("focus");
@@ -104,9 +106,9 @@ a {
 }
 
 p {
-  font-weight: 500;
+  font-weight: 400;
   font-family: "Rowan", Georgia;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   max-width: 50ch;
   + p {
