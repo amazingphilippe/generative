@@ -14,11 +14,11 @@ const path = require("path");
     const segments = art.url.split("/");
     console.log(segments);
     const slug = segments[segments.length - 2];
-    console.log("./dist/generative/" + art.url, slug);
+    console.log("https://www.cliqu.art/generative/" + art.url, slug);
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto("./dist/generative/" + art.url + "/index.html");
+    await page.goto("https://www.cliqu.art/generative/" + art.url);
     await page.waitForSelector("main svg");
     await page.setViewport({
       width: 900,
