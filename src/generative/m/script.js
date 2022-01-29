@@ -57,5 +57,7 @@ function generate() {
       rect.clipWith(clip);
     }
   }
+
+  console.log(svg.svg());
 }
 generate();

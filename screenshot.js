@@ -18,7 +18,7 @@ const path = require("path");
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto("https://www.cliqu.art/generative/" + art.url);
+    await page.goto("https://www.cliqu.art/generative/" + art.url +");
     await page.waitForSelector("main svg");
     await page.setViewport({
       width: 900,
