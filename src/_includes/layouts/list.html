@@ -7,7 +7,6 @@
       {% if thing.data.title !== title and not thing.data.hide %}
       <li role="list">
         <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">{{ thing.data.title or "Untitled" }}</a>
-        <img src="images/art/{{ thing.fileSlug }}.png" alt="">
       </li>
       {% endif %}
     {% endfor %}
