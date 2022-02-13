@@ -41,7 +41,9 @@ function generate() {
     let start = random(0, Math.PI * 2);
     let fade = random(0, start);
 
-    for (let a = start; a < Math.PI * 2 + start; a += 0.05) {
+    let increment = map(i, 1, 180, 0.3, 0.05);
+
+    for (let a = start; a < Math.PI * 2 + start; a += increment) {
       let noise = seed(Math.cos(a) + start, Math.sin(a) + start, random(90, Math.min(90, i)));
       let r = map(noise, -1, 1, i, 90);
       let x = r * Math.cos(a) + width / 2;

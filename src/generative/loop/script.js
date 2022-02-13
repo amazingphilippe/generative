@@ -24,7 +24,7 @@ document.addEventListener("keyup", (e) => {
 });
 
 //const palette = ["#f2f6d0","#d0e1d4","#d9d2b6","#e4be9e"]; // 71697A 17301C
-const palette = ["#819595", "#B1B6A6", "#d0e1d4", "#34623F","#e4be9e"];
+const palette = ["#819595", "#B1B6A6", "#d0e1d4", "#34623F", "#e4be9e"];
 const { width, height } = svg.viewbox();
 
 //-----------------------------------------
@@ -41,7 +41,9 @@ function generate() {
     let start = random(0, Math.PI * 2);
     let fade = random(0, start);
 
-    for (let a = start; a < Math.PI * 2 + start; a += 0.05) {
+    let increment = map(i, 1, 180, 0.2, 0.05);
+
+    for (let a = start; a < Math.PI * 2 + start; a += increment) {
       let noise = seed(Math.cos(a) + start, Math.sin(a) + start, random(0, i));
       let r = map(noise, -1, 1, i, 90);
       let x = r * Math.cos(a) + width / 2;
@@ -51,8 +53,11 @@ function generate() {
         svg
           .line(previousPoint.x, previousPoint.y, x, y)
           .css("mix-blend-mode", "multiply")
-          .stroke({ color: chroma.mix(colorA, colorB, a % fade, 'lab'), width: 1 });
-          //.stroke({ color: colorA, width: 1});
+          .stroke({
+            color: chroma.mix(colorA, colorB, a % fade, "lab"),
+            width: 1,
+          });
+        //.stroke({ color: colorA, width: 1});
       }
 
       previousPoint = { x, y };
