@@ -40,5 +40,11 @@
    {"url":"/generative/base/"}
    ,
    {"url":"/generative/rideau/"}
+   ,
+   {"url":"/generative/loop/"}
+   ,
+   {"url":"/generative/loop2/"}
+   ,
+   {"url":"/generative/loop3/"}
    
 ]
