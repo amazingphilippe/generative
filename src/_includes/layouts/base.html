@@ -46,6 +46,10 @@
         <script type="module" src="/{{ item }}?{{ assetHash }}" ></script>
       {% endfor %}
     {% endif %}
+
+    {% if fxhash %}
+      {% include "partials/fxhash.html" %}
+    {% endif %}
   </head>
   <body>
     <a class="sr skip-link container bg-dark color-light text-500 " href="#main">{{ site.skip }}</a>

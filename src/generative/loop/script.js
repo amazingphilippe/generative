@@ -7,6 +7,8 @@ import {
   createNoiseGrid,
 } from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
 
+import seedrandom from "https://cdn.skypack.dev/seedrandom";
+
 import chroma from "https://cdn.skypack.dev/chroma-js";
 import quickNoise from "https://cdn.skypack.dev/quick-perlin-noise-js";
 
@@ -31,20 +33,27 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
+  const rand = fxrand();
 
-  let seed = quickNoise.create(() => random(0, 1));
+  let seed = quickNoise.create(() => rand);
+
   for (var i = 1; i < 180; i++) {
-    let colorA = random(palette);
-    let colorB = random(palette);
+    let chaos = seedrandom(rand * i)();
+    let chaos2 = seedrandom(i)();
+
+    let colorA = palette[Math.floor(map(chaos, 0, 1, 0, palette.length))];
+    let colorB = palette[Math.floor(map(chaos2, 0, 1, 0, palette.length))];
 
     let previousPoint = false;
-    let start = random(0, Math.PI * 2);
-    let fade = random(0, start);
+    let start = map(chaos, 0, 1, 0, Math.PI * 2);
+    let fade = map(chaos, 0, 1, 0, start);
 
     let increment = map(i, 1, 180, 0.2, 0.05);
 
     for (let a = start; a < Math.PI * 2 + start; a += increment) {
-      let noise = seed(Math.cos(a) + start, Math.sin(a) + start, random(0, i));
+      let chaos3 = seedrandom(a)();
+      let phase = map(chaos3, 0, 1, 0, i);
+      let noise = seed(Math.cos(a) + start, Math.sin(a) + start, phase);
       let r = map(noise, -1, 1, i, 90);
       let x = r * Math.cos(a) + width / 2;
       let y = r * Math.sin(a) + height / 2;
