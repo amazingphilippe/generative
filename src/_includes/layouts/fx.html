@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block meta %}{% endblock %}
+{% block assetHash %}{% endblock %}
+{% block header %}{% endblock %}
+
+
+{% set pageScripts = ["./script.js"] %}
+{% set pageStylesheets = ["./style.css"] %}
+
+{% block content %}
+
+<main class="art">
+  <figure>
+  {% if svg %}
+  <svg class="canvas" viewBox="0 0 {{ width }} {{ height }}" overflow="{{ 'visible' if overflow }}"></svg>
+  {% endif %}
+  {% if series %}
+  <figcaption class="series"><span></span></figcaption>
+  {% endif %}
+  </figure>
+  {% if canvas %}
+  <canvas id="fx" resize"></canvas>
+  {% endif %}
+</main>
+
+{% endblock %}

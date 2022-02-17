@@ -23,7 +23,7 @@ document.addEventListener("keyup", (e) => {
 });
 
 //const palette = ["#f2f6d0","#d0e1d4","#d9d2b6","#e4be9e"]; // 71697A 17301C
-const palette = ["#819595", "#B1B6A6", "#d0e1d4", "#34623F", "#e4be9e"];
+const palette = ["#B1B6A6", "#d0e1d4", "#d9d2b6", "#e4be9e"];
 const { width, height } = svg.viewbox();
 
 //-----------------------------------------
@@ -31,23 +31,26 @@ const { width, height } = svg.viewbox();
 function generate() {
   svg.clear();
 
-  let seed = quickNoise.create(() => random(0, 1));
+  let rand = random(0, 1);
+  let seed = quickNoise.create(() => rand);
+
+  let colorA = random(palette);
 
   for (var i = 1; i < 180; i++) {
 
-    let colorA = random(palette);
-    let colorB = random(palette);
 
     let previousPoint = false;
-    let start = random(0, Math.PI * 2);
-    let fade = random(0, start);
+    let startPoint = false;
+    let startColor = false;
+    let start = map(rand, 0, 1, 0, Math.PI * 2);
+    let fade = map(rand, 0, 1, 0, start);
 
-    let increment = map(i, 1, 180, 0.2, 0.05);
+    let increment = map(i, 0, 180, (Math.PI * 2) / 25, (Math.PI * 2) / 65);
 
     for (let a = start; a < Math.PI * 2 + start; a += increment) {
-      let phase = Math.max(i, 90);
-      let noise = seed(Math.cos(a) + start, Math.sin(a) + start, phase);
-      let r = map(noise, -1, 1, i, Math.min(i, 90));
+      let noise = seed(Math.cos(a) + start, Math.sin(a) + start, rand);
+
+      let r = map(noise, -1, 1, i, 180);
       let x = r * Math.cos(a) + width / 2;
       let y = r * Math.sin(a) + height / 2;
 
@@ -56,14 +59,25 @@ function generate() {
           .line(previousPoint.x, previousPoint.y, x, y)
           .css("mix-blend-mode", "multiply")
           .stroke({
-            color: chroma.mix(colorA, colorB, a % fade, "lab"),
+            color: colorA,
             width: 1,
           });
         //.stroke({ color: colorA, width: 1});
       }
+      if (!startPoint) {
+        startPoint = {x, y};
+        startColor = colorA;
+      }
 
       previousPoint = { x, y };
     }
+    svg
+      .line(previousPoint.x, previousPoint.y, startPoint.x, startPoint.y)
+      .css("mix-blend-mode", "multiply")
+      .stroke({
+        color: startColor,
+        width: 1,
+      });
   }
 }
 generate();

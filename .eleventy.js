@@ -6,6 +6,9 @@ module.exports = (config) => {
   config.addPassthroughCopy("./src/typical/");
   config.addPassthroughCopy("./src/generative/**/script.js");
   config.addPassthroughCopy("./src/generative/**/style.css");
+  config.addPassthroughCopy("./src/fx/**/script.js");
+  config.addPassthroughCopy("./src/fx/**/style.css");
+  config.addPassthroughCopy("./src/**/LICENSE.txt");
 
   // Tell 11ty to use the .eleventyignore and ignore our .gitignore file
   config.setUseGitIgnore(false);
