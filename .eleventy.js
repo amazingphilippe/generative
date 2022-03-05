@@ -6,6 +6,8 @@ module.exports = (config) => {
   config.addPassthroughCopy("./src/typical/");
   config.addPassthroughCopy("./src/generative/**/script.js");
   config.addPassthroughCopy("./src/generative/**/style.css");
+
+  // Bundle js for fxhash
   config.addPassthroughCopy("./src/fx/**/script.js");
   config.addPassthroughCopy("./src/fx/**/style.css");
   config.addPassthroughCopy("./src/**/LICENSE.txt");

@@ -1,9 +1,9 @@
 
 .art {
-  --canvas-bg: #E2E3DD;
+  --canvas-bg: #FFFBFF;
 }
 
-.canvas, canvas {
+.canvas {
   width: 75vmin;
   height: 75vmin;
   background: var(--canvas-bg);

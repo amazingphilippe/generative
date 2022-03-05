@@ -48,5 +48,11 @@
    {"url":"/generative/loop3/"}
    ,
    {"url":"/generative/dunes/"}
+   ,
+   {"url":"/generative/ulam/"}
+   ,
+   {"url":"/generative/leaf/"}
+   ,
+   {"url":"/generative/space-col/"}
    
 ]

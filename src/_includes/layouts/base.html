@@ -47,6 +47,11 @@
       {% include "partials/fxhash.html" %}
     {% endif %}
 
+    {% if not fxhash %}
+      <link rel="stylesheet" href="/typical/Rowan/ical.css" />
+      <link rel="stylesheet" href="/typical/Manrope/ical.css" />
+    {% endif %}
+
     {% if pageScripts %}
       {% for item in pageScripts %}
         <script type="module" src="{{ item }}{{ '?' + assetHash if not fxZip }}" ></script>
