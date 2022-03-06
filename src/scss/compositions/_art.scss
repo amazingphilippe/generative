@@ -17,6 +17,9 @@
   }
 
   figure {
+    /* Looking at you Firefox */
+    caret-color: transparent !important;
+    
     display: grid;
     grid-template-columns: 1;
     grid-auto-rows: 1;
