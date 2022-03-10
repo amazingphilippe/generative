@@ -26,7 +26,7 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-const palette = ["000"];
+const palette = ["#485696","#fc7a1e","#f24c00","#311e10","#dedee0"];
 const { width, height } = svg.viewbox();
 
 const min_dist = 20;

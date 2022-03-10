@@ -3,25 +3,33 @@
 {% block meta %}{% endblock %}
 {% block assetHash %}{% endblock %}
 {% block header %}{% endblock %}
+{% block style %}{% include "css/fx.css" %}{% endblock %}
 
 
-{% set pageScripts = ["./script.js"] %}
-{% set pageStylesheets = ["./style.css"] %}
+{% set pageScripts = ["./src/fx/" + page.fileSlug + "/script.js"] %}
+{% set pageStylesheets = ["style.css"] %}
+
+{% block fxhash %}
+  {% include "partials/fxhash.html" %}
+  {% for item in pageScripts %}
+    {% rollup item | url %}
+  {% endfor %}
+{% endblock %}
 
 {% block content %}
 
 <main class="art">
-  <figure>
-  {% if svg %}
-  <svg class="canvas" viewBox="0 0 {{ width }} {{ height }}" overflow="{{ 'visible' if overflow }}"></svg>
-  {% endif %}
-  {% if series %}
-  <figcaption class="series"><span></span></figcaption>
-  {% endif %}
-  </figure>
-  {% if canvas %}
+
   <canvas id="fx" resize width="{{ width }}" height="{{ height }}"></canvas>
-  {% endif %}
+  <p id="sig">
+    <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8 0H4V3.29289L3.29289 4H0V8H4V12H0V16H4V12H8V8.70711L8.70711 8H12V12H15.2929L16 12.7071V16H20V12H16.7071L16 11.2929V8.70711L16.7071 8H20V4H16V7.29289L15.2929 8H12V4H8.70711L8 3.29289V0ZM4 8V4.70711L4.70711 4H7.29289L8 4.70711V7.29289L7.29289 8H4Z" fill="currentColor"/>
+</svg>
+
+    {{ year }}
+  </p>
+
 </main>
 
 {% endblock %}
+{% block footer %}{% endblock %}

@@ -4,5 +4,6 @@
   "overflow": false,
   "width": 400,
   "height": 300,
-  "layout": "layouts/generative.html"
+  "layout": "layouts/generative.html",
+  "fxhash": false
 }

@@ -31,42 +31,43 @@
     <meta property="twitter:image" content="{{ site.url }}/images/art/{{ page.fileSlug }}.png">
     {% endblock %}
     <style>
-      {% include "css/index.css" %}
+      {% block style %}
+        {% include "css/index.css" %}
+      {% endblock %}
     </style>
 
     {% if pageStylesheets %}
       {% for item in pageStylesheets %}
         <link
           rel="stylesheet"
-          href="{{ item }}{{ '?' + assetHash if not fxZip }}"
+          href="{{ item }}{{ '?' + assetHash if not fxhash }}"
         />
       {% endfor %}
     {% endif %}
 
-    {% if fxhash %}
-      {% include "partials/fxhash.html" %}
-    {% endif %}
+    {% block fxhash %}{% endblock %}
 
     {% if not fxhash %}
       <link rel="stylesheet" href="/typical/Rowan/ical.css" />
       <link rel="stylesheet" href="/typical/Manrope/ical.css" />
     {% endif %}
 
-    {% if pageScripts %}
+    {% if pageScripts and not fxhash %}
       {% for item in pageScripts %}
-        <script type="module" src="{{ item }}{{ '?' + assetHash if not fxZip }}" ></script>
+        <script type="module" src="{{ item }}{{ '?' + assetHash if not fxhash }}" ></script>
       {% endfor %}
     {% endif %}
 
   </head>
   <body>
-    <a class="sr skip-link container bg-dark color-light text-500 " href="#main">{{ site.skip }}</a>
-
-    {% block header %}{% include "partials/site-head.html" %}{% endblock %}
+    {% block header %}
+      <a class="sr skip-link container bg-dark color-light text-500 " href="#main">{{ site.skip }}</a>
+      {% include "partials/site-head.html" %}
+    {% endblock %}
 
     {% block content %}{% endblock %}
 
-    {% include "partials/site-foot.html" %}
+    {% block footer %}{% include "partials/site-foot.html" %}{% endblock %}
 
 
   </body>

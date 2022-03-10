@@ -1,3 +1,14 @@
+
+/*
+
+- new page
+- create svg node. template?
+- load script
+- capture
+
+*/
+
+
 const puppeteer = require("puppeteer");
 const arts = require("./art.json");
 
@@ -18,7 +29,8 @@ const path = require("path");
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto("https://www.cliqu.art/generative/" + art.url +");
+    await page.goto("https://www.cliqu.art/generative/rideau/");
+    await page.addScriptTag("./generative/" + slug + "/script.js");
     await page.waitForSelector("main svg");
     await page.setViewport({
       width: 900,
