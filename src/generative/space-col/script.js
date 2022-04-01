@@ -26,7 +26,8 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-const palette = ["#485696","#fc7a1e","#f24c00","#311e10","#dedee0"];
+const fruit = chroma.scale(['#f24c00','#6B0504']).mode('lch').colors(6)
+const palette = ["#F5F749", "#0C0F0A", "#dedee0"];
 const { width, height } = svg.viewbox();
 
 const min_dist = 20;
@@ -36,16 +37,28 @@ paper.setup(document.getElementById("shadow"));
 
 //-----------------------------------------
 
+let scale = random(10, 20, true);
+
 function generate() {
   svg.clear();
 
+  scale = random(10, 20, true);
   let tree = new Tree();
 
   tree.show();
-  for (var i = 0; i < 1000; i++) {
+  for (var i = 0; i < 100; i++) {
+    if (tree.leaves == 0) {
+      continue;
+    }
     tree.grow();
   }
+
   tree.show();
+
+  // If tree is short. It's a feature!
+  if (tree.branches.length < 30) {
+    sun();
+  }
 }
 generate();
 
@@ -57,7 +70,7 @@ function Tree() {
   const tessellation = createVoronoiTessellation({
     width: width,
     height: height,
-    points: [...Array(12)].map((i) => {
+    points: [...Array(scale)].map((i) => {
       return {
         x: random(100, width - 100),
         y: random(0, height - 100),
@@ -160,49 +173,126 @@ function Tree() {
 function Leaf(x, y) {
   this.pos = new Vector(x, y);
   this.reached = false;
+  this.type = random(0, 5, true);
 
   this.show = function () {
     //svg.circle(2).attr({ cx: this.pos.x, cy: this.pos.y }).fill("red");
   };
 
   this.draw = function (branch) {
-    let size = random(5,7);
-    let points = [];
+    //console.log(branch.depth);
+    if (branch.depth > 30 && this.type - branch.count < 5) {
+      // FRUIT
+      let size = map(scale, 20, 60, 16, 8);
+      let gravity = Vector.add(branch.dir, new Vector(0, random(5, 9, true)));
+      let heading = gravity.heading() * (180 / Math.PI);
 
-    for (var a = 0; a < Math.PI * 2; a += Math.PI / 60) {
-      let r = size;
-      let sec_a = (1/Math.cos(a));
-      let folium;
-      folium = (r / 2) * ((4 * Math.cos(a)) - (1/Math.cos(a))); //Trisectrix of Maclaurin
-      //folium = (3 * r * sec_a * Math.tan(a)) / (1 + Math.pow(Math.tan(a), 3)) //Folium
-      let x = r * folium * Math.cos(a);
-      let y = r * folium * Math.sin(a);
+      let fruitThing = new paper.Path.Circle(new paper.Point(branch.pos.x, branch.pos.y + size), size);
+      fruitThing.flatten();
 
-      if (x > 0 && y < 0) {
-        points.push([
-          x + branch.pos.x,
-          y + branch.pos.y,
-        ]);
+      let fruitPoints = [];
+
+      for (var i = 0; i < fruitThing.segments.length; i++) {
+        fruitPoints[i] = [fruitThing.segments[i].point.x, fruitThing.segments[i].point.y]
+      }
+
+      console.log(fruit);
+
+      fill(fruitPoints, 250, { color: random(fruit), width: 0.5 }, chroma(random(fruit)).brighten(2).hex(), (g) => {
+        g.transform({
+          rotate: heading,
+          origin: [branch.pos.x, branch.pos.y + size],
+        });
+      });
+
+      // svg
+      //   .circle(size * 2)
+      //   .attr({ cx: branch.pos.x, cy: branch.pos.y + size })
+      //   .fill(chroma(random(fruit)).saturate(random(-1, 1)).hex())
+      //   .transform({
+      //     rotate: heading,
+      //     origin: [branch.pos.x, branch.pos.y + size],
+      //   });
+      //stem
+      svg
+        .line(
+          branch.pos.x,
+          branch.pos.y,
+          branch.pos.x + gravity.x,
+          branch.pos.y + gravity.y
+        )
+        .stroke({ width: 0.5, color: palette[1] });
+    } else {
+      {
+        //if (random(0, ) > branch.depth) {
+        // LEAF
+        let size = map(scale, 20, 60, 6, 4);
+        let points = [];
+
+        for (var a = 0; a < Math.PI * 2; a += Math.PI / 60) {
+          let r = size;
+          let sec_a = 1 / Math.cos(a);
+          let folium;
+          if (scale > 14) {
+            folium =
+              (3 * r * sec_a * Math.tan(a)) / (1 + Math.pow(Math.tan(a), 3)); // Folium
+          } else {
+            folium = (r / 2) * (4 * Math.cos(a) - 1 / Math.cos(a)); //Trisectrix of Maclaurin
+          }
+          let x = r * folium * Math.cos(a);
+          let y = r * folium * Math.sin(a);
+
+          if (x > 0 && y > 0) {
+            points.push([x + branch.pos.x, y + branch.pos.y]);
+          }
+        }
+        let gravity = Vector.add(branch.dir, new Vector(0, random(5, 7, true)));
+        let heading, stemOffset;
+        if (scale > 14) {
+          heading = gravity.heading() * (180 / Math.PI) - 45;
+          stemOffset = 45;
+        } else {
+          heading = gravity.heading() * (180 / Math.PI) - random(-35, 35);
+          stemOffset = 12;
+        }
+
+        // svg
+        //   .polyline(points)
+        //   .stroke({ width: 1.2, color: "#efeceb" })
+        //   .transform({
+        //     rotate: heading,
+        //     origin: [branch.pos.x, branch.pos.y],
+        //   });
+        // svg
+        //   .polyline(points)
+        //   .fill(palette[1])
+        //   .transform({
+        //     rotate: heading,
+        //     origin: [branch.pos.x, branch.pos.y],
+        //   });
+
+        fill(points, 250, { color: palette[1], width: 0.5 }, "#2D4739", (g) => {
+          g.transform({
+            rotate: heading,
+            origin: [branch.pos.x, branch.pos.y],
+          });
+        });
+
+        //stem
+        // svg
+        //   .line(
+        //     branch.pos.x,
+        //     branch.pos.y,
+        //     branch.pos.x + size * 2,
+        //     branch.pos.y
+        //   )
+        //   .transform({
+        //     rotate: heading + stemOffset,
+        //     origin: [branch.pos.x, branch.pos.y],
+        //   })
+        //   .stroke({ width: 0.5, color: palette[2] });
       }
     }
-
-    points.push(points[0]);
-    let heading = branch.dir.heading() * (180 / Math.PI) - 35;
-
-    svg
-      .polyline(points)
-      .stroke({ width: 1.2, color: "#efeceb" })
-      .transform({
-        rotate: heading,
-        origin: [branch.pos.x, branch.pos.y]
-      });
-    svg
-      .polyline(points)
-      .stroke({ width: 0.5, color: "black" })
-      .transform({
-        rotate: heading,
-        origin: [branch.pos.x, branch.pos.y]
-      });
   };
 }
 
@@ -213,6 +303,7 @@ function Branch(parent, pos, dir) {
   this.origDir = this.dir.copy();
   this.count = 0;
   this.len = random(5, 10);
+  this.depth = parent != null ? parent.depth + 1 : 0;
 
   this.reset = function () {
     this.dir = this.origDir.copy();
@@ -237,11 +328,91 @@ function Branch(parent, pos, dir) {
       //console.log(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
       svg
         .line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y)
-        .stroke({ width: 0.5, color: `#000` });
+        .stroke({ width: 0.5, color: palette[1] });
     }
   };
 }
 
 function distance(a, b) {
   return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+}
+
+function fill(points, iterations, stroke, fill = false, callback = false) {
+  let group = svg.group();
+
+  if (fill) {
+    group.polyline(points).fill(fill).stroke({color: fill, width: 2});
+  }
+
+  for (var i = 0; i < iterations; i++) {
+    let a = random(points);
+    let b = random(points);
+    group.line(a[0], a[1], b[0], b[1]).fill("none").stroke(stroke);
+  }
+
+  if (callback) {
+    callback(group);
+  }
+}
+
+function sun() {
+  let points = [];
+  let midCircle = [];
+  for (var a = 0; a < Math.PI * 2; a += Math.PI / 60) {
+    let r = 180;
+
+    let x = r * Math.cos(a);
+    let y = r * Math.sin(a);
+
+    points.push([x + width / 2, y + height / 2]);
+
+    x = random(-r, r);
+    y = random(-r, r);
+
+    let shine = { x: -120, y: -120 };
+
+    let shineD = Math.sqrt(
+      (x - shine.x) * (x - shine.x) + (y - shine.y) * (y - shine.y)
+    );
+
+    let d = Math.sqrt(x * x + y * y);
+
+    if (d < r && shineD > r) {
+      midCircle.push([x + width / 2, y + height / 2]);
+    }
+  }
+
+  let group = svg.group()
+
+  // points.push(points[0]);
+  // let baseColor = chroma(random(palette)).brighten(2).hex();
+  //group.polyline(points).stroke({ color: "#fdee6a", width: 5 }).fill("#fdee6a");
+
+  for (var i = 0; i < 500; i++) {
+    let a = random(points);
+    let b = random(midCircle);
+    let c = random(points);
+    group
+      .line(a[0], a[1], b[0], b[1])
+      .fill("none")
+      .stroke({ color: "#F6BE6D", width: 1 });
+      // .css({ "mix-blend-mode": "multiply" });
+    group
+      .line(a[0], a[1], c[0], c[1])
+      .fill("none")
+      .stroke({ color: "#dd9e4a", width: 1 });
+      // .css({ "mix-blend-mode": "screen" });
+    group
+      .line(a[0], a[1], c[0], c[1])
+      .fill("none")
+      .stroke({ color: "#fdee6a", width: 1 });
+      // .css({ "mix-blend-mode": "multiply" });
+    group
+      .polyline([a[0], a[1], b[0], b[1], c[0], c[1]])
+      .fill("none")
+      .stroke({ color: palette[0], width: 1 });
+      // .css({ "mix-blend-mode": "screen" });
+  }
+
+  group.back()
 }

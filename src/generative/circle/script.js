@@ -21,11 +21,7 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-let palette = chroma
-  .scale([chroma.random(), chroma.random()])
-  .mode("lch")
-  .colors(5);
-console.log(palette);
+let palette;
 const { width, height } = svg.viewbox();
 
 const density = 60;
@@ -38,6 +34,7 @@ function generate() {
     .scale([chroma.random(), chroma.random()])
     .mode("lch")
     .colors(5);
+    console.log(palette);
   let points = [];
   let midCircle = [];
   for (var a = 0; a < Math.PI * 2; a += Math.PI / density) {
@@ -51,13 +48,21 @@ function generate() {
     x = random(-r, r);
     y = random(-r, r);
 
+    let shine = { x: -120, y: -120 };
+
+    let shineD = Math.sqrt(
+      (x - shine.x) * (x - shine.x) + (y - shine.y) * (y - shine.y)
+    );
+
     let d = Math.sqrt(x * x + y * y);
-    if (d < r) {
+
+    if (d < r && shineD > r) {
       midCircle.push([x + width / 2, y + height / 2]);
     }
   }
-  points.push(points[0])
-  svg.polyline(points).stroke({ color: random(palette), width: 5 }).fill(chroma(random(palette)).brighten(2).hex());
+  points.push(points[0]);
+  let baseColor = chroma(random(palette)).brighten(2).hex();
+  svg.polyline(points).stroke({ color: baseColor, width: 5 }).fill(baseColor);
 
   for (var i = 0; i < 500; i++) {
     let a = random(points);
