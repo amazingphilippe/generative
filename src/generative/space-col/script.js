@@ -26,8 +26,12 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-const fruit = chroma.scale(['#f24c00','#6B0504']).mode('lch').colors(6)
+const leafPalette = ["#2D4739", "#2A3C35", "#445C5C"]
+const fruitPalette = chroma.scale(['#EE964B','#F95738']).mode('lch').colors(6)
+// const fruitPalette = chroma.scale(['#6A3937','#3B0D11']).mode('lch').colors(6)
 const palette = ["#F5F749", "#0C0F0A", "#dedee0"];
+const sunPalette = chroma.scale(['#fdfeba','#fdee6a']).mode('lch').colors(4);
+
 const { width, height } = svg.viewbox();
 
 const min_dist = 20;
@@ -196,9 +200,7 @@ function Leaf(x, y) {
         fruitPoints[i] = [fruitThing.segments[i].point.x, fruitThing.segments[i].point.y]
       }
 
-      console.log(fruit);
-
-      fill(fruitPoints, 250, { color: random(fruit), width: 0.5 }, chroma(random(fruit)).brighten(2).hex(), (g) => {
+      fill(fruitPoints, 250, { color: fruitPalette, width: 0.5 }, chroma(random(fruitPalette)).brighten(2).hex(), (g) => {
         g.transform({
           rotate: heading,
           origin: [branch.pos.x, branch.pos.y + size],
@@ -271,7 +273,7 @@ function Leaf(x, y) {
         //     origin: [branch.pos.x, branch.pos.y],
         //   });
 
-        fill(points, 250, { color: palette[1], width: 0.5 }, "#2D4739", (g) => {
+        fill(points, 250, { color: leafPalette, width: 0.5 }, leafPalette[2], (g) => {
           g.transform({
             rotate: heading,
             origin: [branch.pos.x, branch.pos.y],
@@ -347,7 +349,12 @@ function fill(points, iterations, stroke, fill = false, callback = false) {
   for (var i = 0; i < iterations; i++) {
     let a = random(points);
     let b = random(points);
-    group.line(a[0], a[1], b[0], b[1]).fill("none").stroke(stroke);
+    if (typeof stroke.color == "object") {
+      group.line(a[0], a[1], b[0], b[1]).fill("none").stroke({...stroke, color: random(stroke.color)});
+    } else {
+      group.line(a[0], a[1], b[0], b[1]).fill("none").stroke(stroke);
+    }
+
   }
 
   if (callback) {
@@ -386,32 +393,37 @@ function sun() {
 
   // points.push(points[0]);
   // let baseColor = chroma(random(palette)).brighten(2).hex();
-  //group.polyline(points).stroke({ color: "#fdee6a", width: 5 }).fill("#fdee6a");
+  group.polyline(points).stroke({ color: sunPalette[2], width: 5 }).fill(sunPalette[0]);
 
   for (var i = 0; i < 500; i++) {
     let a = random(points);
     let b = random(midCircle);
     let c = random(points);
+    let d = random(points);
+    // group
+    //   .line(a[0], a[1], b[0], b[1])
+    //   .stroke({ color: sun[3], width: 1 })
+    //   .css({ "mix-blend-mode": "multiply" })
+    //   .fill("none");
+    //
+    // group
+    //   .line(a[0], a[1], c[0], c[1])
+    //   .stroke({ color: sunPalette[2], width: 1 })
+    //   .css({ "mix-blend-mode": "multiply" })
+    //   .fill("none");
+
     group
-      .line(a[0], a[1], b[0], b[1])
-      .fill("none")
-      .stroke({ color: "#F6BE6D", width: 1 });
-      // .css({ "mix-blend-mode": "multiply" });
-    group
-      .line(a[0], a[1], c[0], c[1])
-      .fill("none")
-      .stroke({ color: "#dd9e4a", width: 1 });
-      // .css({ "mix-blend-mode": "screen" });
-    group
-      .line(a[0], a[1], c[0], c[1])
-      .fill("none")
-      .stroke({ color: "#fdee6a", width: 1 });
-      // .css({ "mix-blend-mode": "multiply" });
+      .line(d[0], d[1], c[0], c[1])
+      .stroke({ color: sunPalette[3], width: 1 })
+      // .css({ "mix-blend-mode": "multiply" })
+      .fill("none");
+
     group
       .polyline([a[0], a[1], b[0], b[1], c[0], c[1]])
-      .fill("none")
-      .stroke({ color: palette[0], width: 1 });
-      // .css({ "mix-blend-mode": "screen" });
+      .stroke({ color: sunPalette[2], width: 1 })
+      // .css({ "mix-blend-mode": "multiply" })
+      .fill("none");
+
   }
 
   group.back()
