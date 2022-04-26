@@ -21,14 +21,14 @@
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:title" content="{{ title or 'Generative Art' }}">
     <meta property="og:description" content="{{ content | striptags(true) }}">
-    <meta property="og:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/">
+    <meta property="og:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/_{{ assetHash }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
     <meta property="twitter:title" content="{{ title or 'Generative Art' }}">
     <meta property="twitter:description" content="{{ content | striptags(true) }}">
-    <meta property="twitter:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/">
+    <meta property="twitter:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/_{{ assetHash }}">
     {% endblock %}
     <style>
       {% block style %}
