@@ -5,6 +5,7 @@ import {
   random,
   map,
   spline,
+  createVoronoiTessellation,
 } from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
 
 import chroma from "https://cdn.skypack.dev/chroma-js";
@@ -36,12 +37,27 @@ paper.setup(document.getElementById("shadow"));
 
 function generate() {
   svg.clear();
+
+  const tessellation = createVoronoiTessellation({
+    width: width,
+    height: height,
+    points: [...Array(9)].map(() => {
+      return {
+        x: random(0, width, true),
+        y: random(0, height, true),
+      };
+    }),
+    relaxIterations: 2,
+  });
+
   let palette = chroma.scale([random(seedPalette), "#DFE2CF"]).colors(6);
   let orientation = new Vector(random(-1, 1), random(-1, 1)).setMag(50);
   let points = [];
-  for (var i = 0; i < 4; i++) {
-    points.push(new Vector(random(50, width - 50), random(50, height - 50)));
+  for (var i = 0; i < tessellation.cells.length; i++) {
+    console.log(tessellation.cells[i].centroid.x);
+    points.push(new Vector(tessellation.cells[i].centroid.x, tessellation.cells[i].centroid.y));
   }
+  console.log(points);
   let poly = new paper.Path(spline(points));
   poly.flatten(0);
 
@@ -69,7 +85,7 @@ function generate() {
   console.log(Vector, brush);
 
   // svg.circle(4).attr({ cx: brush[0].pos.x, cy: brush[0].pos.y });
-  for (var i = -40; i <= 40; i += 1) {
+  for (var i = -4; i <= 4; i += 1) {
     let polyline = brush.map((segment) => [
       segment.pos.x + segment.dir.x * i + random(-1,1),
       segment.pos.y + segment.dir.y * i + random(-1,1),

@@ -6,6 +6,8 @@
     {% for thing in collections.generative | reverse %}
       {% if thing.data.title !== title and not thing.data.hide %}
       <li role="list">
+        <img src="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/medium/1:1/bigger" alt="{{ thing.data.content | striptags }}">
+
         <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">{{ thing.data.title or "Untitled" }}</a>
       </li>
       {% endif %}

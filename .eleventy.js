@@ -31,6 +31,10 @@ module.exports = (config, options) => {
 
   // Add plugins
 
+  config.addFilter("urize", function(value) {
+    return encodeURIComponent(value)
+  });
+
 
   return {
     markdownTemplateEngine: "njk",

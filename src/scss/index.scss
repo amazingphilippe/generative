@@ -154,7 +154,7 @@ hr {
       calc(5rem * var(--seed) + 1rem) calc(7rem * var(--seed) + 1rem);
   }
   img {
-    position: absolute;
+    position: fixed;
     display: none;
     width: 300px;
     height: 300px;

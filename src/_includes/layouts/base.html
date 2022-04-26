@@ -21,14 +21,14 @@
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:title" content="{{ title or 'Generative Art' }}">
     <meta property="og:description" content="{{ content | striptags(true) }}">
-    <meta property="og:image" content="{{ site.url }}/images/art/{{ page.fileSlug }}.png">
+    <meta property="og:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
     <meta property="twitter:title" content="{{ title or 'Generative Art' }}">
     <meta property="twitter:description" content="{{ content | striptags(true) }}">
-    <meta property="twitter:image" content="{{ site.url }}/images/art/{{ page.fileSlug }}.png">
+    <meta property="twitter:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/opengraph/">
     {% endblock %}
     <style>
       {% block style %}
@@ -54,7 +54,7 @@
 
     {% if pageScripts and not fxhash %}
       {% for item in pageScripts %}
-        <script type="module" src="{{ item }}{{ '?' + assetHash if not fxhash }}" ></script>
+        <script type="module" src="{{ item }}{{ '?' + assetHash }}" ></script>
       {% endfor %}
     {% endif %}
 

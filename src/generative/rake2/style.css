@@ -1,0 +1,13 @@
+
+.art {
+  --canvas-bg: #ECE2D0;
+}
+
+.canvas {
+  width: 75vmin;
+  height: 75vmin;
+  background: var(--canvas-bg);
+}
+#info {
+  width: 75vmin
+}
