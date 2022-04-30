@@ -5,11 +5,13 @@
   <ul class="generative-list">
     {% for thing in collections.generative | reverse %}
       {% if thing.data.title !== title and not thing.data.hide %}
-      <li role="list">
+      <a class="text-500 font-base" href="{{ thing.url }}" aria-label="{{ thing.data.title or 'Untitled' }}">
+      <li role="list" style="--seed: {{ global.seed() }}">
         <img src="https://lovely-salamander-445f08.netlify.app/{{ (site.url + thing.url) | urize }}/medium/1:1/bigger/_{{ assetHash }}" alt="{{ thing.data.content | striptags }}">
 
-        <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">{{ thing.data.title or "Untitled" }}</a>
+        <span>{{ thing.data.title or "Untitled" }}</span>
       </li>
+      </a>
       {% endif %}
     {% endfor %}
   </ul>
