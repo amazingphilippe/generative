@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "tt-norms";
+  font-weight: 100 950;
+  font-stretch: 75% 125%;
+  font-style: oblique 0deg 12deg;
+  src: url("type/tt-norms.woff2") format("woff2 supports-variations"), url("type/tt-norms.woff2") format("woff2-variations"),
+    url("type/tt-norms.woff") format("woff");
+}
+/*
+  wdth 75-125
+  slnt 0-12
+  wght 100-950
+*/

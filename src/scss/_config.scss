@@ -16,15 +16,23 @@ $gorko-base-size: 1rem;
 
 $gorko-size-scale: (
   "none": 0,
-  "100": $gorko-base-size * 0.236,
-  "200": $gorko-base-size * 0.382,
-  "300": $gorko-base-size * 0.618,
-  "400": $gorko-base-size * 1,
-  "500": $gorko-base-size * 1.618,
-  "600": $gorko-base-size * 2.618,
-  "700": $gorko-base-size * 4.236,
-  "800": $gorko-base-size * 6.854,
-  "900": $gorko-base-size * 11.089,
+  "100": clamp(0.31rem, calc(0.29rem + 0.12vw), 0.38rem),
+  "200": clamp(0.63rem, calc(0.58rem + 0.24vw), 0.75rem),
+  "300": clamp(0.94rem, calc(0.86rem + 0.37vw), 1.13rem),
+  "400": clamp(1.25rem, calc(1.15rem + 0.49vw), 1.50rem),
+  "500": clamp(1.88rem, calc(1.73rem + 0.73vw), 2.25rem),
+  "600": clamp(2.50rem, calc(2.30rem + 0.98vw), 3.00rem),
+  "700": clamp(3.75rem, calc(3.46rem + 1.46vw), 4.50rem),
+  "800": clamp(5.00rem, calc(4.61rem + 1.95vw), 6.00rem),
+  "900": clamp(7.50rem, calc(6.91rem + 2.93vw), 9.00rem),
+);
+
+$gorko-type-scale: (
+  "100": clamp(0.94rem, calc(1.01rem + -0.10vw), 0.99rem),
+  "300": clamp(1.19rem, calc(1.16rem + 0.12vw), 1.25rem),
+  "500": clamp(1.43rem, calc(1.33rem + 0.47vw), 1.67rem),
+  "700": clamp(1.71rem, calc(1.51rem + 1.00vw), 2.22rem),
+  "900": clamp(2.05rem, calc(1.70rem + 1.77vw), 2.96rem),
 );
 
 /// COLORS
@@ -32,19 +40,19 @@ $gorko-size-scale: (
 /// You can also use them to power borders, fills or shadows, for example.
 ///
 $gorko-colors: (
-  "light": var(--bg, #F5F5F5),
-  "dark": var(--color, #090c02),
-  "shade": var(--shade, #90928A),
-  "primary-shade": var(--primary-shade, #312),
-  "primary": var(--primary, #423),
-  "primary-light": var(--primary-light, #534),
-  "focus": var(--focus, #EAA),
+  "light": #F5F5F5,
+  "dark": #090c02,
+  "shade": #DADAD2,
+  "primary-shade": #312,
+  "primary": #423,
+  "primary-light": #534,
+  "focus": #EAA,
 );
 
 /// FONTS
 $gorko-fonts: (
-  "base": "'Manrope', sans-serif",
-  "text": "'Rowan', serif",
+  "base": "'tt-norms', sans-serif",
+  "text": "'tt-norms', sans-serif",
 );
 
 /// CORE CONFIG
@@ -134,7 +142,7 @@ $gorko-config: (
     "property": "z-index",
   ),
   "text": (
-    "items": $gorko-size-scale,
+    "items": $gorko-type-scale,
     "output": "responsive",
     "property": "font-size",
   ),

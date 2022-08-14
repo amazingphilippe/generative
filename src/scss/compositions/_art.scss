@@ -6,7 +6,6 @@
 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   flex-wrap: wrap;
   margin-top: auto;
   margin-bottom: auto;
@@ -19,10 +18,6 @@
   figure {
     /* Looking at you Firefox */
     caret-color: transparent !important;
-    
-    display: grid;
-    grid-template-columns: 1;
-    grid-auto-rows: 1;
   }
 
   figcaption {
@@ -59,7 +54,10 @@
     width: 75vmin;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     align-items: flex-start;
+    button {
+      margin-bottom: auto;
+      display: inline-block;
+    }
   }
 }

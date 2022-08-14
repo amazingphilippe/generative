@@ -27,7 +27,7 @@ const { width, height } = svg.viewbox();
 function generate() {
   svg.clear();
 
-  let offset = -25;
+  let offset = 0;
 
   let samples = [chroma.random(), chroma.random()];
 
@@ -37,9 +37,12 @@ function generate() {
 
   const scale = chroma.scale(samples).mode("lch").colors(4);
 
-  for (var i = -25; i < width; i += offset) {
+  for (var i = 0; i < width; i += offset) {
     let height = random(4, 5, true) * 60;
     let bf = random(1, 5, true) * 20;
+    if (i + bf > width) {
+      bf = width - i;
+    }
 
     let direction = random(0, 1, true);
 
@@ -49,12 +52,12 @@ function generate() {
       //stripes = height / map(height, 240, 300, 8, 30);
       stripes = height / random(5, 15, true);
       y = random(0, 5, true) * (stripes / 2);
-      console.log(height, stripes, direction);
+      // console.log(height, stripes, direction);
     } else {
       //stripes = bf / map(bf, 20, 100, 2, 10);
       stripes = bf / random(5, 15, true);
       y = random(0, 5, true) * 10;
-      console.log(bf, stripes, direction);
+      // console.log(bf, stripes, direction);
     }
 
     let color = chroma(scale[random(0, 3, true)])
@@ -76,9 +79,9 @@ function generate() {
         }
       })
       //.attr({ patternContentUnits: "objectBoundingBox" });
-
     svg.rect(bf, height).x(i).y(y).fill(color);
     svg.rect(bf, height).x(i).y(y).fill(pattern);
+
 
     offset = bf;
   }

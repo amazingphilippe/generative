@@ -1,0 +1,18 @@
+.show-layout {
+  position: relative;
+}
+.show-layout::before, .show-layout::after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  --c: #{get-color("shade")};
+  background-color: var(--c);
+  position: absolute;
+  top: 0;
+  box-shadow: 0 0 0 100vmax var(--c);
+  clip-path: inset(-100vmax 0);
+  z-index: -999;
+}
+.show-layout::after {
+  right: 0;
+}

@@ -6,7 +6,7 @@
 {% block content %}
 
 <main class="art">
-  <figure>
+  <figure class="show-layout">
   {% if svg %}
   <svg class="canvas" viewBox="0 0 {{ width }} {{ height }}" overflow="{{ 'visible' if overflow }}"></svg>
   {% endif %}
@@ -19,12 +19,14 @@
   {% endif %}
 
 
-  <aside id="info" class="flow">
+  <aside id="info" class="flow show-layout" style="--flow-space:0.33rem">
+    <button class="bg-primary color-light">Regenerate</button>
     <h1>{{ title or "Untitled" }}</h1>
+    <p>{{ width }}&thinsp;&times;&thinsp;{{ width }}</p>
+    <p>{{ page.date.getFullYear() }}</p>
     <div>
       {{ content | safe}}
     </div>
-    <button class="bg-primary font-base color-light text-400">Regenerate</button>
   </aside>
 </main>
 

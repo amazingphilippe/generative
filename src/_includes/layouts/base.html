@@ -48,8 +48,7 @@
     {% block fxhash %}{% endblock %}
 
     {% if not fxhash %}
-      <link rel="stylesheet" href="/typical/Rowan/ical.css" />
-      <link rel="stylesheet" href="/typical/Manrope/ical.css" />
+      <link rel="stylesheet" href="/typical/TTNorms/ical.css" />
     {% endif %}
 
     {% if pageScripts and not fxhash %}
@@ -61,7 +60,7 @@
   </head>
   <body>
     {% block header %}
-      <a class="sr skip-link container bg-dark color-light text-500 " href="#main">{{ site.skip }}</a>
+      <a class="sr skip-link container bg-dark color-light text-300 font-base" href="#main">{{ site.skip }}</a>
       {% include "partials/site-head.html" %}
     {% endblock %}
 
