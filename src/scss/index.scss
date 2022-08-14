@@ -44,6 +44,7 @@ body {
   --color: #{get-color("primary-shade")};
   background-color: var(--bg);
   color: var(--color);
+  font-variation-settings: "slnt" var(--variation-style, 0);
 }
 
 header {
