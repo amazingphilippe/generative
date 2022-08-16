@@ -115,7 +115,10 @@ function generate() {
 
     if (candidates.length == 0 || count > 1000) {
       if (tessellation.cells.length > 2) {
-        let endRadius = random(10, 20);
+        let nearX = Math.min(width - root.centroid.x, root.centroid.x);
+        let nearY = Math.min(height - root.centroid.y, root.centroid.y);
+        let nearest = Math.min(nearX, nearY);
+        let endRadius = random(10, Math.min(nearest, 20));
         ends
           .circle(endRadius)
           .x(root.centroid.x - endRadius / 2)
