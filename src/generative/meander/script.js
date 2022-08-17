@@ -34,7 +34,7 @@ document.addEventListener("keyup", (e) => {
 paper.setup(document.getElementById("shadow"));
 
 // const palette = ["#f2af29", "#533e2d", "#058c42", "#9ee493"];
-const palette = ["#f1f7ed","#243e36","#7ca982","#e0eec6","#c2a83e"];
+const palette = ["#f1f7ed","#243e36","#7ca982","#e0eec6","#c2a83e", "#D5573B"];
 // const palette = ["#8C1C13", "#FFD400", "#34623F", "#2C497F"]
 const { width, height } = svg.viewbox();
 
@@ -42,16 +42,7 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
-  let density = random(200, 800, true);
-
-  let grid = createNoiseGrid({
-    width,
-    height,
-    resolution: 48,
-    xInc: 0.0125,
-    yInc: 0.0125,
-    seed: Math.random() * 1000,
-  });
+  let density = random(4000, 7000, true);
 
   let tessellation = createVoronoiTessellation({
     width: width,
@@ -90,7 +81,7 @@ function generate() {
     averageDistance += closest;
   });
 
-  averageDistance = (averageDistance / density) * 1.6;
+  averageDistance = (averageDistance / density) * 1.3;
 
   tessellation.cells.sort((a, b) => a.centroid.x - b.centroid.x);
   tessellation.cells.sort((a, b) => a.centroid.y - b.centroid.y);
@@ -113,12 +104,12 @@ function generate() {
       }
     });
 
-    if (candidates.length == 0 || count > 1000) {
+    if (candidates.length == 0 || count > 7000) {
       if (tessellation.cells.length > 2) {
         let nearX = Math.min(width - root.centroid.x, root.centroid.x);
         let nearY = Math.min(height - root.centroid.y, root.centroid.y);
         let nearest = Math.min(nearX, nearY);
-        let endRadius = random(10, Math.min(nearest, 20));
+        let endRadius = random(5, Math.min(nearest, 5));
         ends
           .circle(endRadius)
           .x(root.centroid.x - endRadius / 2)
@@ -132,11 +123,11 @@ function generate() {
         let color = chroma(random(palette)).brighten(random(-2, 1)).hex();
         lines
           // .path(polylinePath.pathData)
-          .path(roundCorners(polylinePath.pathData, 30).path)
+          .path(roundCorners(polylinePath.pathData, 10).path)
           .fill("none")
           .stroke({
             color: color,
-            width: chroma(color).luminance() + 1,
+            width: map(chroma(color).luminance(), 0, 1, 2, 5),
             linecap: "round",
             linejoin: "round"
           });
