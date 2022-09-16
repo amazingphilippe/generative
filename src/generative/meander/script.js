@@ -1,16 +1,13 @@
 import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
 // plugins for svg dot js
-import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
 
 import {
   createVoronoiTessellation,
-  createNoiseGrid,
   random,
   map,
 } from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
 
 import {
-  parsePath,
   roundCorners,
 } from "https://cdn.skypack.dev/svg-round-corners";
 
