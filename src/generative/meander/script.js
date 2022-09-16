@@ -23,7 +23,7 @@ btn.addEventListener("click", () => {
 });
 
 document.addEventListener("keyup", (e) => {
-  if (e.code === "Space") {
+  if (e.code === "KeyR") {
     generate();
   }
 });
@@ -39,7 +39,7 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
-  let density = random(4000, 7000, true);
+  let density = random(400, 700, true);
 
   let tessellation = createVoronoiTessellation({
     width: width,
@@ -53,14 +53,6 @@ function generate() {
     relaxIterations: 2,
   });
 
-  // Draw each point once
-  // tessellation.cells.forEach((c) => {
-  //   svg
-  //     .circle(2)
-  //     .x(c.centroid.x - 1)
-  //     .y(c.centroid.y - 1)
-  //     .fill(random(palette));
-  // });
 
   // Find the average distance to the closest point for every point.
   let averageDistance = 0;
@@ -106,7 +98,7 @@ function generate() {
         let nearX = Math.min(width - root.centroid.x, root.centroid.x);
         let nearY = Math.min(height - root.centroid.y, root.centroid.y);
         let nearest = Math.min(nearX, nearY);
-        let endRadius = random(5, Math.min(nearest, 5));
+        let endRadius = random(12, Math.min(nearest, 12));
         ends
           .circle(endRadius)
           .x(root.centroid.x - endRadius / 2)
@@ -124,7 +116,7 @@ function generate() {
           .fill("none")
           .stroke({
             color: color,
-            width: map(chroma(color).luminance(), 0, 1, 2, 5),
+            width: map(chroma(color).luminance(), 0, 1, 8, 12),
             linecap: "round",
             linejoin: "round"
           });

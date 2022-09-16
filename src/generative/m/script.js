@@ -11,7 +11,7 @@ btn.addEventListener("click", () => {
   generate();
 });
 document.addEventListener("keyup", (e) => {
-  if (e.code === "Space") {
+  if (e.code === "KeyR") {
     generate();
   }
 });
