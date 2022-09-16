@@ -119,8 +119,8 @@ function generate() {
 
         let color = chroma(random(palette)).brighten(random(-2, 1)).hex();
         lines
-          // .path(polylinePath.pathData)
-          .path(roundCorners(polylinePath.pathData, 10).path)
+          .path(polylinePath.pathData)
+          // .path(roundCorners(polylinePath.pathData, 10).path)
           .fill("none")
           .stroke({
             color: color,
