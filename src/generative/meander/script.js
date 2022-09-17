@@ -39,8 +39,8 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
-  let density = random(400, 700, true);
-
+  let density = random(2000, 4000, true);
+  console.log("Density: ", density);
   let tessellation = createVoronoiTessellation({
     width: width,
     height: height,
@@ -98,7 +98,7 @@ function generate() {
         let nearX = Math.min(width - root.centroid.x, root.centroid.x);
         let nearY = Math.min(height - root.centroid.y, root.centroid.y);
         let nearest = Math.min(nearX, nearY);
-        let endRadius = random(12, Math.min(nearest, 12));
+        let endRadius = random(6, Math.min(nearest, 6));
         ends
           .circle(endRadius)
           .x(root.centroid.x - endRadius / 2)
@@ -116,7 +116,7 @@ function generate() {
           .fill("none")
           .stroke({
             color: color,
-            width: map(chroma(color).luminance(), 0, 1, 8, 12),
+            width: map(chroma(color).luminance(), 0, 1, 3, 6),
             linecap: "round",
             linejoin: "round"
           });
@@ -143,7 +143,6 @@ function generate() {
     if (add) {
       // lines.line(root.centroid.x, root.centroid.y, add.centroid.x, add.centroid.y, ).fill("none").stroke({ color: "#423", width: 3, linecap: "round" });
       polyline.push(add);
-    } else {
     }
 
     root = add;
