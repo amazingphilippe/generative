@@ -1,0 +1,10 @@
+{% macro generate(slug) %}
+
+{%- for thing in collections.generative -%}
+  {%- if thing.fileSlug === slug -%}
+  <span class="link-to-gen">
+    <a class="tagged-link" href="/generative/{{ slug }}">Generate your {{ thing.data.title }}</a>
+  </span>
+  {%- endif -%}
+{%- endfor -%}
+{% endmacro %}

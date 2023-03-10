@@ -6,3 +6,12 @@
     margin-top: var(--flow-space, 1rem);
   }
 }
+
+.flow-inline {
+  > span {
+    display: inline-block;
+  }
+  > * + * {
+    margin-left: var(--flow-space, 1rem);
+  }
+}

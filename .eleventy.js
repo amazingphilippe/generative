@@ -3,7 +3,6 @@ const rollupper = require("./src/utils/rollupper.js");
 const Image = require("@11ty/eleventy-img");
 
 async function imageShortcode(src, cls, alt, sizes) {
-
   let options = {
     widths: [683],
     formats: ["webp", "png"],
@@ -11,7 +10,7 @@ async function imageShortcode(src, cls, alt, sizes) {
     urlPath: "/images/generated/",
     cacheOptions: {
       // if a remote image URL, this is the amount of time before it fetches a fresh copy
-      duration: "30d",
+      duration: "7d",
     },
   };
 
@@ -23,7 +22,14 @@ async function imageShortcode(src, cls, alt, sizes) {
     decoding: "async",
   };
 
-  metadata = await Image(src, options);
+  try {
+    metadata = await Image(
+      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/`,
+      options
+    );
+  } catch (err) {
+    metadata = await Image("https://lovely-salamander-445f08.netlify.app/https%3A%2F%2Fwww.cliqu.art%2Fungenerated/medium/1:1/bigger/", options);
+  }
   return Image.generateHTML(metadata, imageAttributes);
 }
 
@@ -33,6 +39,7 @@ module.exports = (config, options) => {
   config.addPassthroughCopy("./src/typical/");
   config.addPassthroughCopy("./src/generative/**/script.js");
   config.addPassthroughCopy("./src/generative/**/style.css");
+  config.addPassthroughCopy("./src/blog/**/*.{png,jpg,svg}");
 
   // Bundler js for fxhash
   config.addPlugin(rollupper, {
@@ -42,7 +49,6 @@ module.exports = (config, options) => {
       },
     },
   });
-
 
   config.addPassthroughCopy("./src/fx/**/script.js");
   config.addPassthroughCopy("./src/fx/**/style.css");
@@ -55,15 +61,18 @@ module.exports = (config, options) => {
     return collection.getFilteredByGlob(`./src/generative/**/*.md`);
   });
 
+  config.addCollection("blog", function (collection) {
+    return collection.getFilteredByGlob(`./src/blog/**/*.md`);
+  });
+
   //Shortcodes
-  config.addNunjucksAsyncShortcode("img", imageShortcode);
+  config.addNunjucksAsyncShortcode("generated", imageShortcode);
 
   // Add plugins
 
-  config.addFilter("urize", function(value) {
-    return encodeURIComponent(value)
+  config.addFilter("urize", function (value) {
+    return encodeURIComponent(value);
   });
-
 
   return {
     markdownTemplateEngine: "njk",

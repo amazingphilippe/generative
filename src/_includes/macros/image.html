@@ -1,0 +1,8 @@
+{% macro image(images, caption) %}
+<figure>
+  {% for image in images %}
+  <img src="{{ image.src }}" alt="{{ image.alt }}">
+  {% endfor %}
+  <figcaption>{{ caption }}</figcaption>
+</figure>
+{% endmacro %}

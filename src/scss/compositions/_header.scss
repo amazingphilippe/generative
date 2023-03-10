@@ -1,0 +1,23 @@
+header {
+  padding-bottom: 0;
+  width: 100%;
+  display: flex;
+
+  nav {
+    margin-left: auto;
+
+    // Nav font
+    @include apply-utility("font", "base");
+    font-weight: 400;
+    font-stretch: 90%;
+    @include apply-utility("text", "300");
+    line-height: 1.4;
+  }
+
+  ul {
+    display: flex;
+    li {
+      list-style: none;
+    }
+  }
+}

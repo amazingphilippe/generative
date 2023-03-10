@@ -1,0 +1,10 @@
+.art {
+  --canvas-bg: #fffbff;
+  --canvas-width: 50vmin;
+}
+
+.canvas {
+  width: var(--canvas-width);
+  background: var(--canvas-bg);
+  height: 75vmin;
+}

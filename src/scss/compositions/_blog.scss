@@ -1,0 +1,78 @@
+.blog {
+  max-width: 70ch;
+  margin: 3rem auto 33vh;
+  --flow-space: 5rem;
+
+  p + p {
+    --flow-space: 1.5rem;
+  }
+
+  h1 {
+    font-weight: 300;
+    font-stretch: 90%;
+    @include apply-utility("text", "900");
+    line-height: 1.1;
+  }
+
+  figure {
+    width: 100%;
+    width: clamp(100%, calc(100vw - 6rem), 180%);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    align-items: end;
+    justify-content: center;
+    gap: 4rem;
+    background: white;
+  }
+  figcaption {
+    font-family: "Rowan", Georgia;
+  }
+  img {
+    width: 150px;
+    max-width: 100%;
+    box-shadow: 0 0 0 7px white, 0 0 0 9px #{get-color("shade")};
+  }
+}
+
+.blog-list {
+  li {
+    max-width: 20ch;
+  }
+  h2 {
+    font-weight: 300;
+    line-height: 1.1;
+    font-stretch: 80%;
+    display: inline;
+    box-decoration-break: clone;
+  }
+  a {
+    text-decoration: none;
+    display: inline-block;
+    &:hover {
+      box-shadow: 0 0 0 9px #{get-color("primary")};
+      background-color: get-color("primary");
+      color: get-color("focus");
+      h2 {
+        background-color: get-color("focus");
+        color: get-color("dark");
+        box-shadow: 3px 0 #{get-color("focus")}, -3px 0 #{get-color("focus")};
+      }
+      time {
+        color: white;
+      }
+    }
+  }
+  time {
+    display: block;
+    font-stretch: 90%;
+    @include apply-utility("text", "300");
+  }
+}
+
+.link-to-gen {
+  --flow-space: 0.5rem;  
+}

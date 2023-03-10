@@ -1,5 +1,4 @@
 .art {
-
   gap: 3rem;
   padding: 1rem;
   width: 100%;
@@ -13,6 +12,9 @@
   svg {
     grid-column: 1;
     grid-row: 1;
+  }
+  .canvas {
+    background: var(--canvas-bg, var(--bg));
   }
 
   figure {
@@ -37,7 +39,7 @@
       content: counter(i);
       transform: rotate(45deg);
       color: get-color("shade");
-        display: block;
+      display: block;
     }
     span {
       border-bottom: 1px solid #{get-color("shade")};
@@ -51,7 +53,7 @@
   }
 
   aside {
-    width: 75vmin;
+    width: var(--canvas-width, 75vmin);
     display: flex;
     flex-direction: column;
     align-items: flex-start;

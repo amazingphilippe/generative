@@ -27,6 +27,12 @@
     <div>
       {{ content | safe}}
     </div>
+    {% for blog in collections.blog %}
+      {% if blog.data.tags[0] === tags[0] %}
+      <h2>About this series</h2>
+      <a class="tagged-link" href="{{ blog.url }}">{{ blog.data.title }}</a>
+      {% endif %}
+    {% endfor %}
   </aside>
 </main>
 
