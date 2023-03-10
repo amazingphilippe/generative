@@ -48,6 +48,8 @@
     font-stretch: 80%;
     display: inline;
     box-decoration-break: clone;
+    @include apply-utility("text", "700");
+
   }
   a {
     text-decoration: none;
@@ -74,5 +76,5 @@
 }
 
 .link-to-gen {
-  --flow-space: 0.5rem;  
+  --flow-space: 0.5rem;
 }
