@@ -7,7 +7,7 @@
       {% if thing.data.title !== title and not thing.data.hide %}
       <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">
       <li role="list">
-        {% generated site.url | urize + thing.url | urize, "", "", "683" %}
+        {% generated site.url | urize + thing.url | urize, "", "", "683", global.random() %}
 
         <h2>{{ thing.data.title or "Untitled" }}</h2>
       </li>

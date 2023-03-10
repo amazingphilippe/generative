@@ -2,7 +2,9 @@ const sortByDisplayOrder = require("./src/utils/sort-by-display-order.js");
 const rollupper = require("./src/utils/rollupper.js");
 const Image = require("@11ty/eleventy-img");
 
-async function imageShortcode(src, cls, alt, sizes) {
+
+
+async function imageShortcode(src, cls, alt, sizes, bust) {
   let options = {
     widths: [683],
     formats: ["webp", "png"],
@@ -24,7 +26,7 @@ async function imageShortcode(src, cls, alt, sizes) {
 
   try {
     metadata = await Image(
-      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/`,
+      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/${process.env.ELEVENTY_RUN_MODE === "build" && bust}/`,
       options
     );
   } catch (err) {
