@@ -10,7 +10,7 @@ async function imageShortcode(src, cls, alt, sizes) {
     urlPath: "/images/generated/",
     cacheOptions: {
       // if a remote image URL, this is the amount of time before it fetches a fresh copy
-      duration: "7d",
+      duration: "1m",
     },
   };
 
