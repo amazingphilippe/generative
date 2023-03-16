@@ -1,0 +1,20 @@
+
+.art {
+  --canvas-bg: #FFFBFF;
+}
+
+.canvas {
+  width: 75vmin;
+  height: 75vmin;
+  background: var(--canvas-bg);
+}
+#info {
+  width: 75vmin
+}
+
+.debug-text {
+  font-family: 'tt-norms', sans-serif;
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 300;
+}
