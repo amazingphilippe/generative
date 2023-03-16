@@ -59,7 +59,7 @@ function generate() {
   let baseX = random([3, 5, 9, 13]);
   let baseY = random([2, 7, 11, 17]);
 
-  console.log(baseX, baseY);
+  // console.log(baseX, baseY);
 
   let size = {
     min: random(13, 25),
@@ -81,7 +81,7 @@ function generate() {
         ? [padding, height - padding]
         : [height - padding, padding],
   };
-  console.log(orientation);
+  // console.log(orientation);
 
   for (var i = 0; i < Math.round(map(size.count, 1, 17, 80, 3)); i++) {
     let x = map(halton(baseX, i), 0, 1, orientation.x[0], orientation.x[1]);
