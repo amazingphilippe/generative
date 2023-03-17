@@ -16,7 +16,7 @@ const btn = document.querySelector("button");
 btn.addEventListener("click", () => {
   generate();
 });
-let debug = false
+let debug = false;
 
 document.addEventListener("keyup", (e) => {
   if (e.code === "KeyR") {
@@ -24,7 +24,6 @@ document.addEventListener("keyup", (e) => {
     generate();
   }
 });
-
 
 document.addEventListener("keyup", (e) => {
   if (e.code === "KeyD") {
@@ -87,8 +86,10 @@ function generate() {
     let x = map(halton(baseX, i), 0, 1, orientation.x[0], orientation.x[1]);
     let y = map(halton(baseY, i), 0, 1, orientation.y[0], orientation.y[1]);
 
-
-    debug && svg.text(i).attr({ x: x, y: y + 5, "text-anchor": "middle", class: "debug-text" })
+    debug &&
+      svg
+        .text(i)
+        .attr({ x: x, y: y + 5, "text-anchor": "middle", class: "debug-text" });
 
     for (var j = size.count; j < size.count + 9; j++) {
       svg
