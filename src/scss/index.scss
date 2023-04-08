@@ -119,30 +119,16 @@ a {
   }
 }
 
-p,
-ul,
-ol {
+p {
   @include apply-utility("font", "base");
   font-weight: 400;
   font-stretch: 90%;
   @include apply-utility("text", "300");
   line-height: 1.4;
   max-width: 50ch;
-  + p,
-  + ul,
-  + ol {
-    margin: 0;
-    margin-top: var(--flow-space, 1rem);
-  }
-}
-
-ul,
-ol {
-  list-style-position: inside;
-  list-style-type: square;
   + p {
     margin: 0;
-    margin-top: var(--flow-space, 2rem);
+    margin-top: var(--flow-space, 1rem);
   }
 }
 

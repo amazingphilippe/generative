@@ -40,38 +40,37 @@
 
 .blog-list {
   li {
-    max-width: 20ch;
+    width: 100%;
   }
-  h2 {
-    font-weight: 300;
+
+  a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-block: 0.5rem;
+    border-bottom: 1px solid #{get-color("shade")};
+  }
+
+  h2,
+  time {
+    font-weight: 450;
     line-height: 1.1;
     font-stretch: 80%;
     display: inline;
     box-decoration-break: clone;
-    @include apply-utility("text", "700");
-
-  }
-  a {
-    text-decoration: none;
-    display: inline-block;
-    &:hover {
-      box-shadow: 0 0 0 9px #{get-color("primary")};
-      background-color: get-color("primary");
-      color: get-color("focus");
-      h2 {
-        background-color: get-color("focus");
-        color: get-color("dark");
-        box-shadow: 3px 0 #{get-color("focus")}, -3px 0 #{get-color("focus")};
-      }
-      time {
-        color: white;
-      }
-    }
+    @include apply-utility("text", "300");
   }
   time {
     display: block;
+    font-weight: 300;
     font-stretch: 90%;
-    @include apply-utility("text", "300");
+    @include apply-utility("text", "100");
+  }
+
+  a:hover {
+    background-color: get-color("shade");
+    border-bottom: 1px solid #{get-color("primary")};
   }
 }
 

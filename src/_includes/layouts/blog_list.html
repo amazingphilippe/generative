@@ -1,15 +1,21 @@
-{% extends "layouts/base.html" %}
-
-{% block content %}
-<main class="pad-400">
+{% extends "layouts/base.html" %} {% block content %}
+<main class="blog pad-400">
   <ul class="blog-list">
     {% for thing in collections.blog | reverse %}
-      <a class="text-500 font-base" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">
-      <li role="list" class="flow">
+
+    <li role="list" class="flow">
+      <a
+        class="text-500 font-base"
+        href="{{ thing.url }}"
+        style="--seed: {{ global.seed() }}"
+      >
         <h2>{{ thing.data.title }}</h2>
-        <time>{{ thing.date.toLocaleString('en-CA', { timeZone: 'UTC', dateStyle: "long" }) }}</time>
-      </li>
+        <time
+          >{{ thing.date.toLocaleString('en-CA', { timeZone: 'UTC', dateStyle:
+          "long" }) }}</time
+        >
       </a>
+    </li>
     {% endfor %}
   </ul>
 </main>
