@@ -75,14 +75,21 @@ async function generate() {
 
   let nodes = await getNodes(lon, lat, size);
   console.log(nodes.elements.length, lat, lon);
+  let maxNodes = nodes.elements.slice(-500);
+
+  let points = maxNodes.map(
+    (n) =>
+      new paper.Point(
+        map(n.lon, lon, lon + size, 0, width),
+        map(n.lat, lat, lat + size, 0, height)
+      )
+  );
+
   if (nodes.elements.length >= 4) {
-    nodes.elements.slice(-500).forEach((node, i) => {
-      let x = map(node.lon, lon, lon + size, 0, width);
-      let y = map(node.lat, lat, lat + size, 0, height);
-      let nodePoint = new paper.Point(x, y);
+    points.forEach((nodePoint, i) => {
       // debug
       svg
-        .circle(map(i, 0, nodes.elements.slice(-500).length, 3, 13))
+        .circle(map(i, 0, maxNodes.length, 3, 13))
         .attr({
           cx: nodePoint.x,
           cy: nodePoint.y,
@@ -91,29 +98,17 @@ async function generate() {
         // .stroke({ width: 1, color: random(palette.colorsCSS) })
         .css({
           "mix-blend-mode": "multiply",
-          opacity: map(i, 0, nodes.elements.slice(-500).length, 0.7, 1),
+          opacity: map(i, 0, maxNodes.length, 0.7, 1),
         });
 
-      if (random(0, 1) > 0.99) {
-        let d = 9999;
-        nodes.elements.slice(-500).forEach((otherNode) => {
-          let otherNodePoint = new paper.Point(
-            map(otherNode.lon, lon, lon + size, 0, width),
-            map(otherNode.lat, lat, lat + size, 0, height)
-          );
-          d = distance(nodePoint, otherNodePoint);
-
-          if (d < 30) {
-            svg
-              .line(
-                nodePoint.x,
-                nodePoint.y,
-                otherNodePoint.x,
-                otherNodePoint.y
-              )
-              .stroke({ width: 0.5, color: random(palette.colorsCSS) });
-          }
+      if (random(0, 1) > 0.8) {
+        let linkNode = points.find((otherNode) => {
+          return distance(nodePoint, otherNode) < 60;
         });
+
+        svg
+          .line(nodePoint.x, nodePoint.y, linkNode.x, linkNode.y)
+          .stroke({ width: 0.5, color: random(palette.colorsCSS) });
       }
 
       // let a = random(0, Math.PI * 2);
@@ -130,21 +125,17 @@ async function generate() {
       //   });
     });
 
-    for (let i = 0; i < 20; i++) {
-      let points = nodes.elements.slice(-500).sort(() => Math.random() - 0.5);
+    for (
+      let i = 0;
+      i < random(1, Number.parseInt(points.length / 30) + 5);
+      i++
+    ) {
+      let shuffledPoints = points.sort(() => Math.random() - 0.5);
 
-      let from = new paper.Point(
-        map(points[0].lon, lon, lon + size, 0, width),
-        map(points[0].lat, lat, lat + size, 0, height)
-      );
-      let through = new paper.Point(
-        map(points[1].lon, lon, lon + size, 0, width),
-        map(points[1].lat, lat, lat + size, 0, height)
-      );
-      let to = new paper.Point(
-        map(points[2].lon, lon, lon + size, 0, width),
-        map(points[2].lat, lat, lat + size, 0, height)
-      );
+      let from = shuffledPoints[0];
+      let through = shuffledPoints[1];
+      let to = shuffledPoints[2];
+
       let arc = new paper.Path.Arc(from, through, to);
       svg
         .path(arc.pathData)
@@ -182,24 +173,22 @@ async function generate() {
           "mix-blend-mode": "multiply",
         });
 
-      let walk = [
-        new paper.Point(
-          map(points[2].lon, lon, lon + size, 0, width),
-          map(points[2].lat, lat, lat + size, 0, height)
-        ),
-      ];
+      let walk = [shuffledPoints[3]];
 
       let maxWalk = random(3, 5, true);
-      points.forEach((other) => {
-        let otherPoint = new paper.Point(
-          map(other.lon, lon, lon + size, 0, width),
-          map(other.lat, lat, lat + size, 0, height)
-        );
+      points.forEach((otherPoint) => {
         if (
           !walk.some((point) => point === otherPoint) &&
           walk[0].isClose(otherPoint, 100) &&
           walk.length < maxWalk
         ) {
+          debug.text(walk[0].angle.toFixed(2)).attr({
+            x: walk[0].x,
+            y: walk[0].y + 5,
+            "text-anchor": "middle",
+            class: "debug-text",
+          });
+          // console.log(walk[0].getDirectedAngle(otherPoint));
           walk.unshift(otherPoint);
         }
       });
@@ -209,17 +198,50 @@ async function generate() {
         .fill("none")
         .stroke({
           width: 1,
-          color: random(palette.colorsCSS),
+          color: "white",
           dasharray: "5",
         })
         .css({
-          "mix-blend-mode": "screen",
+          // "mix-blend-mode": "screen",
           // opacity: ,
         })
         .back();
     }
+
+    svg
+      .text(internet.region)
+      .attr({
+        x: width - 5,
+        y: height - 5,
+        "text-anchor": "end",
+        class: "debug-text",
+      })
+      .css({
+        fill: random(palette.colorsCSS),
+        "text-transform": "uppercase",
+        "font-size": "6px",
+        "font-weight": "400",
+        "letter-spacing": "2px",
+        "font-stretch": "125%",
+      });
   } else {
     svg.rect(width, height, 0, 0).fill("#BCCCE0");
+    svg
+      .text("Perdus")
+      .attr({
+        x: width - 5,
+        y: height - 5,
+        "text-anchor": "end",
+        class: "debug-text",
+      })
+      .css({
+        fill: "#E0E6EE",
+        "text-transform": "uppercase",
+        "font-size": "6px",
+        "font-weight": "400",
+        "letter-spacing": "2px",
+        "font-stretch": "125%",
+      });
     // console.log(nodes.elements);
   }
 
@@ -239,7 +261,7 @@ generate();
 async function getNodes(lon, lat, size) {
   let response = await fetch(
     // `https://api.openstreetmap.org/api/0.6/permissions`
-    `https://overpass-api.de/api/interpreter?data=[bbox][out:json];node[place=hamlet];node[place=village];out;&bbox=${lon},${lat},${
+    `https://overpass-api.de/api/interpreter?data=[bbox][out:json];node[place=hamlet];node[place=village];node[place=town];out;&bbox=${lon},${lat},${
       lon + size
     },${lat + size}`
     // `https://overpass-api.de/api/interpreter?data=[bbox][out:json][maxsize:5485760];node[barrier=gate];out;&bbox=${lon},${lat},${
@@ -274,15 +296,11 @@ function distance(a, b) {
   return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 }
 
-function sortByDistance(location, arrayOfPoints) {
-  arrayOfPoints.sort(function (a, b) {
-    a.distance = distance(location, a);
-    b.distance = distance(location, b);
-
-    return a.distance - b.distance;
-  });
-
-  return arrayOfPoints;
+function nodeToPoint(node, lat, lon, size) {
+  return new paper.Point(
+    map(node.lon, lon, lon + size, 0, width),
+    map(node.lat, lat, lat + size, 0, height)
+  );
 }
 
 /**

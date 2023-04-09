@@ -11,3 +11,5 @@ For each village or hamlet, draw a circle. Take 20 triple of hamlets and village
 Sometimes, you can also connect a village or a hamlet to all of its neighbours with a straight line.
 
 Sometimes, also connect a string of hamlets and villages with a dashed line.
+
+When no data is found. Nothing happens, you are truly lost.

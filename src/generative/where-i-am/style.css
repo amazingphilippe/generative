@@ -1,6 +1,5 @@
-
 .art {
-  --canvas-bg: #FFFBFF;
+  --canvas-bg: #fffbff;
 }
 
 .canvas {
@@ -9,5 +8,9 @@
   background: var(--canvas-bg);
 }
 #info {
-  width: 75vmin
+  width: 75vmin;
+}
+
+.debug-text {
+  font-family: "tt-norms", sans-serif;
 }
