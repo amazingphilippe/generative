@@ -45,6 +45,7 @@ body {
   background-color: var(--bg);
   color: var(--color);
   font-variation-settings: "slnt" var(--variation-style, 0);
+  @include apply-utility("font", "base");
 }
 
 footer {
@@ -198,6 +199,7 @@ img {
 }
 
 .tagged-link[href] {
+  font-size: 1rem;
   display: block;
   padding: 0.5rem;
   padding-right: 2rem;

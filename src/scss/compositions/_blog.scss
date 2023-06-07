@@ -1,9 +1,15 @@
 .blog {
-  max-width: 70ch;
+  max-width: 50ch;
   margin: 3rem auto 33vh;
   --flow-space: 5rem;
+  @include apply-utility("font", "base");
+  font-weight: 400;
+  font-stretch: 90%;
+  @include apply-utility("text", "300");
+  line-height: 1.4;
 
-  p + p {
+  p + p,
+  h2 + p {
     --flow-space: 1.5rem;
   }
 
@@ -12,6 +18,9 @@
     font-stretch: 90%;
     @include apply-utility("text", "900");
     line-height: 1.1;
+  }
+  h2 {
+    --flow-space: 5rem;
   }
 
   figure {
@@ -29,6 +38,7 @@
     background: white;
   }
   figcaption {
+    @include apply-utility("text", "100");
     font-family: "Rowan", Georgia;
   }
   img {
@@ -36,11 +46,22 @@
     max-width: 100%;
     box-shadow: 0 0 0 7px white, 0 0 0 9px #{get-color("shade")};
   }
+
+  ul:not(.blog-list) {
+    --flow-space: 1.5rem;
+    li {
+      list-style-type: square;
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
 }
 
 .blog-list {
   li {
     width: 100%;
+    margin: 0;
   }
 
   a {
