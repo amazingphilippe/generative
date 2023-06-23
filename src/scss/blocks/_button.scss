@@ -1,0 +1,21 @@
+button {
+  background-color: var(--color-accent-dark);
+  color: var(--color-bg);
+  border: none;
+  padding: 0.375rem 0.75rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button:focus {
+  outline: 4px solid var(--focus);
+}
+button:hover {
+  background-color: var(--color-accent);
+}
+button:active {
+  height: 40px;
+  border-top: 4px solid var(--color-accent-dark);
+}

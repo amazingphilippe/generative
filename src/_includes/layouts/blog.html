@@ -1,9 +1,12 @@
-{% extends "layouts/base.html" %}
+{% from "macros/clic.html" import clic with context %}
+
+{% extends "layouts/base.html" %} 
 
 {% block content %}
 
-<main class="blog pad-400 flow">
+<main class="blog blog-single flow">
   {{ content | safe }}
+  {{ clic(40) }}
 </main>
 
 {% endblock %}

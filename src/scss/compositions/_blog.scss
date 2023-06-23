@@ -1,28 +1,25 @@
 .blog {
-  max-width: 50ch;
-  margin: 3rem auto 33vh;
-  --flow-space: 5rem;
-  @include apply-utility("font", "base");
-  font-weight: 400;
-  font-stretch: 90%;
-  @include apply-utility("text", "300");
-  line-height: 1.4;
-
   p + p,
   h2 + p {
-    --flow-space: 1.5rem;
+    --flow-space: 2rem;
   }
 
   h1 {
-    font-weight: 300;
-    font-stretch: 90%;
-    @include apply-utility("text", "900");
-    line-height: 1.1;
+    font: var(--font-heading-large);
+    max-width: 450px;
+    margin: 0 auto 4rem;
   }
   h2 {
-    --flow-space: 5rem;
+    font: var(--font-heading-small);
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    --flow-space: 4rem;
   }
 
+  figure + figure {
+    --flow-space: 0;
+  }
   figure {
     width: 100%;
     width: clamp(100%, calc(100vw - 6rem), 180%);
@@ -34,30 +31,75 @@
     grid-template-columns: repeat(auto-fit, 150px);
     align-items: end;
     justify-content: center;
-    gap: 4rem;
+    gap: 1rem 4rem;
     background: white;
   }
   figcaption {
-    @include apply-utility("text", "100");
-    font-family: "Rowan", Georgia;
+    font: var(--font-caption);
   }
   img {
     width: 150px;
+    padding: 7px;
     max-width: 100%;
-    box-shadow: 0 0 0 7px white, 0 0 0 9px #{get-color("shade")};
+    border: 2px solid #{get-color("shade")};
+  }
+  .link-to-gen {
+    // grid-row: 2;
+    // grid-column: 3;
+    font: var(--font-caption);
+    font-family: "tt-norms";
+    font-weight: 350;
+    display: block;
+    color: var(--color-accent-dark, var(--color-accent));
   }
 
   ul:not(.blog-list) {
-    --flow-space: 1.5rem;
+    --flow-space: 2.5rem;
+    max-width: 80%;
+    font: var(--font-text);
+    font-weight: 350;
+    margin-left: 1em;
+
     li {
-      list-style-type: square;
+      list-style-type: "";
+      position: relative;
+      &::before {
+        width: 0.35em;
+        height: 0.35em;
+        content: "*";
+        font: var(--font-heading-small);
+        color: var(--color-accent);
+        position: absolute;
+        top: 0.15em;
+        left: -0.65em;
+        transition: transform ease-out 1s;
+      }
+      &:hover::before {
+        transform: rotate(360deg);
+        transition: transform ease-in-out 0s;
+      }
       &:not(:last-child) {
         margin-bottom: 0.5rem;
       }
+      &::marker {
+        color: var(--color-bg);
+        font-size: 0.1px;
+      }
+    }
+
+    > li + li {
+      margin-top: 1rem;
     }
   }
-}
 
+  .clic {
+    margin: 4.5rem auto;
+    width: 100%;
+  }
+}
+.blog-index {
+  flex-grow: 1;
+}
 .blog-list {
   li {
     width: 100%;
@@ -65,33 +107,33 @@
   }
 
   a {
+    --duration-hover: 0.4s;
+    --ease-smooth-out: cubic-bezier(0, 0, 0.11, 1.01);
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding-block: 0.5rem;
+    gap: 1.5rem;
+    padding: 4rem 2rem;
+    color: var(--color-accent-dark);
     border-bottom: 1px solid #{get-color("shade")};
-  }
-
-  h2,
-  time {
-    font-weight: 450;
-    line-height: 1.1;
-    font-stretch: 80%;
-    display: inline;
-    box-decoration-break: clone;
-    @include apply-utility("text", "300");
+    box-shadow: 0 0 0 0 var(--color-accent-shade);
+    transition: padding var(--ease-smooth-out) var(--duration-hover),
+      gap var(--ease-smooth-out) var(--duration-hover);
   }
   time {
     display: block;
-    font-weight: 300;
-    font-stretch: 90%;
-    @include apply-utility("text", "100");
+    font: var(--font-caption);
   }
 
   a:hover {
-    background-color: get-color("shade");
-    border-bottom: 1px solid #{get-color("primary")};
+    background-color: var(--color-accent-shade);
+    border-bottom: 1px solid var(--color-accent);
+    box-shadow: 0 0 0 0.5rem var(--color-accent-shade);
+    transition: box-shadow var(--ease-smooth-out) var(--duration-hover),
+      padding var(--ease-smooth-out) var(--duration-hover),
+      gap var(--ease-smooth-out) var(--duration-hover);
+    padding-block: 3.5rem;
+    gap: 2.5rem;
   }
 }
 

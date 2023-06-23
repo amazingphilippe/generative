@@ -1,10 +1,15 @@
-// @import url("https://fonts.googleapis.com/css2?family=Manrope&display=swap");
 @import "_reset";
 @import "_config";
 @import "../../node_modules/gorko/gorko";
 
 :root {
-  font-size: 93.8%;
+  --font-heading-large: 3.75rem/1.06666666667 "Bizzarrini V0.5 Headline";
+  --font-heading-small: 2.1875rem/0.875 "Bizzarrini V0.5 Headline";
+  --font-text: 1.1875rem/1.2631578947 "tt-norms";
+  --font-paragraph: 1.1875rem/1.6842105263 "tt-norms";
+  --font-caption: 300 0.8125rem/1.2307692308 "Bizzarrini V0.5 Text";
+
+  --space-gutter: 1rem;
 }
 
 * {
@@ -37,187 +42,72 @@
 }
 
 body {
+  //Layout foundations
+  max-width: 100%;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  --bg: #{get-color("light")};
-  --color: #{get-color("primary-shade")};
-  background-color: var(--bg);
-  color: var(--color);
-  font-variation-settings: "slnt" var(--variation-style, 0);
-  @include apply-utility("font", "base");
+  --color-bg: #{get-color("light")};
+  --color-text: #{get-color("dark")};
+  --color-accent: #{get-color("accent")};
+  --color-focus: #{get-color("focus")};
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-variation-settings: "slnt" var(--slnt, 0);
+  font: var(--font-text);
 }
 
-footer {
-  padding: 1rem;
-  margin-top: auto;
-}
-
-.logo {
-  &:hover {
-    background: get-color("focus");
-    box-shadow: 0 0 0 1rem #{get-color("focus")};
+header,
+footer,
+main {
+  max-width: 100%;
+  @include media-query("md") {
+    max-width: 48rem;
   }
+  padding: 0 var(--space-gutter);
+  margin: 0 auto;
 }
 
-h1 {
-  @include apply-utility("text", "300");
-  @include apply-utility("font", "base");
-  font-weight: 550;
-  font-stretch: 90%;
-  letter-spacing: 0.05ch;
-  color: get-color("primary");
-}
-
-h2 {
-  @include apply-utility("text", "300");
-  @include apply-utility("font", "base");
-  font-weight: 450;
-  font-stretch: 90%;
-  letter-spacing: 0.05ch;
-  color: get-color("primary");
-  --flow-space: 2rem;
-}
-
-button {
-  @include apply-utility("font", "base");
-  @include apply-utility("text", "300");
-  font-weight: 400;
-  font-stretch: 90%;
-  border: none;
-  padding: 0.2rem 1.25rem;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-button:focus {
-  outline: 4px solid #{get-color("focus")};
-}
-button:hover {
-  background-color: #{get-color("primary-light")};
-}
-button:active {
-  height: 40px;
-  border-top: 4px solid #{get-color("primary-shade")};
+main {
+  padding: 6.5rem 1rem;
 }
 
 a {
-  color: get-color("primary");
-  text-decoration-style: solid;
-  text-decoration-thickness: 1px;
+  color: var(--color-accent);
+  text-decoration-thickness: max(0.07em, 1px);
+  text-underline-offset: 0.15em;
 
   &:hover {
-    text-decoration-color: get-color("focus");
-    color: get-color("primary-shade");
+    text-decoration-color: var(--color-focus);
   }
-
-  &:focus {
-    outline-offset: 2px;
-    outline: 2px solid #{get-color("focus")};
-  }
+}
+:focus-visible {
+  outline-offset: 2px;
+  outline: 2px solid #{get-color("focus")};
 }
 
 p {
-  @include apply-utility("font", "base");
-  font-weight: 400;
-  font-stretch: 90%;
-  @include apply-utility("text", "300");
-  line-height: 1.4;
-  max-width: 50ch;
+  font: var(--font-paragraph);
   + p {
     margin: 0;
     margin-top: var(--flow-space, 1rem);
   }
 }
 
-ul li::marker {
-  color: get-color("shade");
-}
-
-img {
-  // Important for alt text
-  @include apply-utility("font", "base");
-  font-weight: 400;
-  font-stretch: 90%;
-  @include apply-utility("text", "300");
-  line-height: 1.4;
-  max-width: 50ch;
-}
-
-.generative-list {
+footer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5rem 3rem;
-  justify-content: center;
+  flex-direction: column;
+  padding-block: 0.5rem;
   align-items: center;
-
-  li {
-    display: block;
-  }
-  a {
-    text-decoration: none;
-    margin: 0 calc(var(--seed) * 1rem + 1rem);
-  }
-  img {
-    max-width: calc(var(--seed) * 50px + 150px);
-    margin: 1rem;
-    margin-bottom: 2rem;
-    background-color: white;
-    box-shadow: 0 0 0 15px white, 0 0 0 24px #{get-color("shade")};
-  }
-  h2 {
-    @include apply-utility("font", "base");
-    font-weight: 400;
-    font-stretch: 90%;
-    @include apply-utility("text", "300");
-  }
-  a:hover li,
-  a:focus li {
-    box-shadow: 0 0 0 9px #{get-color("shade")};
-    background-color: get-color("shade");
-    img {
-      box-shadow: 0 0 0 15px white, 0 0 0 16px #{get-color("primary")},
-        0 0 0 24px #{get-color("shade")};
-    }
-  }
-  a:focus {
-    outline-offset: 11px;
-    outline: 2px solid #{get-color("focus")};
-    caret-color: transparent !important;
-  }
 }
 
-.text-with-button {
-  width: 100%;
-  align-items: baseline;
-  display: flex;
-  gap: 1rem;
-  justify-content: space-between;
-}
-
-.tagged-link[href] {
-  font-size: 1rem;
-  display: block;
-  padding: 0.5rem;
-  padding-right: 2rem;
-  background-color: white;
-  text-decoration: none;
-  box-shadow: inset 0 0 0 1px #{get-color("shade")};
-
-  @include apply-utility("font", "base");
-
-  &:hover {
-    color: get-color("primary");
-    background: get-color("focus");
-    box-shadow: 0 1px 0 #{get-color("primary")};
-  }
-}
+@import "blocks/button";
 
 @import "compositions/art";
 @import "compositions/blog";
 @import "compositions/header";
+@import "compositions/gallery";
+
 @import "utilities/flow";
 @import "utilities/show-layout";

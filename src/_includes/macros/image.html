@@ -1,8 +1,16 @@
-{% macro image(images, caption) %}
+{% from "macros/generate.html" import generate with context %}
+
+
+{% macro image(slug, images, caption) %}
 <figure>
   {% for image in images %}
-  <img src="{{ image.src }}" alt="{{ image.alt }}">
+  <img src="{{ image.src }}" alt="{{ image.alt }}" />
   {% endfor %}
-  <figcaption>{{ caption }}</figcaption>
+  <figcaption class="flow">
+    <div>{{ caption }}</div>
+    {%- if slug -%}
+      {{- generate(slug) -}}
+    {%- endif -%}
+  </figcaption>
 </figure>
 {% endmacro %}

@@ -1,4 +1,6 @@
-
+.art {
+  --canvas-bg: white;
+}
 .canvas {
   width: 75vmin;
   height: 75vmin;

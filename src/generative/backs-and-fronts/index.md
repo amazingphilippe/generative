@@ -6,6 +6,8 @@ layout: "layouts/generative.html"
 svg: true
 canvas: false
 overflow: true
+flow: theory
+frame: frameless
 ---
 
 For a given width, fill the space with rectangles until roughly all the space available is covered. Each rectangle shoud contain a vertical or horizontal striped pattern. The stripes should alternate between a more or less saturated color and a neutral colour. The output should be of a generative piece that blurs its own boudaries.

@@ -13,26 +13,25 @@ $gorko-base-size: 1rem;
 /// your whole project.
 ///
 
-
 $gorko-size-scale: (
   "none": 0,
   "100": clamp(0.31rem, calc(0.29rem + 0.12vw), 0.38rem),
   "200": clamp(0.63rem, calc(0.58rem + 0.24vw), 0.75rem),
   "300": clamp(0.94rem, calc(0.86rem + 0.37vw), 1.13rem),
-  "400": clamp(1.25rem, calc(1.15rem + 0.49vw), 1.50rem),
+  "400": clamp(1.25rem, calc(1.15rem + 0.49vw), 1.5rem),
   "500": clamp(1.88rem, calc(1.73rem + 0.73vw), 2.25rem),
-  "600": clamp(2.50rem, calc(2.30rem + 0.98vw), 3.00rem),
-  "700": clamp(3.75rem, calc(3.46rem + 1.46vw), 4.50rem),
-  "800": clamp(5.00rem, calc(4.61rem + 1.95vw), 6.00rem),
-  "900": clamp(7.50rem, calc(6.91rem + 2.93vw), 9.00rem),
+  "600": clamp(2.5rem, calc(2.3rem + 0.98vw), 3rem),
+  "700": clamp(3.75rem, calc(3.46rem + 1.46vw), 4.5rem),
+  "800": clamp(5rem, calc(4.61rem + 1.95vw), 6rem),
+  "900": clamp(7.5rem, calc(6.91rem + 2.93vw), 9rem),
 );
 
 $gorko-type-scale: (
-  "100": clamp(0.94rem, calc(1.01rem + -0.10vw), 0.99rem),
+  "100": clamp(0.94rem, calc(1.01rem + -0.1vw), 0.99rem),
   "300": clamp(1.19rem, calc(1.16rem + 0.12vw), 1.25rem),
   "500": clamp(1.43rem, calc(1.33rem + 0.47vw), 1.67rem),
-  "700": clamp(1.71rem, calc(1.51rem + 1.00vw), 2.22rem),
-  "900": clamp(2.05rem, calc(1.70rem + 1.77vw), 2.96rem),
+  "700": clamp(1.71rem, calc(1.51rem + 1vw), 2.22rem),
+  "900": clamp(2.05rem, calc(1.7rem + 1.77vw), 2.96rem),
 );
 
 /// COLORS
@@ -40,13 +39,14 @@ $gorko-type-scale: (
 /// You can also use them to power borders, fills or shadows, for example.
 ///
 $gorko-colors: (
-  "light": #F5F5F5,
+  "light": #f5f5f5,
   "dark": #090c02,
-  "shade": #DADAD2,
+  "shade": #dadad2,
   "primary-shade": #312,
+  "accent": #423,
   "primary": #423,
   "primary-light": #534,
-  "focus": #EAA,
+  "focus": #eaa,
 );
 
 /// FONTS
@@ -70,119 +70,133 @@ $gorko-config: (
     "output": "standard",
     "property": "color",
   ),
-  "box": (
-    "items": (
-      "block": "block",
-      "flex": "flex",
-      "hide": "none",
-      "show": "inherit",
+  // "box": (
+  //   "items": (
+  //     "block": "block",
+  //     "flex": "flex",
+  //     "hide": "none",
+  //     "show": "inherit",
+  //   ),
+  //   "output": "responsive",
+  //   "property": "display",
+  // ),
+  "font":
+    (
+      "items": $gorko-fonts,
+      "output": "standard",
+      "property": "font-family",
     ),
-    "output": "responsive",
-    "property": "display",
-  ),
-  "font": (
-    "items": $gorko-fonts,
-    "output": "standard",
-    "property": "font-family",
-  ),
-  "gap-top": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "margin-top",
-  ),
-  "gap-right": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "margin-right",
-  ),
-  "gap-bottom": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "margin-bottom",
-  ),
-  "gap-left": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "margin-left",
-  ),
-  "pad-top": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "padding-top",
-  ),
-  "pad": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "padding",
-  ),
-  "pad-right": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "padding-right",
-  ),
-  "pad-bottom": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "padding-bottom",
-  ),
-  "pad-left": (
-    "items": $gorko-size-scale,
-    "output": "standard",
-    "property": "padding-left",
-  ),
-  "stack": (
-    "items": (
-      "300": 0,
-      "400": 10,
-      "500": 20,
-      "600": 30,
-      "700": 40,
+  // "gap-top": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "margin-top",
+  // ),
+  // "gap-right": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "margin-right",
+  // ),
+  // "gap-bottom": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "margin-bottom",
+  // ),
+  // "gap-left": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "margin-left",
+  // ),
+  // "pad-top": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "padding-top",
+  // ),
+  "pad":
+    (
+      "items": $gorko-size-scale,
+      "output": "standard",
+      "property": "padding",
     ),
-    "output": "standard",
-    "property": "z-index",
-  ),
-  "text": (
-    "items": $gorko-type-scale,
-    "output": "responsive",
-    "property": "font-size",
-  ),
-  "weight": (
-    "items": (
-      "thin": "100",
-      "light": "200",
-      "blond": "300",
-      "regular": "400",
-      "medium": "500",
-      "semibold": "600",
-      "bold": "700",
-      "extra-bold": "800",
-      "chunker": "950"
+  // "pad-right": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "padding-right",
+  // ),
+  // "pad-bottom": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "padding-bottom",
+  // ),
+  // "pad-left": (
+  //   "items": $gorko-size-scale,
+  //   "output": "standard",
+  //   "property": "padding-left",
+  // ),
+  // "stack": (
+  //   "items": (
+  //     "300": 0,
+  //     "400": 10,
+  //     "500": 20,
+  //     "600": 30,
+  //     "700": 40,
+  //   ),
+  //   "output": "standard",
+  //   "property": "z-index",
+  // ),
+  "text":
+    (
+      "items": $gorko-type-scale,
+      "output": "responsive",
+      "property": "font-size",
     ),
-    "output": "standard",
-    "property": "font-weight",
-  ),
-  "stretch": (
-    "items": (
-      "narrow": "75%",
-      "regular": "100%",
-      "wide": "115%",
+  // "weight": (
+  //   "items": (
+  //     "thin": "100",
+  //     "light": "200",
+  //     "blond": "300",
+  //     "regular": "400",
+  //     "medium": "500",
+  //     "semibold": "600",
+  //     "bold": "700",
+  //     "extra-bold": "800",
+  //     "chunker": "950"
+  //   ),
+  //   "output": "standard",
+  //   "property": "font-weight",
+  // ),
+  // "stretch": (
+  //   "items": (
+  //     "narrow": "75%",
+  //     "regular": "100%",
+  //     "wide": "115%",
+  //   ),
+  //   "output": "standard",
+  //   "property": "font-stretch",
+  // ),
+  // "width": (
+  //   "items": (
+  //     "full": "100%",
+  //     "half": "50%",
+  //     "quarter": "25%",
+  //     "third": "33.333%",
+  //   ),
+  //   "output": "responsive",
+  //   "property": "width",
+  // ),
+  // "layout":
+  //   (
+  //     "items": (
+  //       "base": "100%",
+  //       "md": "48em",
+  //       "lg": "64em",
+  //     ),
+  //     "output": "responsive",
+  //     "property": "width",
+  //   ),
+  "breakpoints":
+    (
+      "sm": "(min-width: 36em)",
+      "md": "(min-width: 48em)",
+      "lg": "(min-width: 64em)",
     ),
-    "output": "standard",
-    "property": "font-stretch",
-  ),
-  "width": (
-    "items": (
-      "full": "100%",
-      "half": "50%",
-      "quarter": "25%",
-      "third": "33.333%",
-    ),
-    "output": "responsive",
-    "property": "width",
-  ),
-  "breakpoints": (
-    "sm": "(min-width: 36em)",
-    "md": "(min-width: 48em)",
-    "lg": "(min-width: 62em)",
-  ),
 );

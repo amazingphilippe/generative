@@ -5,7 +5,7 @@ height: 300
 layout: "layouts/generative.html"
 svg: true
 canvas: false
-
+flow: theory
 ---
 
 Draw 2 groups of squares arranged in a 2 by 4 grid. Squares should orient their gradients towards the center of the image, just like a Fresnel lens.

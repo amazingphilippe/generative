@@ -1,15 +1,18 @@
 import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
-// plugins for svg dot js
+// plugins for svg dot js...
 
+// So powerful
+import paper from "https://cdn.skypack.dev/paper";
+
+// Some utils
 import {
   random,
   map,
   spline,
 } from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
 
+// Color libraries
 import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-
-import paper from "https://cdn.skypack.dev/paper";
 import chroma from "https://cdn.skypack.dev/chroma-js";
 
 const svg = SVG(".canvas");

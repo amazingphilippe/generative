@@ -1,11 +1,6 @@
-
 .canvas {
-  width: 75vmin;
-  height: 50vmin;
-  background: hsl(0, 0%, 100%);
-  user-select: none;
+  --canvas-bg: hsl(0, 0%, 100%);
 }
-
 
 @keyframes move {
   from {

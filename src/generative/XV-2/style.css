@@ -1,7 +1,3 @@
-
 .canvas {
-  width: 75vmin;
-  height: 50vmin;
-  background: hsl(0, 0%, 10%);
-  user-select: none;
+  --canvas-bg: hsl(0, 0%, 10%);
 }

@@ -1,65 +1,49 @@
 .art {
-  gap: 3rem;
-  padding: 1rem;
+  padding: 6.5rem 1rem;
   width: 100%;
+  max-width: 100%;
 
   display: flex;
+  gap: 3rem;
   justify-content: center;
   flex-wrap: wrap;
   margin-top: auto;
   margin-bottom: auto;
 
-  svg {
-    grid-column: 1;
-    grid-row: 1;
-  }
   .canvas {
+    width: min(75vmin, calc(75vmin * var(--ratio)));
+    // height: 75vmin;
     background: var(--canvas-bg, var(--bg));
   }
 
-  figure {
-    /* Looking at you Firefox */
-    caret-color: transparent !important;
-  }
-
-  figcaption {
-    height: min-content;
-    align-self: end;
-    justify-self: end;
-    grid-row: 1;
-    grid-column: 1;
-    display: inline-flex;
-    flex-direction: column;
-    width: 3ch;
-    text-align: center;
-    transform: translateX(-1em) rotate(-45deg);
-    font-family: "Rowan", Georgia;
-    &:before {
-      counter-reset: i var(--item);
-      content: counter(i);
-      transform: rotate(45deg);
-      color: get-color("shade");
-      display: block;
-    }
-    span {
-      border-bottom: 1px solid #{get-color("shade")};
-    }
-    &:after {
-      counter-reset: i var(--total);
-      content: counter(i);
-      transform: rotate(45deg);
-      color: get-color("shade");
-    }
-  }
-
   aside {
-    width: var(--canvas-width, 75vmin);
+    width: min(75vmin, calc(75vmin * var(--ratio)));
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    p {
+      max-width: 50ch;
+      font: var(--font-paragraph);
+    }
+    h1 {
+      --flow-space: 3rem;
+
+      font: var(--font-heading-small);
+    }
+    h2 {
+      --flow-space: 3rem;
+      font: var(--font-caption);
+    }
+    .art-blog {
+      --flow-space: 0.5rem;
+    }
     button {
       margin-bottom: auto;
       display: inline-block;
+    }
+
+    .art-meta p {
+      --flow-space: 0rem;
     }
   }
 }

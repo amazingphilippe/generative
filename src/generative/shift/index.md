@@ -2,6 +2,7 @@
 title: "Shift"
 width: 400
 height: 400
+flow: division
 ---
 
 Start by dividing the canvas in two areas, either vertically, horizontally, or not at all. Repeat for 7 iterations.

@@ -1,8 +1,7 @@
 const sortByDisplayOrder = require("./src/utils/sort-by-display-order.js");
 const rollupper = require("./src/utils/rollupper.js");
 const Image = require("@11ty/eleventy-img");
-
-
+const _ = require("lodash");
 
 async function imageShortcode(src, cls, alt, sizes, bust) {
   let options = {
@@ -26,11 +25,16 @@ async function imageShortcode(src, cls, alt, sizes, bust) {
 
   try {
     metadata = await Image(
-      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/${process.env.ELEVENTY_RUN_MODE === "build" && bust}/`,
+      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/${
+        process.env.ELEVENTY_RUN_MODE === "build" && bust
+      }/`,
       options
     );
   } catch (err) {
-    metadata = await Image("https://lovely-salamander-445f08.netlify.app/https%3A%2F%2Fwww.cliqu.art%2Fungenerated/medium/1:1/bigger/", options);
+    metadata = await Image(
+      "https://lovely-salamander-445f08.netlify.app/https%3A%2F%2Fwww.cliqu.art%2Fungenerated/medium/1:1/bigger/",
+      options
+    );
   }
   return Image.generateHTML(metadata, imageAttributes);
 }
@@ -61,6 +65,16 @@ module.exports = (config, options) => {
 
   config.addCollection("generative", function (collection) {
     return collection.getFilteredByGlob(`./src/generative/**/*.md`);
+  });
+
+  config.addCollection("curated", (collection) => {
+    return (
+      _.chain(collection.getAllSorted())
+        .groupBy((post) => post.data.flow)
+        // .toPairs()
+        .reverse()
+        .value()
+    );
   });
 
   config.addCollection("blog", function (collection) {

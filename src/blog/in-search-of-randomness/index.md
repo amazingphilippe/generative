@@ -1,6 +1,6 @@
 ---
 title: "In search of randomness: pseudo-random, algorithms and nature"
-tags: randomness
+tags: random
 media:
   halton:
     - src: halton-1.png
@@ -39,14 +39,11 @@ Most often, algorithms are created to simulate and explain natural phenomena. Th
 - The space colonization algorithm creates a network of paths that efficiently visit a set of points in space.
 - The meander network formation algorithm can move methodically through a set of points using a single line.
 
-{% from "macros/image.html" import image %}
-{% from "macros/generate.html" import generate with context %}
+{% from "macros/image.html" import image with context %}
 
-{{ image(media.space, "Both Voronoi tesselation and the space colonization algorithms create plant like compositions. Even then, all compositions are very similar to each other.") }}
-{{ generate("space-col") }}
+{{ image("space-col", media.space, "Both Voronoi tesselation and the space colonization algorithms create plant like compositions. Even then, all compositions are very similar to each other.") }}
 
-{{ image(media.halton, "Halton Sequence is slightly unpredictable, it can both look organic and ordered.") }}
-{{ generate("halton-sequence") }}
+{{ image("halton-sequence", media.halton, "Halton Sequence is slightly unpredictable, it can both look organic and ordered.") }}
 
 ## Nature
 
@@ -60,8 +57,7 @@ Finding a data source becomes the main challenge of this type of generative artw
 
 To me, the transposition is where nature and generative art becomes really interesting. How we articulate the relation between input and output provides the meaning layer for an artwork.
 
-{{ image(media.where, "Data from open street map can help create points on a 2d canvas. Each point are real places, villages or cities.") }}
-{{ generate("where-i-am") }}
+{{ image("where-i-am", media.where, "Data from open street map can help create points on a 2d canvas. Each point are real places, villages or cities.") }}
 
 ## Everything together. Chaos?
 

@@ -1,13 +1,12 @@
-<header class="pad-400">
-  <a href="/"><img src="/images/cliquart.svg" alt="Clique art" class="logo"></a>
-  <nav>
-    <ul class="flow-inline">
-      <li role="list">
-        <a href="/">Generative</a>
-      </li>
-      <li role="list">
-        <a href="/blog">Blog</a>
-      </li>
-    </ul>
+{% from "macros/clic.html" import clic with context %}
+
+<header class="">
+  <a href="/" class="logo">
+    <img src="/images/cliquart.svg" alt="Clique art" class="logo" />
+    {{ clic(32) }}
+  </a>
+  <nav aria-label="Main menu">
+    <a href="/">Generative</a>
+    <a href="/blog">Blog</a>
   </nav>
 </header>

@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Bizzarrini V0.5 Headline";
+  src: url("type/BizzarriniV0_5-HeadlineRegular.woff2") format("woff2"),
+    url("type/BizzarriniV0_5-HeadlineRegular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bizzarrini V0.5 Text";
+  src: url("type/BizzarriniV0_5-TextLight.woff2") format("woff2"),
+    url("type/BizzarriniV0_5-TextLight.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bizzarrini V0.5 Text";
+  src: url("type/BizzarriniV0_5-TextRegular.woff2") format("woff2"),
+    url("type/BizzarriniV0_5-TextRegular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

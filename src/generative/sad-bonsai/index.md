@@ -2,6 +2,8 @@
 title: "Sad bonsai"
 width: 400
 height: 600
+series: tree
+flow: nature
 tags: tree
 ---
 

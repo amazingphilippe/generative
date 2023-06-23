@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'Bizzarrini V0.5 Headline';
+    src: url('BizzarriniV0_5-HeadlineThin.woff2') format('woff2'),
+        url('BizzarriniV0_5-HeadlineThin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Headline';
+    src: url('BizzarriniV0_5-HeadlineLight.woff2') format('woff2'),
+        url('BizzarriniV0_5-HeadlineLight.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Headline';
+    src: url('BizzarriniV0_5-HeadlineBold.woff2') format('woff2'),
+        url('BizzarriniV0_5-HeadlineBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Headline';
+    src: url('BizzarriniV0_5-HeadlineRegular.woff2') format('woff2'),
+        url('BizzarriniV0_5-HeadlineRegular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Headline';
+    src: url('BizzarriniV0_5-HeadlineBlack.woff2') format('woff2'),
+        url('BizzarriniV0_5-HeadlineBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Text';
+    src: url('BizzarriniV0_5-TextThin.woff2') format('woff2'),
+        url('BizzarriniV0_5-TextThin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Text';
+    src: url('BizzarriniV0_5-TextLight.woff2') format('woff2'),
+        url('BizzarriniV0_5-TextLight.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Text';
+    src: url('BizzarriniV0_5-TextRegular.woff2') format('woff2'),
+        url('BizzarriniV0_5-TextRegular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Text';
+    src: url('BizzarriniV0_5-TextBold.woff2') format('woff2'),
+        url('BizzarriniV0_5-TextBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bizzarrini V0.5 Text';
+    src: url('BizzarriniV0_5-TextBlack.woff2') format('woff2'),
+        url('BizzarriniV0_5-TextBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+

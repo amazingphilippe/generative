@@ -1,0 +1,35 @@
+{% macro clic(size) %}
+
+<svg
+  class="clic"
+  viewBox="0 0 40 40"
+  width="{{ size }}"
+  height="{{ size }}"
+  overflow=""
+  xmlns="http://www.w3.org/2000/svg"
+  version="1.1"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:svgjs="http://svgjs.dev/svgjs"
+>
+  <g>
+    <animate
+      attributeName="transform"
+      values="rotate(-{{ global.seed() * 90 + 90 }}, 20, 20);rotate(0, 20, 20)"
+      dur="1s"
+      repeatCount="1"
+      end="rotate(180, 20, 20)"
+      calcMode="spline"
+      keySplines="0.21 0.69 0.32 1"
+    />
+    {% for path in global.clic() %}
+    <path
+      d="{{ path }}"
+      fill="var(--color-accent)"
+      stroke-linejoin="bevel"
+      stroke-width="0.2"
+      stroke="var(--color-accent)"
+    ></path>
+    {% endfor %}
+  </g>
+</svg>
+{% endmacro %}

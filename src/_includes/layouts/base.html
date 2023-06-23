@@ -13,22 +13,28 @@
     <meta name="description" content="{{ site[locale].metaDescription }}" />
     <link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
 
-
-
-
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="art">
-    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
-    <meta property="og:title" content="{{ title or 'Generative Art' }}">
-    <meta property="og:description" content="{{ content | striptags(true) }}">
-    <meta property="og:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + page.url) | urize }}/opengraph/">
+    <meta property="og:type" content="art" />
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
+    <meta property="og:title" content="{{ title or 'Generative Art' }}" />
+    <meta property="og:description" content="{{ content | striptags(true) }}" />
+    <meta
+      property="og:image"
+      content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + page.url) | urize }}/opengraph/"
+    />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
-    <meta property="twitter:title" content="{{ title or 'Generative Art' }}">
-    <meta property="twitter:description" content="{{ content | striptags(true) }}">
-    <meta property="twitter:image" content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + page.url) | urize }}/opengraph/">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="{{ site.url }}{{ page.url }}" />
+    <meta property="twitter:title" content="{{ title or 'Generative Art' }}" />
+    <meta
+      property="twitter:description"
+      content="{{ content | striptags(true) }}"
+    />
+    <meta
+      property="twitter:image"
+      content="https://lovely-salamander-445f08.netlify.app/{{ (site.url + page.url) | urize }}/opengraph/"
+    />
     {% endblock %}
     <style>
       {% block style %}
@@ -36,38 +42,23 @@
       {% endblock %}
     </style>
 
-    {% if pageStylesheets %}
-      {% for item in pageStylesheets %}
-        <link
-          rel="stylesheet"
-          href="{{ item }}{{ '?' + assetHash if not fxhash }}"
-        />
-      {% endfor %}
-    {% endif %}
-
-    {% block fxhash %}{% endblock %}
-
-    {% if not fxhash %}
-      <link rel="stylesheet" href="/typical/TTNorms/ical.css" />
-    {% endif %}
-
-    {% if pageScripts and not fxhash %}
-      {% for item in pageScripts %}
-        <script type="module" src="{{ item }}{{ '?' + assetHash }}" ></script>
-      {% endfor %}
-    {% endif %}
-
+    {% if pageStylesheets %} {% for item in pageStylesheets %}
+    <link
+      rel="stylesheet"
+      href="{{ item }}{{ '?' + assetHash if not fxhash }}"
+    />
+    {% endfor %} {% endif %} {% block fxhash %}{% endblock %} {% if not fxhash
+    %}
+    <link rel="stylesheet" href="/typical/TTNorms/ical.css" />
+    <link rel="stylesheet" href="/typical/Bizzarrini/ical.css" />
+    {% endif %} {% if pageScripts and not fxhash %} {% for item in pageScripts
+    %}
+    <script type="module" src="{{ item }}{{ '?' + assetHash }}"></script>
+    {% endfor %} {% endif %}
   </head>
-  <body>
-    {% block header %}
-      <a class="sr skip-link container bg-dark color-light text-300 font-base" href="#main">{{ site.skip }}</a>
-      {% include "partials/site-head.html" %}
-    {% endblock %}
-
-    {% block content %}{% endblock %}
-
-    {% block footer %}{% include "partials/site-foot.html" %}{% endblock %}
-
-
+  <body style="{{ global.accent() }}">
+    {% block header %} {% include "partials/site-head.html" %} {% endblock %} {%
+    block content %}{% endblock %} {% block footer %}{% include
+    "partials/site-foot.html" %}{% endblock %}
   </body>
 </html>

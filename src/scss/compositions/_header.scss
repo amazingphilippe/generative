@@ -1,17 +1,18 @@
 header {
-  padding-bottom: 0;
   width: 100%;
   display: flex;
+  padding: 0.5rem 1rem;
+  a.logo {
+    display: flex;
+    gap: 0.375rem;
+  }
 
   nav {
     margin-left: auto;
-
-    // Nav font
-    @include apply-utility("font", "base");
-    font-weight: 400;
-    font-stretch: 90%;
-    @include apply-utility("text", "300");
-    line-height: 1.4;
+    display: flex;
+    font-stretch: 70%;
+    gap: 2rem;
+    align-items: center;
   }
 
   ul {
