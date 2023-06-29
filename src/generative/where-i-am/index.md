@@ -4,6 +4,7 @@ width: 400
 height: 400
 flow: nature
 tags: random
+fallback: where-i-am.png
 ---
 
 Create a random <abbr title="Internet Protocol">IP</abbr> address. Find coordinates for thatc IP address. Using feature data from [open street map](https://wiki.openstreetmap.org/wiki/Map_features), look for hamlets and villages near this IP address.

@@ -45,6 +45,7 @@ module.exports = (config, options) => {
   config.addPassthroughCopy("./src/typical/");
   config.addPassthroughCopy("./src/generative/**/script.js");
   config.addPassthroughCopy("./src/generative/**/style.css");
+  config.addPassthroughCopy("./src/generative/**/*.png");
   config.addPassthroughCopy("./src/blog/**/*.{png,jpg,svg}");
 
   // Bundler js for fxhash

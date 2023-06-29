@@ -10,8 +10,13 @@
       {% for thing in collections.curated[flow] %}
         <li role="list">
           <a class="{{ thing.data.frame }} scale-{{ thing.data.scale or '1' }}" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">
+            {% if thing.data.fallback %}
+              <img src="{{thing.url}}/{{ thing.data.fallback }}" alt="{{ thing.data.title }}" />
+
+            {% else %}
             {% generated site.url | urize + thing.url | urize, "", "", "683",
               global.random() %}
+            {% endif %}
             <h2 class="">{{ thing.data.title or "Untitled" }}</h2>
           </a>
         </li>
