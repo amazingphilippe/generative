@@ -1,4 +1,5 @@
 import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+// import "https://cdn.jsdelivr.net/npm/@svgdotjs/svg.filter.js@3.0.8/dist/svg.filter.min.js";
 // plugins for svg dot js...
 
 // So powerful
@@ -353,6 +354,10 @@ function generator(start, end, iteration) {
           width: 0,
           color: color,
         })
+        // .filterWith(function (add) {
+        //   let blur = add.offset(0, 0).in(add.$sourceAlpha).gaussianBlur(30);
+        //   add.blend(add.$source, blur);
+        // });
         .css({
           filter: `drop-shadow(0 0 ${
             feature.scaleType === 2 || feature.curvatureType === 2 ? "30px" : 0

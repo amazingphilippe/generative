@@ -71,7 +71,7 @@ module.exports = (config, options) => {
   config.addCollection("curated", (collection) => {
     return (
       _.chain(collection.getAllSorted())
-        .groupBy((post) => post.data.flow)
+        .groupBy((post) => !post.data.hide && post.data.flow)
         // .toPairs()
         .reverse()
         .value()

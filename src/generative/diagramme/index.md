@@ -2,7 +2,7 @@
 title: "Diagramme"
 width: 500
 height: 400
-series:
+series: diagrams
 flow: algo
 tags:
 ---
