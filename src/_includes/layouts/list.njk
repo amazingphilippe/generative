@@ -11,7 +11,9 @@
         <li role="list">
           <a class="{{ thing.data.frame }} scale-{{ thing.data.scale or '1' }}" href="{{ thing.url }}" style="--seed: {{ global.seed() }}">
             {% if thing.data.fallback %}
+            <picture>
               <img src="{{thing.url}}/{{ thing.data.fallback }}" alt="{{ thing.data.title }}" />
+            </picture>
 
             {% else %}
             {% generated site.url | urize + thing.url | urize, "", "", "683",
