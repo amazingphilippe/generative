@@ -54,8 +54,10 @@ body {
   --color-focus: #{get-color("focus")};
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-variation-settings: "slnt" var(--slnt, 0);
   font: var(--font-text);
+
+  font-variation-settings: "slnt" var(--slnt, 0);
+  font-style: oblique 0deg;
 }
 
 header,
@@ -89,6 +91,9 @@ a {
 
 p {
   font: var(--font-paragraph);
+
+  font-variation-settings: "slnt" var(--slnt, 0);
+  font-style: oblique 0deg;
   + p {
     margin: 0;
     margin-top: var(--flow-space, 1rem);
