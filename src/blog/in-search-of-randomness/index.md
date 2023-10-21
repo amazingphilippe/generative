@@ -1,6 +1,7 @@
 ---
 title: "In search of randomness: pseudo-random, algorithms and nature"
 tags: random
+date: "git Created"
 media:
   halton:
     - src: halton-1.png

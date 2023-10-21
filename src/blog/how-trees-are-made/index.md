@@ -1,6 +1,7 @@
 ---
 title: Variation, mistakes, and how to draw trees.
 tags: tree
+date: "git Created"
 media:
   tall:
     - src: tree-tall.png
