@@ -1,5 +1,6 @@
 .flow {
-  > span {
+  > span,
+  > button {
     display: inline-block;
   }
   > * + * {

@@ -38,7 +38,9 @@
     {% endblock %}
     <style>
       {% block style %}
-        {% include "css/index.css" %}
+        @layer base {
+          {% include "css/index.css" %}
+        }
       {% endblock %}
     </style>
 
@@ -51,6 +53,8 @@
     %}
     <link rel="stylesheet" href="/typical/TTNorms/ical.css" />
     <link rel="stylesheet" href="/typical/Bizzarrini/ical.css" />
+    <script type="module" src="/js/is-land.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     {% endif %} {% if pageScripts and not fxhash %} {% for item in pageScripts
     %}
     <script type="module" src="{{ item }}{{ '?' + assetHash }}"></script>

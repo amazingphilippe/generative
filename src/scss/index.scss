@@ -1,26 +1,13 @@
 @import "_reset";
 @import "_config";
 @import "../../node_modules/gorko/gorko";
+@import "_typography";
 
-:root {
-  --font-heading-large: 3.75rem/1.06666666667 "Bizzarrini V0.5 Headline";
-  --font-heading-small: 2.1875rem/0.875 "Bizzarrini V0.5 Headline";
-  --font-text: 1.1875rem/1.2631578947 "tt-norms";
-  --font-paragraph: 1.1875rem/1.6842105263 "tt-norms";
-  --font-caption: 300 0.8125rem/1.2307692308 "Bizzarrini V0.5 Text";
-
-  --space-gutter: 1rem;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-[role="list"] {
-  list-style: none;
-}
+// * {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
 
 .sr:not(:focus) {
   display: block;
@@ -98,6 +85,10 @@ p {
     margin: 0;
     margin-top: var(--flow-space, 1rem);
   }
+  i {
+    position: relative;
+    bottom: -0.25ex;
+  }
 }
 
 footer {
@@ -108,6 +99,8 @@ footer {
 }
 
 @import "blocks/button";
+@import "blocks/toggle";
+@import "blocks/details";
 
 @import "compositions/art";
 @import "compositions/blog";

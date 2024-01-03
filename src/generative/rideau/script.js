@@ -38,16 +38,18 @@ function generate() {
     Math.floor(random(0, palette.length))
   );
 
+  let harmonies = ["a", "b", "c"].map((h) => svg.group().attr("id", h));
+
   let hDensity = 100;
   for (var j = 0; j < hDensity; j++) {
     let offset = { x: 50 + (300 / hDensity) * j, y: 50 };
-    for (var g = 0; g < 3; g++) {
+    for (var g = 0; g < harmonies.length; g++) {
       let points = [];
       for (var i = 0; i < 20; i++) {
         let noise = seed(i / width, g, i + i / hDensity);
         points.push([offset.x + (noise * i * j) / 10, i * 15 + 50 + g]);
       }
-      svg
+      harmonies[g]
         .path(spline(points, 1, false))
         .stroke({
           weight: 2,

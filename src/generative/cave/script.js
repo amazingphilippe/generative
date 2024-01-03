@@ -47,7 +47,11 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
-  debug = svg.group();
+  debug = svg.group().attr("id", "debug");
+
+  //Layers
+  let bg = svg.group().attr("id", "background");
+  let meanderLayer = svg.group().attr("id", "meander");
 
   let res = random([8, 10, 20, 25]);
   let maxCols = width / res;
@@ -77,7 +81,7 @@ function generate() {
   });
 
   // Set foreground layer B
-  let bLayer = svg.group();
+  let bLayer = svg.group().attr("id", "bLayer");
 
   // Init cells for cave generation
   let cells = [];
@@ -186,11 +190,11 @@ function generate() {
       // Background layer
       switch (features.caveShape) {
         case "rect":
-          svg
-            .rect(
-              map(cells[i].state, 0, 1, 0, 1.5 * res),
-              map(cells[i].state, 0, 1, 0, 1.5 * res)
-            )
+          bg.attr("data-feature", "rect");
+          bg.rect(
+            map(cells[i].state, 0, 1, 0, 1.5 * res),
+            map(cells[i].state, 0, 1, 0, 1.5 * res)
+          )
             .attr({ x: col * res + res / 2, y: row * res + res / 2 })
             .fill(
               palette.colorsCSS[
@@ -210,13 +214,13 @@ function generate() {
           break;
         case "line":
           let twist = random(-1, 1);
-          svg
-            .line(
-              col * res + res / 2 + twist,
-              row * res - map(noise, -1, 1, 0, res),
-              col * res + res / 2 - twist,
-              row * res + res + map(noise, -1, 1, 0, res)
-            )
+          bg.attr("data-feature", "line");
+          bg.line(
+            col * res + res / 2 + twist,
+            row * res - map(noise, -1, 1, 0, res),
+            col * res + res / 2 - twist,
+            row * res + res + map(noise, -1, 1, 0, res)
+          )
             .stroke({
               width: features.thickness ? res * 0.33 * cells[i].state + 1 : 1,
               linecap: "square",
@@ -241,6 +245,7 @@ function generate() {
     if (cells[i].state === 0 && features.bLayerSparse > random(0, 1)) {
       switch (features.bLayerShape) {
         case "dot":
+          bLayer.attr("data-feature", "dot");
           if (noise > 0) {
             bLayer
               .circle(3, 3)
@@ -262,6 +267,8 @@ function generate() {
 
           break;
         case "circle":
+          bLayer.attr("data-feature", "circle");
+
           bLayer
             .circle(map(noise, -1, 1, res, 5), map(noise, -1, 1, res, 5))
             .attr({ cx: col * res, cy: row * res })
@@ -307,7 +314,7 @@ function generate() {
     ]);
     // Run meadner script on alive cells as points.
     meander(alivePoints).forEach((p) => {
-      bLayer
+      meanderLayer
         .path(roundCorners(p.pathData, features.meanderRoundness).path)
         .fill("none")
         .stroke({
@@ -319,6 +326,7 @@ function generate() {
 
   // Bring foreground to front
   bLayer.front();
+  meanderLayer.front();
 
   // Must be last
   debug.front();

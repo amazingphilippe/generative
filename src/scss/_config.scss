@@ -43,7 +43,9 @@ $gorko-colors: (
   "dark": #090c02,
   "shade": #dadad2,
   "primary-shade": #312,
-  "accent": #423,
+  "accent": var(--color-accent, #423),
+  "accent-dark": var(--color-accent-dark, #312),
+  "accent-shade": var(--color-accent-shade, #534),
   "primary": #423,
   "primary-light": #534,
   "focus": #eaa,
@@ -173,16 +175,17 @@ $gorko-config: (
   //   "output": "standard",
   //   "property": "font-stretch",
   // ),
-  // "width": (
-  //   "items": (
-  //     "full": "100%",
-  //     "half": "50%",
-  //     "quarter": "25%",
-  //     "third": "33.333%",
-  //   ),
-  //   "output": "responsive",
-  //   "property": "width",
-  // ),
+  "width":
+    (
+      "items": (
+        "full": "100%",
+        "half": "50%",
+        "quarter": "25%",
+        "third": "33.333%",
+      ),
+      "output": "responsive",
+      "property": "width",
+    ),
   // "layout":
   //   (
   //     "items": (

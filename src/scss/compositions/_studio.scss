@@ -1,0 +1,179 @@
+.studio {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  box-shadow: 0 0 0 1px var(--color-accent-dark);
+  height: calc(100vh - 3rem);
+
+  // position: var(--toggle-studio, absolute);
+  // opacity: var(--toggle-studio, 0);
+  // pointer-events: var(--toggle-studio, none);
+  font-stretch: 75%;
+
+  //     --font-heading-large: 3.75rem/1.06666666667 "Bizzarrini V0.5 Headline";
+  //   --font-heading-small: 2.1875rem/0.875 "Bizzarrini V0.5 Headline";
+  //   --font-text: 1.1875rem/1.2631578947 "tt-norms";
+  //   --font-paragraph: 1.1875rem/1.6842105263 "tt-norms";
+
+  input:checked {
+    & ~ .on {
+      display: inline-block;
+      color: var(--color-accent-dark);
+    }
+    & ~ .off {
+      display: none;
+    }
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 500;
+  }
+  hr {
+    border: 0.5px solid var(--color-accent);
+    box-shadow: -1rem 0 0 var(--color-accent), 1rem 0 0 var(--color-accent);
+    align-self: stretch;
+    margin: 0;
+  }
+
+  #studio {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: 0 0 0 1px var(--color-accent-dark);
+  }
+  aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  form,
+  label,
+  input {
+    max-width: 100%;
+  }
+
+  label.checkbox {
+    display: flex;
+    gap: 0.5ch;
+    input {
+      accent-color: var(--color-accent);
+    }
+  }
+
+  input {
+    border-radius: 0;
+    padding: 0.475rem 0.5rem;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+
+    &:focus {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 1px;
+      border: 1px solid black;
+      box-shadow: 0 0 0 1px black;
+      background-color: white;
+      color: black;
+    }
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    &.paired-values label {
+      width: 5ch;
+      flex-grow: 1;
+    }
+  }
+
+  .reorder {
+    counter-reset: layer;
+    box-shadow: 0 0 0 1px var(--color-accent);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    li {
+      counter-increment: layer;
+      display: flex;
+      align-items: center;
+      gap: 0.5ch;
+      cursor: grab;
+      user-select: none;
+      &:active {
+        cursor: grabbing;
+      }
+      &:not(:last-child) {
+        box-shadow: 0 1px 0 var(--color-accent);
+      }
+      &.gu-transit {
+        box-shadow: 0 1px 0 var(--color-accent),
+          inset 0 -2px 0 var(--color-accent);
+      }
+    }
+    span {
+      flex-grow: 1;
+      display: block;
+      padding: 0.475rem 0.5rem;
+    }
+
+    .toggle {
+      --button-height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      padding: 0;
+      min-width: var(--button-height);
+      min-height: var(--button-height);
+
+      // background-color: var(--color-bg);
+      color: var(--color-accent-dark);
+      &:hover {
+        background-color: var(--color-accent-shade);
+        // box-shadow: inset 0 -1px 0 var(--color-accent),
+        // 0 -1px 0 var(--color-accent);
+      }
+      input {
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.gu-mirror {
+  font-stretch: 75%;
+
+  position: fixed;
+  pointer-events: none;
+  display: flex;
+  background-color: var(--color-accent-shade);
+  align-items: center;
+  gap: 0.5ch;
+  padding: 0.475rem 0.5rem;
+  button {
+    display: none;
+  }
+}
+.gu-unselectable {
+  user-select: none;
+}

@@ -1,0 +1,40 @@
+.toggle {
+  align-self: center;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  position: relative;
+  gap: 0.5ch;
+  cursor: pointer;
+
+  &:focus-within,
+  &:focus-visible {
+    outline-offset: 2px;
+    outline: 2px solid #{get-color("focus")};
+  }
+
+  input {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+  }
+
+  .on {
+    display: none;
+  }
+  .off {
+    display: inline-block;
+  }
+
+  input:checked {
+    & ~ .on {
+      display: inline-block;
+      color: var(--color-accent-dark);
+    }
+    & ~ .off {
+      display: none;
+    }
+  }
+}

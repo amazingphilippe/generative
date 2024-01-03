@@ -1,0 +1,25 @@
+details {
+  summary {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 0.5ch;
+    cursor: pointer;
+  }
+  &:not([open]) summary {
+    .on {
+      display: none;
+    }
+  }
+
+  &[open] summary {
+    .off {
+      display: none;
+    }
+    .on {
+      color: var(--color-accent-dark);
+    }
+  }
+}

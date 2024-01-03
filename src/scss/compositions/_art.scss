@@ -9,13 +9,15 @@
   flex-wrap: wrap;
   margin-top: auto;
   margin-bottom: auto;
+  --width: min(75vmin, calc(75vmin * var(--ratio)));
+  --height: var(--width) * var(--ratio, 1);
 
   .canvas {
-    width: min(75vmin, calc(75vmin * var(--ratio)));
+    width: var(--width);
+    height: var(--height);
     // height: 75vmin;
     background: var(--canvas-bg, var(--bg));
   }
-
   aside {
     width: min(75vmin, calc(75vmin * var(--ratio)));
     display: flex;

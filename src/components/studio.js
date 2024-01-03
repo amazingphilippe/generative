@@ -1,0 +1,425 @@
+// const svgGcode = require("svg_gcode");
+const paper = require("paper");
+const { SVG } = require("@svgdotjs/svg.js");
+const { el, mount } = require("redom");
+const DragonDrop = require("drag-on-drop");
+
+const JOINER = "\r\n";
+const PEN_UP = "M3S20";
+const PEN_DOWN = "M3S15";
+const PEN_DELAY = 0.5;
+const FEED_RATE = 1000;
+const fix = (n) => n.toFixed(3); // Fix to X decimals
+
+// Get svg from .canvas
+let svg = SVG(".canvas");
+
+// Get svg as a string from .canvas
+let svgString = svg.node.outerHTML;
+let { width, height } = svg.viewbox();
+
+// Init paper project into the #studio canvas
+paper.setup(document.getElementById("studio"));
+document.getElementById("studio").style.cursor = "grab";
+
+getGCODE();
+getSVG();
+
+// Observe .canvas, so that we can run this every time art is regenerated
+const elementToObserve = document.querySelector(".art svg");
+// create a new instance of `MutationObserver` named `observer`,
+// passing it a callback function
+const observer = new MutationObserver(() => {
+  getGCODE();
+  getSVG();
+  console.log("Regenerated");
+});
+
+// call `observe()` on that MutationObserver instance,
+// passing it the element to observe, and the options object
+observer.observe(elementToObserve, { subtree: true, childList: true });
+
+// Components
+const Layer = (layer) => {
+  return el("li", [
+    el("span.layer-grab", layer.name),
+    el("label.toggle", [
+      el("span.sr", "Change pen"),
+      el(`input#toggle-layer-pause-${layer.name}`, {
+        type: "checkbox",
+        value: layer.name,
+      }),
+      el("i.ph-bold.ph-pencil-simple.on"),
+      el("i.ph-bold.ph-arrow-arc-right.off"),
+    ]),
+    el("label.toggle", [
+      el("span.sr", "Change pen"),
+      el(`input#toggle-layer-skip-${layer.name}`, {
+        type: "checkbox",
+        value: layer.name,
+        checked: true,
+      }),
+      el("i.ph-bold.ph-eye.on"),
+      el("i.ph-bold.ph-eye-slash.off"),
+    ]),
+  ]);
+};
+
+// first pass at GCODE and SVG
+let layers = paper.project.getItems({
+  recursive: true,
+  class: paper.Group,
+  name: (name) => name !== null,
+});
+
+if (layers.length) {
+  layers.forEach((layer) => {
+    let list = Layer(layer);
+    mount(document.getElementById("layers"), list);
+  });
+
+  const dragonDrop = new DragonDrop(document.getElementById("layers"), {
+    handle: ".layer-grab",
+  });
+} else {
+  document.getElementById("layers").parentNode.remove();
+}
+
+function getSVG() {
+  // Just export .canvas as-is
+  // svgString = svg.node.outerHTML;
+  let blob = new Blob([svgString]);
+  let anchor = document.getElementById("getSVG");
+  let filename = document.getElementById("filename").value;
+  anchor.download = `${filename}.svg`;
+  anchor.href = window.URL.createObjectURL(blob);
+}
+
+function getGCODE() {
+  const checkDuplicates = document.getElementById("check-duplicates").checked;
+  // Begin GCODE array. Each item will be joined at the last step
+  let gcode = ["G21; mm-mode"];
+  // Update svg string from .canvas
+  svgString = svg.node.outerHTML;
+  // Clear studio canvas and reset size based on svg viewbox
+  paper.project.clear();
+  ({ width, height } = svg.viewbox());
+
+  // Import svg from string, expand shapes and apply transforms
+  paper.project.importSVG(svgString, {
+    expandShapes: true,
+    applyMatrix: true,
+  });
+
+  // Create copy of viewbox, so we can keep track of the original size or the canvas
+  let viewbox = new paper.Path.Rectangle(
+    new paper.Point(0, 0),
+    new paper.Size(width, height)
+  );
+  let viewboxBounds = viewbox.bounds;
+  // Remove from canvas, we know the bounds.
+  viewbox.remove();
+  // Same as below, but allows the studio to be resized.
+  // paper.project.view.viewSize = new paper.Size(width, height);
+
+  /**
+   * Track offset of original viewbox
+   * At the start, we want this to be the 0,0 coordinate from the top-left corner.
+   * As we figure out what is overflowing, this point might shift in the negative values.
+   * Which we need to calculate work area on the machine
+   */
+  let viewboxOffset = new paper.Point(0, 0);
+
+  // Get all visible Paths, Shapes, etc.
+  let paths = getPaths(paper);
+  let duplicatePaths = [];
+
+  /**
+   * Deal with dash-array
+   * Start by filtering paths with dasharrays
+   * For each, recursively split paths at each dash and gap
+   * Discard gap paths
+   * path ───── path ─────► isGap?
+       └────── split ───── path ...
+                  └────── split ...
+   */
+  let dashArrayPaths = paths.filter((p) => p.dashArray.length > 0);
+
+  dashArrayPaths.forEach((path) => {
+    let dash = 0;
+    let dashArrayLength = path.dashArray.length;
+    let i = 0;
+    let len = path.length;
+
+    while (dash < len) {
+      let currentDashLength = path.dashArray[i % dashArrayLength];
+      let isGap = i % 2 === 1;
+      let split = path.splitAt(currentDashLength);
+
+      if (isGap) {
+        path.remove();
+      }
+
+      path = split;
+
+      // set path to the remainder given by splitAt, so that we can continue expanding
+      dash += currentDashLength;
+      i++;
+    }
+  });
+
+  /** DASH ARRAY DONE */
+
+  // Get all paths again, we've created more by dealing with dash-arrays
+  paths = getPaths(paper);
+
+  /**
+   * Keep index of duplicate paths
+   * This is a perfect example of garbage IN -> garbage OUT
+   * Fix up your shit
+   */
+  if (checkDuplicates) {
+    let c = 0;
+    // I can get paths as an array of duplicate paths to each path. Needs to loop through each path squared. Yikes.
+    let comparePaths = paths
+      .map((path, i) => {
+        let bounds = path.bounds;
+        return paths
+          .filter((p, j) => i !== j)
+          .filter((p) => p.isInside(bounds))
+          .filter((p) => p.compare(path));
+      })
+      .filter((dup) => dup.length > 0);
+
+    console.log(`compared ${c} paths`);
+
+    // Then probably you want to do MORE filtering to keep one of each duplicate paths.
+  }
+
+  // Convert paper.Paths to svg paths.
+  // This steps preps the paths, and resizes the viewbox to create a work area for the machine
+  paths.forEach((path, i) => {
+    // GCODE needs flat curves.
+    // Flatten curves (0.25)
+    path.flatten();
+    // Remove fill color
+    path.fillColor = null;
+    // Uniform stroke color and width
+    path.strokeColor = "#2224";
+    path.strokeWidth = 1;
+    // Make paths visible, they should be visible?
+    path.visible = true;
+    // Clear the dash-array, GCODE can't handle that shit.
+    path.dashArray = [];
+
+    // Deal with bounds
+    if (!path.isInside(viewboxBounds)) {
+      // Mark paths that are out of bounds
+      path.strokeColor = "#D22";
+
+      // Get path bounds and combine with current project view bounds
+      let pathBounds = new paper.Path.Rectangle(path.bounds);
+
+      // Update viewbox offset for later
+      viewboxOffset.x = Math.min(viewboxOffset.x, pathBounds.bounds.x);
+      viewboxOffset.y = Math.min(viewboxOffset.y, pathBounds.bounds.y);
+
+      // Get current view bounds
+      let currentViewBounds = new paper.Path.Rectangle(viewboxBounds);
+      // Unite with current path bounds
+      let unite = currentViewBounds.unite(pathBounds);
+
+      // Set united bounds as project view size
+      viewboxBounds = unite.bounds;
+      // console.log(viewboxBounds);
+
+      // Set layer position from project view center
+      paper.project.activeLayer.position.x = viewboxBounds.center.x;
+      paper.project.activeLayer.position.y = viewboxBounds.center.y;
+
+      pathBounds.remove();
+      currentViewBounds.remove();
+      unite.remove();
+
+      // pathBounds.strokeColor = "#F82";
+      // uniteBounds.strokeColor = "#2D2";
+      // currentViewBounds.strokeColor = "#D88";
+      // unite.strokeColor = "#F8F";
+    }
+  });
+
+  // Resize to fit physical support (The size you want to print)
+  viewbox = new paper.Path.Rectangle(viewboxBounds);
+
+  let supportWidth = document.getElementById("support-width").value;
+  let supportHeight = document.getElementById("support-height").value;
+  let supportSize = new paper.Path.Rectangle(
+    new paper.Point(0, 0),
+    new paper.Size(Number(supportWidth), Number(supportHeight))
+  );
+
+  let canvas = paper.project.activeLayer.getItem({ class: paper.Group });
+  canvas.addChild(viewbox);
+  canvas.fitBounds(supportSize.bounds);
+
+  viewboxBounds = viewbox.bounds;
+  viewbox.remove();
+  supportSize.remove();
+
+  /** GCODE STARTS. No debug clutter!! */
+
+  // GCODE loop. Again through all paths.
+  // Keep stats on skipped paths
+  let d = 0,
+    z = 0;
+  paths = getPaths(paper);
+
+  // Get expanded width and height, we will need later to invert Y coordinates
+  ({ width, height } = viewboxBounds);
+
+  // console.log(paths.map((p) => [p.strokeColor.toCSS(), p.bounds.x]));
+
+  let lastKnownPosition = null;
+
+  // Filter out Zero length segments
+  // Filter out Duplicate paths, if you dare.
+  paths
+    .filter((p, i) => {
+      let hasSegments = p.segments.length > 0;
+      z += hasSegments ? 0 : 1;
+      return hasSegments;
+    })
+    .filter((p, i) => {
+      let hasNoDuplicates = !duplicatePaths.includes(i);
+      d += hasNoDuplicates ? 0 : 1;
+      return hasNoDuplicates;
+    })
+    .forEach((path, i) => {
+      // Begin routine
+      gcode.push("G0 Z0; move to z-safe height");
+
+      // Track start and end points.
+      let start = path.firstSegment.point;
+      let end = path.lastSegment.point;
+
+      // Start the next routine as close as possible to the current known position.
+      if (
+        lastKnownPosition !== null &&
+        lastKnownPosition.getDistance(end) <
+          lastKnownPosition.getDistance(start)
+      ) {
+        path.reverse();
+        start = path.firstSegment.point;
+        end = path.lastSegment.point;
+      }
+
+      // Rapid move to start of path
+      gcode.push(`G0 F1000 X${fix(start.x)} Y${fix(height - start.y)}`);
+
+      // Tool on
+      gcode.push(PEN_DOWN);
+      gcode.push(`G4 P${PEN_DELAY}; Tool ON`);
+      gcode.push("G1 F300 Z-0.1000");
+
+      // for each segment of the path
+      path.segments.forEach((segment) => {
+        gcode.push(
+          `G1 F${FEED_RATE} X${fix(segment.point.x)} Y${fix(
+            height - segment.point.y
+          )} Z-0.1000`
+        );
+      });
+
+      // return to start segment if path is closed
+      if (path.closed) {
+        gcode.push(
+          `G1 F${FEED_RATE} X${fix(path.segments[0].point.x)} Y${fix(
+            height - path.segments[0].point.y
+          )} Z-0.1000`
+        );
+        lastKnownPosition = start;
+      } else {
+        lastKnownPosition = end;
+      }
+
+      // Tool off
+      gcode.push(PEN_UP);
+      gcode.push(`G4 P${PEN_DELAY}; Tool OFF`);
+      gcode.push("");
+    });
+
+  console.log(`${z} zero length paths`);
+  console.log(`${d} duplicate paths`);
+
+  gcode.push("G0 Z0; retracting back to z-safe");
+
+  // Create  blob
+  let blob = new Blob([gcode.join(JOINER)]);
+  let anchor = document.getElementById("getGCODE");
+  let filename = document.getElementById("filename").value;
+  anchor.download = `${filename}.gcode`;
+  anchor.href = window.URL.createObjectURL(blob);
+
+  console.log("GCODE blob updated");
+
+  /** GCODE ENDS. Debug stuff below */
+
+  // Unclip groups
+  let groups = paper.project.getItems({ recursive: true, class: paper.Group });
+  groups.map((group) => (group.clipped = false));
+
+  // Show original viewbob on studio canvas
+  ({ width, height } = svg.viewbox());
+  let debugViewbox = new paper.Path.Rectangle(
+    new paper.Point(0, 0),
+    new paper.Size(Number(supportWidth), Number(supportHeight))
+  );
+  debugViewbox.strokeColor = "#2AA";
+  debugViewbox.dashArray = [3, 5];
+
+  // Preview the workarea needed
+  let debugWorkArea = new paper.Path.Rectangle(viewboxBounds);
+  debugWorkArea.strokeColor = "#222";
+  debugWorkArea.dashArray = [3, 5];
+
+  // Add size labels
+  let workWidthLabel = new paper.PointText(
+    new paper.Point(debugWorkArea.bounds.center.x, debugWorkArea.bounds.y - 5)
+  );
+  workWidthLabel.justification = "center";
+  workWidthLabel.fillColor = "#222";
+  workWidthLabel.content = debugWorkArea.bounds.width.toFixed(2) + " mm";
+
+  let workHeightLabel = new paper.PointText(
+    new paper.Point(debugWorkArea.bounds.x - 5, debugWorkArea.bounds.center.y)
+  );
+  workHeightLabel.justification = "center";
+  workHeightLabel.fillColor = "#222";
+  workHeightLabel.rotation = -90;
+  workHeightLabel.content = debugWorkArea.bounds.height.toFixed(2) + " mm";
+
+  // Last, position suff in the middle of the sudio canvas
+  paper.project.activeLayer.position = paper.project.view.center;
+}
+
+let tool = new paper.Tool();
+
+tool.onMouseDrag = function (event) {
+  let pan_offset = event.point.subtract(event.downPoint);
+  document.getElementById("studio").style.cursor = "grabbing";
+  paper.view.center = paper.view.center.subtract(pan_offset);
+};
+
+tool.onMouseUp = function () {
+  document.getElementById("studio").style.cursor = "grab";
+};
+
+/** HELPERS */
+
+function getPaths(paper) {
+  return paper.project
+    .getItems({ recursive: true, class: paper.Path })
+    .filter((p) => p.segments.length > 0)
+    .filter((p) => p.parent.visible)
+    .filter((p) => p.hasStroke || p.hasFill);
+}

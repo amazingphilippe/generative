@@ -1,0 +1,107 @@
+{% macro studio(open=false) %}
+<details {{ open and "open" }}>
+  <summary>
+    Studio
+    <i class="ph-bold ph-eye on"></i>
+    <i class="ph-bold ph-eye-slash off"></i>
+  </summary>
+  <is-land on:visible>
+    <template data-island>
+      <link rel="stylesheet" href="/css/studio.css" />
+      <script type="module">
+        console.log("Hydrating!");
+      </script>
+      <script type="module" src="/js/studio.js"></script>
+      <div class="studio">
+        <canvas resize id="studio"></canvas>
+        <aside>
+          <h2>Studio</h2>
+          <form>
+            <label>
+              File name
+              <input id="filename" value="{{title | slugify }}" />
+            </label>
+            <fieldset class="paired-values">
+              <legend>Size (mm)</legend>
+              <label>
+                Width
+                <input id="support-width" value="{{width}}" />
+              </label>
+              <label>
+                Height
+                <input id="support-height" value="{{height}}" />
+              </label>
+            </fieldset>
+            <fieldset class="paired-values">
+              <legend>Tool</legend>
+              <label>
+                Up
+                <input id="pen-up" value="M3S20" />
+              </label>
+              <label>
+                Down
+                <input id="pen-down" value="M3S15" />
+              </label>
+            </fieldset>
+            <label class="checkbox">
+              <input
+                id="check-duplicates"
+                type="checkbox"
+                value="check-duplicates"
+              />
+              Check for duplicate paths
+            </label>
+          </form>
+          <hr />
+
+          <div class="layers flow width-full">
+            <h3>Drawing steps</h3>
+            <ul class="reorder" id="layers" role="list"></ul>
+            <hr />
+          </div>
+
+          <a class="icon-link" id="getSVG">
+            SVG
+            <i class="ph-bold ph-file-arrow-down"></i>
+          </a>
+          <a class="icon-link" id="getGCODE">
+            GCODE
+            <i class="ph-bold ph-file-arrow-down"></i>
+          </a>
+        </aside>
+      </div>
+    </template>
+  </is-land>
+</details>
+
+{# Templates #}
+
+<template id="layer-template">
+  <li>
+    <span class="layer-grab" tabindex="0" role="button">a</span>
+    <label class="toggle">
+      <span class="sr">Change pen</span>
+      <input id="toggle-layer-pause-a" type="checkbox" value="a" />
+      <i class="ph-bold ph-pencil-simple on"></i>
+      <i class="ph-bold ph-arrow-arc-right off"></i>
+    </label>
+    <label class="toggle">
+      <span class="sr">Change pen</span>
+      <input id="toggle-layer-skip-a" type="checkbox" value="a" />
+      <i class="ph-bold ph-eye on"></i>
+      <i class="ph-bold ph-eye-slash off"></i>
+    </label>
+  </li>
+</template>
+
+<template id="toggle-template">
+  <label class="toggle">
+    <span class="sr">Change pen</span>
+    <input id="toggle-layer-skip-a" type="checkbox" value="a" />
+    <i class="ph-bold ph-eye on"></i>
+    <i class="ph-bold ph-eye-slash off"></i>
+  </label>
+</template>
+
+
+{% endmacro %}

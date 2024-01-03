@@ -2,6 +2,7 @@ const sortByDisplayOrder = require("./src/utils/sort-by-display-order.js");
 const rollupper = require("./src/utils/rollupper.js");
 const Image = require("@11ty/eleventy-img");
 const _ = require("lodash");
+const pluginWebc = require("@11ty/eleventy-plugin-webc");
 
 async function imageShortcode(src, cls, alt, sizes, bust) {
   let options = {
@@ -44,7 +45,10 @@ module.exports = (config, options) => {
   config.addPassthroughCopy("./src/images/");
   config.addPassthroughCopy("./src/typical/");
   config.addPassthroughCopy("./src/generative/**/script.js");
+  config.addPassthroughCopy("./src/studio/**/script.js");
+  config.addPassthroughCopy("./src/studio/**/style.css");
   config.addPassthroughCopy("./src/generative/**/style.css");
+  config.addPassthroughCopy({ "./src/scss/**/*.css": "css" });
   config.addPassthroughCopy("./src/generative/**/*.png");
   config.addPassthroughCopy("./src/blog/**/*.{png,jpg,svg}");
 
@@ -86,7 +90,9 @@ module.exports = (config, options) => {
   config.addNunjucksAsyncShortcode("generated", imageShortcode);
 
   // Add plugins
+  config.addPlugin(pluginWebc);
 
+  // Filters
   config.addFilter("urize", function (value) {
     return encodeURIComponent(value);
   });

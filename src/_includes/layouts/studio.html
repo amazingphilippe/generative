@@ -1,0 +1,33 @@
+{% from "macros/studio.html" import studio with context %}
+<!---->
+{% extends "layouts/base.html" %}
+
+<!-- CSS -->
+{% set pageStylesheets = ["/" + page.fileSlug + "/style.css"] %}
+<!-- STUDIO -->
+{% set pageScripts = ["/" + page.fileSlug + "/script.js" ] %}
+<!-- HEAD -->
+{% block header %}
+<!-- HEADER -->
+{% include "partials/studio-head.html" %}
+<!-- END HEAD -->
+
+{% endblock %}
+<!-- CONTENT -->
+{% block content %}
+
+<main class="studio-container">
+  {{ content | safe }}
+  <svg
+    class="canvas"
+    width="{{ width }}"
+    height="{{ height }}"
+    viewBox="0 0 {{ width }} {{ height }}"
+  >
+    <g></g>
+  </svg>
+  {{ studio(true) }}
+</main>
+
+{% endblock %} {% block footer %} {% include "partials/studio-foot.html" %} {%
+endblock %}
