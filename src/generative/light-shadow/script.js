@@ -78,7 +78,7 @@ function generate() {
   let size = random([0.875, 0.95]);
   let offset = { x: width * ((1 - size) / 2), y: height * ((1 - size) / 2) };
   let variation = {
-    nodeSize: ((width * size) / grid) * 0.6666,
+    nodeSize: ((width * size) / grid) * 0.9,
     grid: grid,
     nodeType: random(["burst", "circle", "petals", "none"]),
     beltWidth: 1,
@@ -121,7 +121,7 @@ function generate() {
       row: y,
       x: offset.x + x * ((width * size) / grid),
       y: offset.y + y * ((height * size) / grid),
-      radius: variation.nodeSize * random([0.25, 0.33, 0.5]),
+      radius: variation.nodeSize / 2,
     };
     dots.push({ ...dot, toCenter: distance(dot, center) });
   }
@@ -147,10 +147,10 @@ function generate() {
     // let r = variation.nodeSize;
     let color = random(palette);
 
-    svg
-      .circle(dot.radius * 2 - variation.beltWidth)
-      .attr({ cx: dot.x, cy: dot.y })
-      .fill(chroma(bgColor).darken(4).hex());
+    // svg
+    //   .circle(dot.radius * 2 - variation.beltWidth)
+    //   .attr({ cx: dot.x, cy: dot.y })
+    //   .fill(chroma(bgColor).darken(4).hex());
   });
 
   // let delaunay = Delaunator.from(
@@ -439,6 +439,15 @@ function generate() {
     debug.path(wrapNormal.pathData).stroke({ color: "lime", width: "1" });
     beltPath.add(...beltWrap.segments);
     beltPath.add(...t.segments);
+
+    svg
+      .circle(current.radius * 2 - variation.beltWidth)
+      .attr({ cx: current.x, cy: current.y })
+      .fill(
+        current.charge
+          ? chroma(bgColor).brighten(0.2).hex()
+          : chroma(bgColor).darken(4).hex()
+      );
 
     // svg
     //   .path(beltWrap.pathData)
