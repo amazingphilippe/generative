@@ -10,7 +10,7 @@
     "screenshot": "node screenshot.js",
     "not:start": "npm-run-all sass --parallel watch:*",
     "start": "npx gulp && concurrently \"npx gulp watch\" \"npx eleventy --serve\"",
-    "production": "NODE_ENV=production npm run sass && eleventy"
+    "production": "NODE_ENV=production npx gulp && npm run sass && eleventy"
   },
   "keywords": [],
   "author": "",
