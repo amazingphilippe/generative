@@ -1,0 +1,25 @@
+@layer studio {
+  body {
+    --color-bg: #202328;
+    --color-text: #aabccd;
+  }
+  header {
+    width: 100%;
+    max-width: 100%;
+    background-color: get-color("dark");
+  }
+  main {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+  .canvas {
+    position: absolute;
+    /* opacity: 0; */
+    pointer-events: none;
+  }
+  .canvas * {
+    fill: none;
+    stroke: none;
+  }
+}
