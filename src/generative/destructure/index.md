@@ -5,7 +5,7 @@ height: 600
 overflow: true
 series: diagrams
 flow: algo
-tags:
+tags: genuary
 ---
 
 Using a 2D cave system map, overlay a series of cube groups. Groups can range from 1 to 20. Each cube drawn in a group can be skewed horizontally or vertically. Use vibrant ink colors.
