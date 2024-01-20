@@ -69,6 +69,8 @@ function generate() {
   // Layers
   let bgLayer = svg.group().attr("id", "background");
   let gridLayer = svg.group().attr("id", "grid");
+  let nodeLayer = svg.group().attr("id", "nodes");
+  let beltLayer = svg.group().attr("id", "belt");
   // let networkLayer = svg.group().attr("id", "network");
   // let rhizomeLayer = svg.group().attr("id", "rhizome");
   // let dotsLayer = svg.group().attr("id", "dots");
@@ -437,10 +439,10 @@ function generate() {
 
     let beltWrap = new paper.Path.Arc(from, through, t.lastSegment.point);
     debug.path(wrapNormal.pathData).stroke({ color: "lime", width: "1" });
-    beltPath.add(...beltWrap.segments);
-    beltPath.add(...t.segments);
+    beltPath.join(beltWrap);
+    beltPath.join(t);
 
-    svg
+    nodeLayer
       .circle(current.radius * 2 - variation.beltWidth)
       .attr({ cx: current.x, cy: current.y })
       .fill(
@@ -454,7 +456,7 @@ function generate() {
     //   .fill("none")
     //   .stroke({ width: variation.beltWidth, color: "black" });
   });
-  svg
+  beltLayer
     .path(beltPath.pathData)
     .fill(chroma(bgColor).set("lch.c", 80).hex())
     .stroke({ width: 0, color: chroma(bgColor).darken(2) })

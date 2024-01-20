@@ -11,6 +11,20 @@ const PEN_DELAY = 0.5;
 const FEED_RATE = 1000;
 const fix = (n) => n.toFixed(3); // Fix to X decimals
 
+// For debugging tool changes
+let toolPalette = [
+  "#4e79a7",
+  "#f28e2c",
+  "#e15759",
+  "#76b7b2",
+  "#59a14f",
+  "#edc949",
+  "#af7aa1",
+  "#ff9da7",
+  "#9c755f",
+  "#bab0ab",
+];
+
 // Get svg from .canvas
 let svg = SVG(".canvas");
 
@@ -43,7 +57,7 @@ observer.observe(elementToObserve, { subtree: true, childList: true });
 const Layer = (layer) => {
   return el("li", [
     el("span.layer-grab", layer.name),
-    el("label.toggle", [
+    el("label.layer-control.toggle", [
       el("span.sr", "Change pen"),
       el(`input#toggle-layer-pause-${layer.name}`, {
         type: "checkbox",
@@ -52,7 +66,7 @@ const Layer = (layer) => {
       el("i.ph-bold.ph-pencil-simple.on"),
       el("i.ph-bold.ph-arrow-arc-right.off"),
     ]),
-    el("label.toggle", [
+    el("label.layer-control.toggle", [
       el("span.sr", "Change pen"),
       el(`input#toggle-layer-skip-${layer.name}`, {
         type: "checkbox",
@@ -65,7 +79,6 @@ const Layer = (layer) => {
   ]);
 };
 
-// first pass at GCODE and SVG
 let layers = paper.project.getItems({
   recursive: true,
   class: paper.Group,
@@ -85,6 +98,18 @@ if (layers.length) {
   document.getElementById("layers").parentNode.remove();
 }
 
+// Hookup the layer buttons
+const layerControls = document.querySelectorAll(".layer-control input");
+console.log(layerControls);
+layerControls.forEach((control) => {
+  console.log("clicked");
+  control.addEventListener("change", () => {
+    getGCODE();
+    getSVG();
+  });
+});
+
+// first pass at GCODE and SVG
 function getSVG() {
   // Just export .canvas as-is
   // svgString = svg.node.outerHTML;
@@ -130,9 +155,31 @@ function getGCODE() {
    */
   let viewboxOffset = new paper.Point(0, 0);
 
-  // Get all visible Paths, Shapes, etc.
+  // Get all visible Paths, Shapes, Layers, etc.
   let paths = getPaths(paper);
   let duplicatePaths = [];
+  let layerMeta = false;
+  if (layers) {
+    let tool = 0;
+    layerMeta = layers.map((layer) => {
+      let changeTool = document.getElementById(
+        `toggle-layer-pause-${layer.name}`
+      ).checked;
+
+      if (changeTool) {
+        tool++;
+      }
+
+      return {
+        name: layer.name,
+        ref: layer,
+        tool: tool,
+        plot: document.getElementById(`toggle-layer-skip-${layer.name}`)
+          .checked,
+      };
+    });
+  }
+  console.log(layerMeta);
 
   /**
    * Deal with dash-array
@@ -199,13 +246,19 @@ function getGCODE() {
   // Convert paper.Paths to svg paths.
   // This steps preps the paths, and resizes the viewbox to create a work area for the machine
   paths.forEach((path, i) => {
+    // Set tool color for path
+    let tool = 0;
+    if (layerMeta) {
+      tool = layerMeta.find((layer) => layer.name === path.parent.name).tool;
+      console.log(tool);
+    }
     // GCODE needs flat curves.
     // Flatten curves (0.25)
     path.flatten();
     // Remove fill color
     path.fillColor = null;
     // Uniform stroke color and width
-    path.strokeColor = "#2224";
+    path.strokeColor = toolPalette[tool % toolPalette.length];
     path.strokeWidth = 1;
     // Make paths visible, they should be visible?
     path.visible = true;
@@ -271,7 +324,24 @@ function getGCODE() {
   // GCODE loop. Again through all paths.
   // Keep stats on skipped paths
   let d = 0,
-    z = 0;
+    z = 0,
+    tool = 0;
+  // Get rid of hidden layers.
+  if (layers) {
+    layerMeta.forEach((layer) => {
+      if (!layer.plot) {
+        let l = paper.project.getItem({
+          recursive: true,
+          class: paper.Group,
+          name: layer.name,
+        });
+
+        l.remove();
+      }
+    });
+  }
+
+  // Then get paths one last time
   paths = getPaths(paper);
 
   // Get expanded width and height, we will need later to invert Y coordinates
@@ -296,30 +366,56 @@ function getGCODE() {
     })
     .forEach((path, i) => {
       // Begin routine
-      gcode.push("G0 Z0; move to z-safe height");
+
+      // Check for tool change, Stop if tool needs changing
+      if (layerMeta) {
+        if (
+          tool !==
+          layerMeta.find((layer) => layer.name === path.parent.name).tool
+        ) {
+          gcode.push("G0 Z0; move to z-safe height");
+          gcode.push("M0; stop for tool change");
+        }
+      }
 
       // Track start and end points.
       let start = path.firstSegment.point;
       let end = path.lastSegment.point;
 
-      // Start the next routine as close as possible to the current known position.
       if (
         lastKnownPosition !== null &&
-        lastKnownPosition.getDistance(end) <
-          lastKnownPosition.getDistance(start)
+        lastKnownPosition.getDistance(start) > 0.1
       ) {
-        path.reverse();
-        start = path.firstSegment.point;
-        end = path.lastSegment.point;
+        // Path starts in new location
+        // Tool off
+        gcode.push(PEN_UP);
+        gcode.push(`G4 P${PEN_DELAY}; Tool OFF`);
+        gcode.push("");
+
+        // Tool up, ready to mode to next path
+        gcode.push("G0 Z0; move to z-safe height");
+
+        // Start the next routine as close as possible to the current known position.
+        if (
+          lastKnownPosition !== null &&
+          lastKnownPosition.getDistance(end) <
+            lastKnownPosition.getDistance(start)
+        ) {
+          path.reverse();
+          start = path.firstSegment.point;
+          end = path.lastSegment.point;
+        }
+
+        // Rapid move to start of path
+        gcode.push(`G0 F1000 X${fix(start.x)} Y${fix(height - start.y)}`);
+
+        // Tool on
+        gcode.push(PEN_DOWN);
+        gcode.push(`G4 P${PEN_DELAY}; Tool ON`);
+        gcode.push("G1 F300 Z-0.1000");
       }
 
-      // Rapid move to start of path
-      gcode.push(`G0 F1000 X${fix(start.x)} Y${fix(height - start.y)}`);
-
-      // Tool on
-      gcode.push(PEN_DOWN);
-      gcode.push(`G4 P${PEN_DELAY}; Tool ON`);
-      gcode.push("G1 F300 Z-0.1000");
+      // Else Continue with next path
 
       // for each segment of the path
       path.segments.forEach((segment) => {
@@ -341,11 +437,6 @@ function getGCODE() {
       } else {
         lastKnownPosition = end;
       }
-
-      // Tool off
-      gcode.push(PEN_UP);
-      gcode.push(`G4 P${PEN_DELAY}; Tool OFF`);
-      gcode.push("");
     });
 
   console.log(`${z} zero length paths`);
