@@ -74,12 +74,12 @@ function generate() {
   let grid = random(7, 11, true);
   let size = random([0.875, 0.95]);
   let offset = { x: width * ((1 - size) / 2), y: height * ((1 - size) / 2) };
-  let density = random(2, 10);
+  let density = random(2, 5);
   let variation = {
     density: density,
-    thickness: 1,
+    thickness: random(1, density),
     sketch: random(0, 3),
-    regularity: random(0, 10 - density),
+    regularity: random(0, 5 - density),
   };
 
   let bgColor = chroma
