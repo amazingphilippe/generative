@@ -5,10 +5,10 @@ const { el, mount } = require("redom");
 const DragonDrop = require("drag-on-drop");
 
 const JOINER = "\r\n";
-const PEN_UP = "M3S20";
-const PEN_DOWN = "M3S15";
+const PEN_UP = "M3S18";
+const PEN_DOWN = "M3S26";
 const PEN_DELAY = 0.5;
-const FEED_RATE = 1000;
+const FEED_RATE = 3000;
 const fix = (n) => n.toFixed(3); // Fix to X decimals
 
 // For debugging tool changes
@@ -369,12 +369,15 @@ function getGCODE() {
 
       // Check for tool change, Stop if tool needs changing
       if (layerMeta) {
-        if (
-          tool !==
-          layerMeta.find((layer) => layer.name === path.parent.name).tool
-        ) {
+        let layer = layerMeta.find((layer) => layer.name === path.parent.name);
+
+        if (tool !== layer.tool) {
+          gcode.push(PEN_UP);
           gcode.push("G0 Z0; move to z-safe height");
-          gcode.push("M0; stop for tool change");
+          gcode.push(
+            `M0; stop for tool (${layer.tool}) change (${layer.name})`
+          );
+          tool = layer.tool;
         }
       }
 
@@ -387,19 +390,19 @@ function getGCODE() {
         lastKnownPosition.getDistance(start) > 0.1
       ) {
         // Path starts in new location
-        // Tool off
+        // Tool up/off
         gcode.push(PEN_UP);
         gcode.push(`G4 P${PEN_DELAY}; Tool OFF`);
         gcode.push("");
 
-        // Tool up, ready to mode to next path
+        // Tool is up, get ready to mode to next path
         gcode.push("G0 Z0; move to z-safe height");
 
         // Start the next routine as close as possible to the current known position.
         if (
           lastKnownPosition !== null &&
           lastKnownPosition.getDistance(end) <
-            lastKnownPosition.getDistance(start)
+          lastKnownPosition.getDistance(start)
         ) {
           path.reverse();
           start = path.firstSegment.point;
@@ -412,6 +415,16 @@ function getGCODE() {
         // Tool on
         gcode.push(PEN_DOWN);
         gcode.push(`G4 P${PEN_DELAY}; Tool ON`);
+        gcode.push("G1 F300 Z-0.1000");
+      } else if (lastKnownPosition === null) {
+        // First path
+
+        // Rapid move to start of path
+        gcode.push(`G0 F1000 X${fix(start.x)} Y${fix(height - start.y)}`);
+
+        // Tool on
+        gcode.push(PEN_DOWN);
+        gcode.push(`G4 P${PEN_DELAY}; Tool ON (first)`);
         gcode.push("G1 F300 Z-0.1000");
       }
 
@@ -442,6 +455,9 @@ function getGCODE() {
   console.log(`${z} zero length paths`);
   console.log(`${d} duplicate paths`);
 
+  // Tool up, done!
+  gcode.push(PEN_UP);
+  gcode.push(`G4 P${PEN_DELAY}; Tool OFF. Job done. `);
   gcode.push("G0 Z0; retracting back to z-safe");
 
   // Create  blob
@@ -459,7 +475,7 @@ function getGCODE() {
   let groups = paper.project.getItems({ recursive: true, class: paper.Group });
   groups.map((group) => (group.clipped = false));
 
-  // Show original viewbob on studio canvas
+  // Show original viewbox on studio canvas
   ({ width, height } = svg.viewbox());
   let debugViewbox = new paper.Path.Rectangle(
     new paper.Point(0, 0),
