@@ -1,22 +1,22 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import { roundCorners } from "https://cdn.skypack.dev/svg-round-corners";
+import { roundCorners } from "svg-round-corners";
 
-import { createNoise2D } from "https://cdn.jsdelivr.net/npm/simplex-noise@4.0.1/+esm";
+import { createNoise2D } from "simplex-noise";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import { Poline, positionFunctions } from "poline";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 paper.setup(document.getElementById("shadow"));
@@ -194,15 +194,14 @@ function generate() {
             color: chroma(color).set("lch.c", random(60, 80)).hex(),
           })
           .attr({
-            transform: `rotate(${random(-15, 15, true)} ${col * res + res} ${
-              row * res + res
-            }) skewX(${map(noise, 0, 1, -3, i)}) skewY(${map(
-              noise,
-              0,
-              1,
-              -i,
-              3
-            )})`,
+            transform: `rotate(${random(-15, 15, true)} ${col * res + res} ${row * res + res
+              }) skewX(${map(noise, 0, 1, -3, i)}) skewY(${map(
+                noise,
+                0,
+                1,
+                -i,
+                3
+              )})`,
           })
           .css({ "mix-blend-mode": "multiply" });
       }

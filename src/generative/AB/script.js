@@ -1,12 +1,12 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   random,
   map,
   spline,
   pointsInPath,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.0";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -33,8 +33,8 @@ function generate() {
   const a = chroma.lch(random(50, 60), random(20, 60), random(pair[0] - 10, pair[0] + 10)).hex();
   const b = chroma.lch(random(50, 60), random(20, 60), random(pair[1] - 10, pair[1] + 10)).hex();
 
-  svg.rect(150, 150).x(58.333).y(75).fill(a).attr({"class": "a"});
-  svg.rect(150, 150).x(191.666).y(75).fill(b).attr({"class": "b"});
+  svg.rect(150, 150).x(58.333).y(75).fill(a).attr({ "class": "a" });
+  svg.rect(150, 150).x(191.666).y(75).fill(b).attr({ "class": "b" });
   //svg.circle(2).cx(200).cy(150).fill("black").opacity(0.7);
 
 }

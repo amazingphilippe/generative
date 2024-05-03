@@ -1,13 +1,13 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
-import quickNoise from "https://cdn.skypack.dev/quick-perlin-noise-js";
+import chroma from "chroma-js";
+import quickNoise from "quick-perlin-noise-js";
 
 const svg = SVG(".canvas");
 

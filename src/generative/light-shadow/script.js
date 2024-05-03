@@ -1,23 +1,18 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
-  map,
-  spline,
-  createVoronoiTessellation,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
-import { roundCorners } from "https://cdn.skypack.dev/svg-round-corners";
-import hullJs from "https://cdn.jsdelivr.net/npm/hull.js@1.0.4/+esm";
-import concaveman from "https://cdn.jsdelivr.net/npm/concaveman@1.2.1/+esm";
+} from "@georgedoescode/generative-utils";
+import concaveman from "concaveman";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import { Poline, positionFunctions } from "poline";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -256,8 +251,8 @@ function generate() {
       d1 < d2,
       "inside? ",
       (!chargePolygon.contains(p2.add(chargeRadius)) && d1 > d2) ||
-        (likeNumbers(d1, d2) &&
-          chargePolygon.contains(p2.subtract(chargeRadius))),
+      (likeNumbers(d1, d2) &&
+        chargePolygon.contains(p2.subtract(chargeRadius))),
       "inline? ",
       likeNumbers(d1, d2)
     );

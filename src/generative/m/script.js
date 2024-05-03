@@ -1,8 +1,8 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   createVoronoiTessellation,
   random,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
 const svg = SVG(".canvas");
 

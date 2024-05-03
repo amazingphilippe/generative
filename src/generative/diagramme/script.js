@@ -1,21 +1,21 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // import "https://cdn.jsdelivr.net/npm/@svgdotjs/svg.filter.js@3.0.8/dist/svg.filter.min.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
   map,
   spline,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
-import quickNoise from "https://cdn.skypack.dev/quick-perlin-noise-js";
+} from "@georgedoescode/generative-utils";
+import quickNoise from "quick-perlin-noise-js";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import { Poline, positionFunctions } from "poline";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -300,14 +300,14 @@ function generator(start, end, iteration) {
   // ];
   let color =
     palette.colorsCSS[
-      Math.min(palette.colorsCSS.length - 1, random(0, iteration * 2, true))
+    Math.min(palette.colorsCSS.length - 1, random(0, iteration * 2, true))
     ];
 
   switch (feature.shape) {
     case "line":
       color =
         palette.colorsCSS[
-          Math.min(palette.colorsCSS.length - 1, random(0, iteration * 2, true))
+        Math.min(palette.colorsCSS.length - 1, random(0, iteration * 2, true))
         ];
       svg
         .line(
@@ -359,9 +359,8 @@ function generator(start, end, iteration) {
         //   add.blend(add.$source, blur);
         // });
         .css({
-          filter: `drop-shadow(0 0 ${
-            feature.scaleType === 2 || feature.curvatureType === 2 ? "30px" : 0
-          } ${color})`,
+          filter: `drop-shadow(0 0 ${feature.scaleType === 2 || feature.curvatureType === 2 ? "30px" : 0
+            } ${color})`,
         });
       mask = mask.unite(fillShape);
       // mask.path(fillShape.pathData).fill("white");

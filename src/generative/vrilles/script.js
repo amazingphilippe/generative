@@ -1,14 +1,14 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -39,9 +39,9 @@ function generate() {
     let origin = { x: random(0, width), y: random(0, height) };
     let palette = chroma.scale([random(seedPalette), "#2B061E"]).colors(6);
 
-    for (var i = 0; i < j ; i++) {
-      let k = random(0.5,2);
-      let r = random(1,5)
+    for (var i = 0; i < j; i++) {
+      let k = random(0.5, 2);
+      let r = random(1, 5)
       let max = Math.PI * r;
       // svg.circle(2).attr({ cx: origin.x, cy: origin.y }).fill(palette[3]);
       // svg.circle(2).attr({ cx: origin.x, cy: origin.y }).fill("blue");
@@ -63,8 +63,8 @@ function generate() {
         .polyline(points)
         .stroke({ width: 1, color: random(palette) })
         .fill("none")
-        .css({"mix-blend-mode": "multiply"})
-        //.transform({ rotate: max * (180/Math.PI), origin: [origin.x, origin.y] });
+        .css({ "mix-blend-mode": "multiply" })
+      //.transform({ rotate: max * (180/Math.PI), origin: [origin.x, origin.y] });
 
 
       let ox = points[points.length - 1][0];

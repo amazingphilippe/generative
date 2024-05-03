@@ -1,19 +1,19 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   createVoronoiTessellation,
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
 import {
   roundCorners,
-} from "https://cdn.skypack.dev/svg-round-corners";
+} from "svg-round-corners";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -31,7 +31,7 @@ document.addEventListener("keyup", (e) => {
 paper.setup(document.getElementById("shadow"));
 
 // const palette = ["#f2af29", "#533e2d", "#058c42", "#9ee493"];
-const palette = ["#f1f7ed","#243e36","#7ca982","#e0eec6","#c2a83e", "#D5573B"];
+const palette = ["#f1f7ed", "#243e36", "#7ca982", "#e0eec6", "#c2a83e", "#D5573B"];
 // const palette = ["#8C1C13", "#FFD400", "#34623F", "#2C497F"]
 const { width, height } = svg.viewbox();
 
@@ -156,6 +156,6 @@ generate();
 function distance(a, b) {
   return Math.sqrt(
     (b.centroid.x - a.centroid.x) * (b.centroid.x - a.centroid.x) +
-      (b.centroid.y - a.centroid.y) * (b.centroid.y - a.centroid.y)
+    (b.centroid.y - a.centroid.y) * (b.centroid.y - a.centroid.y)
   );
 }

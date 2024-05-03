@@ -1,14 +1,14 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -60,7 +60,7 @@ function generate() {
 
   //points.push(points[0]);
   console.log(points);
-console.log(chroma("#311E10").saturate(random(-2, 2)));
+  console.log(chroma("#311E10").saturate(random(-2, 2)));
   //debug(points)
   svg
     .polyline(points)

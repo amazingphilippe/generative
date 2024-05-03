@@ -1,47 +1,43 @@
 {% extends "layouts/base.html" %}
 
 <!-- GENERATIVE {{title}} -->
-{% set pageScripts = ["/generative/" + page.fileSlug + "/script.js" ] %}
+{% set pageScripts = ["/generative/" + page.fileSlug + "/script.min.js"] %}
 <!-- Special CSS -->
 {% set pageStylesheets = ["/generative/" + page.fileSlug + "/style.css"] %}
 
 <!-- GENERATIVE -->
 {% block content %}
 
-<main class="art" style="--ratio: {{ width / height}}">
-  <figure>
-    {% if svg %}
-    <svg
-      class="canvas"
-      width="{{ width }}"
-      height="{{ height }}"
-      viewBox="0 0 {{ width }} {{ height }}"
-      overflow="{{ 'visible' if overflow }}"
-    ></svg>
+  <main class="art" style="--ratio: {{ width / height}}">
+    <figure>
+      {% if svg %}
+        <svg class="canvas" width="{{ width }}" height="{{ height }}" viewbox="0 0 {{ width }} {{ height }}" overflow="{{ 'visible' if overflow }}"></svg>
+      {% endif %}
+    </figure>
+
+    {% if canvas %}
+      <canvas style="display:none;width:{{ width }}px;height:{{ height }}px" id="shadow"></canvas>
     {% endif %}
-  </figure>
 
-  {% if canvas %}
-  <canvas
-    style="display:none;width:{{ width }}px;height:{{ height }}px"
-    id="shadow"
-  ></canvas>
-  {% endif %}
+    <aside id="info" class="flow">
+      <button type="button" id="regenerate">Regenerate</button>
+      <h1>{{ title or "Untitled" }}</h1>
+      <div class="art-meta">
+        <p>{{ width }}&thinsp;&times;&thinsp;{{ height }}</p>
+        <p>{{ page.date.getFullYear() }}</p>
+      </div>
+      <div>{{ content | safe}}</div>
+      {% for blog in collections.blog %}
+        {% if blog
+          .data
+          .tags[0] === tags[0] %}
+          <h2>About this series</h2>
+          <a class="art-blog" href="{{ blog.url }}">{{ blog.data.title }}</a>
+        {% endif %}
+      {% endfor %}
+    </aside>
+  </main>
 
-  <aside id="info" class="flow">
-    <button type="button" id="regenerate">Regenerate</button>
-    <h1>{{ title or "Untitled" }}</h1>
-    <div class="art-meta">
-      <p>{{ width }}&thinsp;&times;&thinsp;{{ height }}</p>
-      <p>{{ page.date.getFullYear() }}</p>
-    </div>
-    <div>{{ content | safe}}</div>
-    {% for blog in collections.blog %} {% if blog.data.tags[0] === tags[0] %}
-    <h2>About this series</h2>
-    <a class="art-blog" href="{{ blog.url }}">{{ blog.data.title }}</a>
-    {% endif %} {% endfor %}
-  </aside>
-</main>
-
-<!-- STUDIO -->
-{% include "partials/studio.html" %} {% endblock %}
+  <!-- STUDIO -->
+  {% include "partials/studio.html" %}
+{% endblock %}

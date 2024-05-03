@@ -1,4 +1,4 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
 import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
@@ -6,11 +6,11 @@ import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -38,7 +38,7 @@ function generate() {
 
   svg
     //.path("M0 0H300V400H0Z")
-    .polyline([0,0,300,0,300,400,0,400,0,0])
+    .polyline([0, 0, 300, 0, 300, 400, 0, 400, 0, 0])
     .x(0)
     .y(0)
     .fill(
@@ -47,7 +47,7 @@ function generate() {
 
   for (var i = 0; i < 4; i++) {
     svg.each(function (j, children) {
-      const stop = random(0, 1) > 0.5
+      const stop = random(0, 1) > 0.5
       if (this.attr("data-depth") < i) {
         return;
       }
@@ -63,21 +63,21 @@ function generate() {
 
 
       let abc = new paper.Path({
-        segments: [[a.x, a.y],[b.x, b.y],[c.x, c.y]]
+        segments: [[a.x, a.y], [b.x, b.y], [c.x, c.y]]
       });
 
       let cda = new paper.Path({
-        segments: [[c.x, c.y],[d.x, d.y],[a.x, a.y]]
+        segments: [[c.x, c.y], [d.x, d.y], [a.x, a.y]]
       });
       abc.strokeColor = "cyan";
 
       cda.strokeColor = "red";
 
-      let r = random(0,1)
+      let r = random(0, 1)
       let e = abc.getLocationAt(abc.length * r).point;
       let f = cda.getLocationAt(cda.length * r).point;
 
-      console.log(e,f);
+      console.log(e, f);
 
       /*
       A-----B
@@ -112,12 +112,12 @@ or
 
       if (line.intersects(ab)) {
         // AEFD and EBCF
-        svg.polyline([a.x,a.y,e.x,e.y,f.x,f.y,d.x,d.y,a.x,a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i+1).stroke({width: 1, color: chroma.random().luminance(0.02)});
-        svg.polyline([e.x,e.y,b.x,b.y,c.x,c.y,f.x,f.y,e.x,e.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i+1).stroke({width: 1, color: chroma.random().luminance(0.02)});
+        svg.polyline([a.x, a.y, e.x, e.y, f.x, f.y, d.x, d.y, a.x, a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg.polyline([e.x, e.y, b.x, b.y, c.x, c.y, f.x, f.y, e.x, e.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
       } else if (line.intersects(bc)) {
         // ABEF and FECD
-        svg.polyline([a.x,a.y,b.x,b.y,e.x,e.y,f.x,f.y,a.x,a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i+1).stroke({width: 1, color: chroma.random().luminance(0.02)});
-        svg.polyline([f.x,f.y,e.x,e.y,c.x,c.y,d.x,d.y,f.x,f.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i+1).stroke({width: 1, color: chroma.random().luminance(0.02)});
+        svg.polyline([a.x, a.y, b.x, b.y, e.x, e.y, f.x, f.y, a.x, a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg.polyline([f.x, f.y, e.x, e.y, c.x, c.y, d.x, d.y, f.x, f.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
       }
     });
   }

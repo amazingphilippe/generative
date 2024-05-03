@@ -1,17 +1,17 @@
-import { SVG, Point } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG, Point } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
   createVoronoiTessellation,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
-import { Vector } from "https://cdn.skypack.dev/p5js-vector-standalone";
+import { Vector } from "p5js-vector-standalone";
 
 const svg = SVG(".canvas");
 
@@ -27,10 +27,10 @@ document.addEventListener("keyup", (e) => {
 });
 
 const leafPalette = ["#2D4739", "#2A3C35", "#445C5C"]
-const fruitPalette = chroma.scale(['#EE964B','#F95738']).mode('lch').colors(6)
+const fruitPalette = chroma.scale(['#EE964B', '#F95738']).mode('lch').colors(6)
 // const fruitPalette = chroma.scale(['#6A3937','#3B0D11']).mode('lch').colors(6)
 const palette = ["#F5F749", "#0C0F0A", "#dedee0"];
-const sunPalette = chroma.scale(['#fdfeba','#fdee6a']).mode('lch').colors(4);
+const sunPalette = chroma.scale(['#fdfeba', '#fdee6a']).mode('lch').colors(4);
 
 const { width, height } = svg.viewbox();
 
@@ -343,14 +343,14 @@ function fill(points, iterations, stroke, fill = false, callback = false) {
   let group = svg.group();
 
   if (fill) {
-    group.polyline(points).fill(fill).stroke({color: fill, width: 2});
+    group.polyline(points).fill(fill).stroke({ color: fill, width: 2 });
   }
 
   for (var i = 0; i < iterations; i++) {
     let a = random(points);
     let b = random(points);
     if (typeof stroke.color == "object") {
-      group.line(a[0], a[1], b[0], b[1]).fill("none").stroke({...stroke, color: random(stroke.color)});
+      group.line(a[0], a[1], b[0], b[1]).fill("none").stroke({ ...stroke, color: random(stroke.color) });
     } else {
       group.line(a[0], a[1], b[0], b[1]).fill("none").stroke(stroke);
     }

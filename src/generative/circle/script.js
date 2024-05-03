@@ -1,12 +1,12 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -34,7 +34,7 @@ function generate() {
     .scale([chroma.random(), chroma.random()])
     .mode("lch")
     .colors(5);
-    console.log(palette);
+  console.log(palette);
   let points = [];
   let midCircle = [];
   for (var a = 0; a < Math.PI * 2; a += Math.PI / density) {

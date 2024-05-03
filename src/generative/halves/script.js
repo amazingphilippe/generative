@@ -1,4 +1,4 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
 import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
@@ -6,11 +6,11 @@ import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -48,7 +48,7 @@ function generate() {
 
   for (var i = 0; i < 7; i++) {
     svg.each(function (j, children) {
-      let stop = random(0, 2) < (i+1)/7;
+      let stop = random(0, 2) < (i + 1) / 7;
       if (this.attr("data-depth") < i || stop) {
         return;
       }
