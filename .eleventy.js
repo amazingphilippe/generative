@@ -1,8 +1,5 @@
-const sortByDisplayOrder = require("./src/utils/sort-by-display-order.js");
-const rollupper = require("./src/utils/rollupper.js");
 const Image = require("@11ty/eleventy-img");
 const _ = require("lodash");
-const pluginWebc = require("@11ty/eleventy-plugin-webc");
 
 async function imageShortcode(src, cls, alt, sizes, bust) {
   let options = {
@@ -52,18 +49,6 @@ module.exports = (config, options) => {
   config.addPassthroughCopy({ "./src/scss/**/*.css": "css" });
   config.addPassthroughCopy("./src/generative/**/*.png");
   config.addPassthroughCopy("./src/blog/**/*.{png,jpg,svg}");
-
-  // Bundler js for fxhash
-  config.addPlugin(rollupper, {
-    rollup: {
-      output: {
-        format: "es",
-      },
-    },
-  });
-
-  config.addPassthroughCopy("./src/fx/**/script.js");
-  config.addPassthroughCopy("./src/fx/**/style.css");
   config.addPassthroughCopy("./src/**/LICENSE.txt");
 
   // Tell 11ty to use the .eleventyignore and ignore our .gitignore file
@@ -91,7 +76,7 @@ module.exports = (config, options) => {
   config.addNunjucksAsyncShortcode("generated", imageShortcode);
 
   // Add plugins
-  config.addPlugin(pluginWebc);
+  // config.addPlugin(pluginWebc);
 
   // Filters
   config.addFilter("urize", function (value) {

@@ -1,4 +1,3 @@
-// const svgGcode = require("svg_gcode");
 const paper = require("paper");
 const { SVG } = require("@svgdotjs/svg.js");
 const { el, mount } = require("redom");
