@@ -93,7 +93,8 @@ p {
 
 footer {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 2rem;
   padding-block: 0.5rem;
   align-items: center;
 }

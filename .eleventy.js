@@ -24,18 +24,19 @@ async function imageShortcode(src, cls, alt, sizes, bust) {
     decoding: "async",
   };
 
+  let url = `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/${process.env.ELEVENTY_RUN_MODE === "build" ? bust + "/" : ""}`
+
   try {
-    metadata = await Image(
-      `https://lovely-salamander-445f08.netlify.app/${src}/medium/1:1/bigger/${
-        process.env.ELEVENTY_RUN_MODE === "build" && bust
-      }/`,
-      options
-    );
+    console.log(url);
+    metadata = await Image(url, options);
   } catch (err) {
+    console.warn(err)
+    console.log(url)
     metadata = await Image(
-      "https://lovely-salamander-445f08.netlify.app/https%3A%2F%2Fwww.cliqu.art%2Fungenerated/medium/1:1/bigger/",
+      "src/images/not-found.svg",
       options
     );
+
   }
   return Image.generateHTML(metadata, imageAttributes);
 }

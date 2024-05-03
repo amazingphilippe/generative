@@ -30,6 +30,7 @@ const { width, height } = svg.viewbox();
 
 function generate() {
   svg.clear();
+  let duneLayer = svg.group().attr("id", "dunes");
 
   let rand = random(0, 1);
   let seed = quickNoise.create(() => rand);
@@ -37,8 +38,6 @@ function generate() {
   let colorA = random(palette);
 
   for (var i = 1; i < 180; i++) {
-
-
     let previousPoint = false;
     let startPoint = false;
     let startColor = false;
@@ -55,7 +54,7 @@ function generate() {
       let y = r * Math.sin(a) + height / 2;
 
       if (previousPoint) {
-        svg
+        duneLayer
           .line(previousPoint.x, previousPoint.y, x, y)
           .css("mix-blend-mode", "multiply")
           .stroke({
@@ -65,13 +64,13 @@ function generate() {
         //.stroke({ color: colorA, width: 1});
       }
       if (!startPoint) {
-        startPoint = {x, y};
+        startPoint = { x, y };
         startColor = colorA;
       }
 
       previousPoint = { x, y };
     }
-    svg
+    duneLayer
       .line(previousPoint.x, previousPoint.y, startPoint.x, startPoint.y)
       .css("mix-blend-mode", "multiply")
       .stroke({

@@ -21,12 +21,16 @@ button:active {
   border-top: 4px solid var(--color-accent-dark);
 }
 
-.icon-link {
+.icon-link,
+.icon-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5ch;
   flex-wrap: nowrap;
   text-decoration: none;
+}
+
+.icon-link {
   &:hover {
     background-color: var(--color-accent-shade);
     box-shadow: 0 0 0 0.475rem var(--color-accent-shade);
