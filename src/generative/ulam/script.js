@@ -1,13 +1,13 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
   spline,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -91,7 +91,7 @@ function generate() {
 
   console.log(ulamPoints, randomPoints);
   svg
-    .path(spline(ulamPoints,80))
+    .path(spline(ulamPoints, 80))
     .fill("none")
     .css("mix-blend-mode", "multiply")
     .stroke({
@@ -99,7 +99,7 @@ function generate() {
       color: chroma(random(palette)).saturate(random(-2, 2)),
     });
   svg
-    .path(spline(randomPoints,80))
+    .path(spline(randomPoints, 80))
     .fill("none")
     .css("mix-blend-mode", "multiply")
     .stroke({

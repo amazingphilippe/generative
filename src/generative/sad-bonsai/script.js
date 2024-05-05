@@ -1,4 +1,4 @@
-import { SVG, Point } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG, Point } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
@@ -6,15 +6,15 @@ import {
   map,
   createVoronoiTessellation,
   spline,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
-import { Vector } from "https://cdn.skypack.dev/p5js-vector-standalone";
+import { Vector } from "p5js-vector-standalone";
 
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
+import { Poline, positionFunctions } from "poline";
 
 const svg = SVG(".canvas");
 

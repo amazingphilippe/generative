@@ -1,19 +1,19 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
   map,
   spline,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import { Poline, positionFunctions } from "poline";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 let debug;
@@ -264,8 +264,7 @@ generate();
 async function getNodes(lon, lat, size) {
   let response = await fetch(
     // `https://api.openstreetmap.org/api/0.6/permissions`
-    `https://overpass-api.de/api/interpreter?data=[bbox][out:json];node[place=hamlet];node[place=village];node[place=town];out;&bbox=${lon},${lat},${
-      lon + size
+    `https://overpass-api.de/api/interpreter?data=[bbox][out:json];node[place=hamlet];node[place=village];node[place=town];out;&bbox=${lon},${lat},${lon + size
     },${lat + size}`
     // `https://overpass-api.de/api/interpreter?data=[bbox][out:json][maxsize:5485760];node[barrier=gate];out;&bbox=${lon},${lat},${
     //   lon + size

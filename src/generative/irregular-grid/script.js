@@ -1,14 +1,14 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   random,
   map,
   createVoronoiTessellation,
   spline,
   pointsInPath,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
-import paper from "https://cdn.skypack.dev/paper";
+import chroma from "chroma-js";
+import paper from "paper";
 
 const svg = SVG(".canvas");
 

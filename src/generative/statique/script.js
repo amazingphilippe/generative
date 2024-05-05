@@ -1,8 +1,8 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   createVoronoiTessellation,
   random,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
 const svg = SVG(".canvas");
 
@@ -89,7 +89,7 @@ function generate() {
     let size = random(c.innerCircleRadius, c.innerCircleRadius * 4, true);
 
     g.path(`M0 0 V${size} H${size} Z`)
-      .transform({translateX: c.centroid.x - size / 2, translateY: c.centroid.y - size / 2})
+      .transform({ translateX: c.centroid.x - size / 2, translateY: c.centroid.y - size / 2 })
       .fill(random(palette));
   });
 }

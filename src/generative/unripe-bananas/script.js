@@ -1,16 +1,15 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import SimplexNoise from "https://cdn.skypack.dev/simplex-noise";
-import fractalNoise from "https://cdn.skypack.dev/fractal-noise";
-import { makeNoise2D } from "https://cdn.skypack.dev/open-simplex-noise";
+import fractalNoise from "fractal-noise";
+import { makeNoise2D } from "open-simplex-noise";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -129,28 +128,32 @@ function line(p1, p2) {
       width: random(70, 90, true),
       color: chroma.mix(bg, chroma(random(palette)), 0.2, 'lab').saturate(random(0.2, 2)),
     }).transform({
-    rotate: random(-10, 10)});
+      rotate: random(-10, 10)
+    });
   svg
     .line(p1.x, p1.y, p2.x, p2.y)
     .stroke({
       width: random(50, 70, true),
       color: chroma.mix(bg, chroma(random(palette)), 0.4, 'lab').saturate(random(0.2, 2.5)),
     }).transform({
-    rotate: random(-10, 10)});
+      rotate: random(-10, 10)
+    });
   svg
     .line(p1.x, p1.y, p2.x, p2.y)
     .stroke({
       width: random(30, 50, true),
       color: chroma.mix(bg, chroma(random(palette)), 0.6, 'lab').saturate(random(0.2, 3)),
     }).transform({
-    rotate: random(-10, 10)});
+      rotate: random(-10, 10)
+    });
   svg
     .line(p1.x, p1.y, p2.x, p2.y)
     .stroke({
       width: random(10, 30, true),
       color: chroma.mix(bg, chroma(random(palette)), 0.8, 'lab').saturate(random(0.2, 3)),
     }).transform({
-    rotate: random(-10, 10)});
+      rotate: random(-10, 10)
+    });
 }
 
 function pole() {

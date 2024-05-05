@@ -1,22 +1,22 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
-import quickNoise from "https://cdn.skypack.dev/quick-perlin-noise-js";
-import { roundCorners } from "https://cdn.skypack.dev/svg-round-corners";
+} from "@georgedoescode/generative-utils";
+import quickNoise from "quick-perlin-noise-js";
+import { roundCorners } from "svg-round-corners";
 
-// import { createNoise2D } from "https://cdn.jsdelivr.net/npm/simplex-noise@4.0.1/+esm";
+// import { createNoise2D } from "simplex-noise";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import { Poline, positionFunctions } from "poline";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 paper.setup(document.getElementById("shadow"));

@@ -1,21 +1,21 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js...
 
 // So powerful
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 // Some utils
 import {
   random,
   map,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import { roundCorners } from "https://cdn.skypack.dev/svg-round-corners";
+import { roundCorners } from "svg-round-corners";
 
-import { createNoise2D } from "https://cdn.jsdelivr.net/npm/simplex-noise@4.0.1/+esm";
+import { createNoise2D } from "simplex-noise";
 
 // Color libraries
-import { Poline, positionFunctions } from "https://unpkg.com/poline?module";
+import { Poline, positionFunctions } from "poline";
 
 const svg = SVG(".canvas");
 paper.setup(document.getElementById("shadow"));
@@ -198,7 +198,7 @@ function generate() {
             .attr({ x: col * res + res / 2, y: row * res + res / 2 })
             .fill(
               palette.colorsCSS[
-                Math.floor(map(noise, -1, 1, 0, palette.colorsCSS.length - 1))
+              Math.floor(map(noise, -1, 1, 0, palette.colorsCSS.length - 1))
               ]
             )
             .stroke({
@@ -207,9 +207,8 @@ function generate() {
               color: "none",
             })
             .attr({
-              transform: `rotate(${map(noise, -1, 1, 0, 360)} ${
-                col * res + res / 2
-              } ${row * res + res / 2})`,
+              transform: `rotate(${map(noise, -1, 1, 0, 360)} ${col * res + res / 2
+                } ${row * res + res / 2})`,
             });
           break;
         case "line":
@@ -226,13 +225,12 @@ function generate() {
               linecap: "square",
               color:
                 palette.colorsCSS[
-                  Math.floor(map(noise, -1, 1, 0, palette.colorsCSS.length - 1))
+                Math.floor(map(noise, -1, 1, 0, palette.colorsCSS.length - 1))
                 ],
             })
             .attr({
-              transform: `rotate(${map(cells[i].state, 0, 1, 0, 90)} ${
-                col * res + res / 2
-              } ${row * res + res / 2})`,
+              transform: `rotate(${map(cells[i].state, 0, 1, 0, 90)} ${col * res + res / 2
+                } ${row * res + res / 2})`,
             });
           break;
 
@@ -254,9 +252,8 @@ function generate() {
               .css({ "mix-blend-mode": random[("overlay", "multiply")] })
               .attr({
                 "vector-effect": "non-scaling-stroke",
-                "transform-origin": `${col * res + res / 2} ${
-                  row * res + res / 2
-                }`,
+                "transform-origin": `${col * res + res / 2} ${row * res + res / 2
+                  }`,
                 transform: `
           rotate(${map(noise, -1, 1, 0, 360)}) 
           translate(${noise * 20})
@@ -277,9 +274,8 @@ function generate() {
             // .css({ "mix-blend-mode": random[("overlay", "multiply")] })
             .attr({
               "vector-effect": "non-scaling-stroke",
-              "transform-origin": `${col * res + res / 2} ${
-                row * res + res / 2
-              }`,
+              "transform-origin": `${col * res + res / 2} ${row * res + res / 2
+                }`,
               transform: `
           rotate(${map(noise, -1, 1, 0, 360)}) 
           translate(${noise * 20})

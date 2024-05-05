@@ -2,8 +2,6 @@
 const { src, dest } = require("gulp");
 
 // Import Gulp plugins.
-const babel = require("gulp-babel");
-const concat = require("gulp-concat");
 const plumber = require("gulp-plumber");
 
 const gulpEsbuild = require("gulp-esbuild");

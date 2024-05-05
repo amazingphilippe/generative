@@ -1,12 +1,12 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   random,
   map,
   spline,
   pointsInPath,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.0";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 
@@ -32,9 +32,9 @@ function generate() {
       let color;
 
       if (j == 0 || j == height - resolution.height) {
-        color = ["369eb8","68a8c4","99adc1"][random(0, 0, true)];
+        color = ["369eb8", "68a8c4", "99adc1"][random(0, 0, true)];
       } else {
-        color = ["fb5e53","ffc098","ffc870"][random(0, 1, true)];
+        color = ["fb5e53", "ffc098", "ffc870"][random(0, 1, true)];
       }
 
       const gradient = svg.gradient("linear", function (add) {
@@ -42,7 +42,7 @@ function generate() {
         add.stop(1, chroma(color).brighten(random(3, 5, false)));
       });
 
-      if (i < width / 2) {
+      if (i < width / 2) {
         gradient.from(1, 0).to(0, 0);
       }
 

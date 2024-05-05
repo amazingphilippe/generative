@@ -1,12 +1,12 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 import {
   random,
   map,
   spline,
   pointsInPath,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.0";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
 const svg = SVG(".canvas");
 

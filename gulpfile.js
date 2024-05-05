@@ -1,7 +1,8 @@
-const { parallel, watch } = require("gulp");
+const { series, parallel, watch } = require("gulp");
 
 // Pull in each task
 //const fonts = require('./gulp-tasks/fonts.js');
+const generative = require("./gulp-tasks/generative.js");
 const sass = require("./gulp-tasks/sass.js");
 const components = require("./gulp-tasks/components.js");
 
@@ -10,12 +11,13 @@ const components = require("./gulp-tasks/components.js");
 // prevent the task being run when we run `gulp watch`, but it
 // will run when a file changes.
 const watcher = () => {
+  watch("./src/generative/**/script.js", { ignoreInitial: true }, generative);
   watch("./src/scss/**/*.scss", { ignoreInitial: true }, sass);
   watch("./src/components/**/*.js", { ignoreInitial: true }, components);
 };
 
 // The default (if someone just runs `gulp`) is to run each task in parrallel
-exports.default = parallel(sass, components);
+exports.default = series(generative, parallel(sass, components));
 
 // This is our watcher task that instructs gulp to watch directories and
 // act accordingly

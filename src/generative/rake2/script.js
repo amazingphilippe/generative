@@ -1,4 +1,4 @@
-import { SVG } from "https://cdn.skypack.dev/@svgdotjs/svg.js";
+import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
 import {
@@ -6,13 +6,13 @@ import {
   map,
   spline,
   createVoronoiTessellation,
-} from "https://cdn.skypack.dev/@georgedoescode/generative-utils@1.0.34";
+} from "@georgedoescode/generative-utils";
 
-import chroma from "https://cdn.skypack.dev/chroma-js";
+import chroma from "chroma-js";
 
-import { Vector } from "https://cdn.skypack.dev/p5js-vector-standalone";
+import { Vector } from "p5js-vector-standalone";
 
-import paper from "https://cdn.skypack.dev/paper";
+import paper from "paper";
 
 const svg = SVG(".canvas");
 
@@ -87,8 +87,8 @@ function generate() {
   // svg.circle(4).attr({ cx: brush[0].pos.x, cy: brush[0].pos.y });
   for (var i = -4; i <= 4; i += 1) {
     let polyline = brush.map((segment) => [
-      segment.pos.x + segment.dir.x * i + random(-1,1),
-      segment.pos.y + segment.dir.y * i + random(-1,1),
+      segment.pos.x + segment.dir.x * i + random(-1, 1),
+      segment.pos.y + segment.dir.y * i + random(-1, 1),
     ]);
     svg
       .polyline(polyline)
