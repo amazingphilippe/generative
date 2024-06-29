@@ -1,7 +1,9 @@
-const paper = require("paper");
-const { SVG } = require("@svgdotjs/svg.js");
-const { el, mount } = require("redom");
-const DragonDrop = require("drag-on-drop");
+import paper from "paper";
+import { SVG } from "@svgdotjs/svg.js";
+import { el, mount } from "redom";
+import DragonDrop from "drag-on-drop";
+import { Layer } from "./layer"
+
 
 const JOINER = "\r\n";
 const PEN_UP = "M3S18";
@@ -24,89 +26,140 @@ let toolPalette = [
   "#bab0ab",
 ];
 
-// Get svg from .canvas
-let svg = SVG(".canvas");
+document.getElementById("pen-up").value = PEN_UP;
+document.getElementById("pen-down").value = PEN_DOWN;
+document.getElementById("feed-rate").value = FEED_RATE;
 
-// Get svg as a string from .canvas
-let svgString = svg.node.outerHTML;
-let { width, height } = svg.viewbox();
 
 // Init paper project into the #studio canvas
 paper.setup(document.getElementById("studio"));
 document.getElementById("studio").style.cursor = "grab";
 
-getGCODE();
-getSVG();
+// Get svg from .canvas
+let svg, svgString;
 
-// Observe .canvas, so that we can run this every time art is regenerated
-const elementToObserve = document.querySelector(".art svg");
-// create a new instance of `MutationObserver` named `observer`,
-// passing it a callback function
-const observer = new MutationObserver(() => {
+try {
+
+  // Try finding canvas svg.
+  svg = SVG(".canvas");
+  svgString = svg.node.outerHTML;
   getGCODE();
   getSVG();
-  console.log("Regenerated");
-});
 
-// call `observe()` on that MutationObserver instance,
-// passing it the element to observe, and the options object
-observer.observe(elementToObserve, { subtree: true, childList: true });
+  makeLayers();
 
-// Components
-const Layer = (layer) => {
-  return el("li", [
-    el("span.layer-grab", layer.name),
-    el("label.layer-control.toggle", [
-      el("span.sr", "Change pen"),
-      el(`input#toggle-layer-pause-${layer.name}`, {
-        type: "checkbox",
-        value: layer.name,
-      }),
-      el("i.ph-bold.ph-pencil-simple.on"),
-      el("i.ph-bold.ph-arrow-arc-right.off"),
-    ]),
-    el("label.layer-control.toggle", [
-      el("span.sr", "Change pen"),
-      el(`input#toggle-layer-skip-${layer.name}`, {
-        type: "checkbox",
-        value: layer.name,
-        checked: true,
-      }),
-      el("i.ph-bold.ph-eye.on"),
-      el("i.ph-bold.ph-eye-slash.off"),
-    ]),
-  ]);
-};
-
-let layers = paper.project.getItems({
-  recursive: true,
-  class: paper.Group,
-  name: (name) => name !== null,
-});
-
-if (layers.length) {
-  layers.forEach((layer) => {
-    let list = Layer(layer);
-    mount(document.getElementById("layers"), list);
-  });
-
-  const dragonDrop = new DragonDrop(document.getElementById("layers"), {
-    handle: ".layer-grab",
-  });
-} else {
-  document.getElementById("layers").parentNode.remove();
-}
-
-// Hookup the layer buttons
-const layerControls = document.querySelectorAll(".layer-control input");
-console.log(layerControls);
-layerControls.forEach((control) => {
-  console.log("clicked");
-  control.addEventListener("change", () => {
+  // Observe .canvas, so that we can run this every time art is regenerated
+  const elementToObserve = document.querySelector(".canvas");
+  // create a new instance of `MutationObserver` named `observer`,
+  // passing it a callback function
+  const observer = new MutationObserver(() => {
     getGCODE();
     getSVG();
+    console.log("Regenerated");
   });
-});
+
+  // call `observe()` on that MutationObserver instance,
+  // passing it the element to observe, and the options object
+  observer.observe(elementToObserve, { subtree: true, childList: true });
+
+} catch (error) {
+  console.log(error, "Studio mode. Waiting for file upload");
+}
+
+const fileInput = document.getElementById("svg-file")
+const reader = new FileReader();
+
+if (fileInput) {
+  // Load file if it contains something. Like after a page refresh
+  if (fileInput.files[0]) {
+    loadFileToCanvas(fileInput.files[0])
+  }
+
+  // And also listen to changes
+  fileInput.addEventListener('change', (e) => {
+    let file = e.target.files[0];
+
+    if (file) {
+      loadFileToCanvas(file)
+    }
+  })
+}
+
+function loadFileToCanvas(file) {
+  reader.onload = (file) => {
+    svg = SVG(file.target.result)
+    svgString = file.target.result;
+
+    getGCODE();
+    getSVG();
+
+    makeLayers();
+  }
+
+  reader.readAsText(file)
+}
+
+function getLayers() {
+  return paper.project.getItems({
+    recursive: true,
+    class: paper.Group,
+    name: (name) => name !== null,
+  });
+}
+
+function makeLayers() {
+  let layers = getLayers()
+
+  if (layers.length) {
+    layers.forEach((layer) => {
+      let list = new Layer(layer);
+      mount(document.getElementById("layers"), list);
+    });
+
+    const dragonDrop = new DragonDrop(document.getElementById("layers"), {
+      handle: ".layer-grab",
+    });
+  } else {
+    document.getElementById("layers").parentNode.remove();
+  }
+
+  // Hookup the layer buttons
+  let layerControls = document.querySelectorAll(".layer-control input");
+  // console.log(layerControls);
+  layerControls.forEach((control) => {
+    console.log("clicked");
+    control.addEventListener("change", () => {
+      getGCODE({ layerControls: true });
+      getSVG();
+    });
+  });
+}
+
+
+
+
+// Hookup output controls
+const controls = document.querySelectorAll(".output-control input");
+
+controls.forEach((control) => {
+  control.addEventListener("change", () => {
+    validateSettings();
+    getGCODE();
+    getSVG();
+  })
+})
+
+function validateSettings() {
+  // Clamp feed rate to [0,3000]
+  let feed = document.getElementById("feed-rate");
+  let value = parseInt(feed.value)
+  let min = parseInt(feed.min)
+  let max = parseInt(feed.max)
+  feed.value = Math.min(Math.max(value, min), max);
+
+
+}
+
 
 // first pass at GCODE and SVG
 function getSVG() {
@@ -119,7 +172,7 @@ function getSVG() {
   anchor.href = window.URL.createObjectURL(blob);
 }
 
-function getGCODE() {
+function getGCODE(layerControls = false) {
   const checkDuplicates = document.getElementById("check-duplicates").checked;
   // Begin GCODE array. Each item will be joined at the last step
   let gcode = ["G21; mm-mode"];
@@ -127,7 +180,7 @@ function getGCODE() {
   svgString = svg.node.outerHTML;
   // Clear studio canvas and reset size based on svg viewbox
   paper.project.clear();
-  ({ width, height } = svg.viewbox());
+  let { width, height } = svg.viewbox();
 
   // Import svg from string, expand shapes and apply transforms
   paper.project.importSVG(svgString, {
@@ -158,7 +211,9 @@ function getGCODE() {
   let paths = getPaths(paper);
   let duplicatePaths = [];
   let layerMeta = false;
-  if (layers) {
+  let layers = getLayers()
+  console.log("layers made?", layerControls);
+  if (layers && layerControls) {
     let tool = 0;
     layerMeta = layers.map((layer) => {
       let changeTool = document.getElementById(
@@ -247,9 +302,8 @@ function getGCODE() {
   paths.forEach((path, i) => {
     // Set tool color for path
     let tool = 0;
-    if (layerMeta) {
+    if (layerMeta && path.parent.name !== null) {
       tool = layerMeta.find((layer) => layer.name === path.parent.name).tool;
-      console.log(tool);
     }
     // GCODE needs flat curves.
     // Flatten curves (0.25)
@@ -326,7 +380,7 @@ function getGCODE() {
     z = 0,
     tool = 0;
   // Get rid of hidden layers.
-  if (layers) {
+  if (layers && layerMeta) {
     layerMeta.forEach((layer) => {
       if (!layer.plot) {
         let l = paper.project.getItem({
@@ -367,7 +421,7 @@ function getGCODE() {
       // Begin routine
 
       // Check for tool change, Stop if tool needs changing
-      if (layerMeta) {
+      if (layerMeta && path.parent.name !== null) {
         let layer = layerMeta.find((layer) => layer.name === path.parent.name);
 
         if (tool !== layer.tool) {

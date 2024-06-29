@@ -1,3 +1,5 @@
+{% from "macros/studio.html" import studio with context %}
+
 {% extends "layouts/base.html" %}
 
 <!-- GENERATIVE {{title}} -->
@@ -39,5 +41,5 @@
   </main>
 
   <!-- STUDIO -->
-  {% include "partials/studio.html" %}
+  {{ studio(false) }}
 {% endblock %}

@@ -1,0 +1,9 @@
+body {
+    --color-text: #f5f5f5;
+    --color-bg: #090c02;
+}
+
+header {
+    margin: 0;
+    max-width: 100%;
+}
