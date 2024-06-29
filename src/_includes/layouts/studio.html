@@ -1,33 +1,24 @@
-{% from "macros/studio.html" import studio with context %}
-<!---->
 {% extends "layouts/base.html" %}
 
-<!-- CSS -->
-{% set pageStylesheets = ["/" + page.fileSlug + "/style.css"] %}
-<!-- STUDIO -->
-{% set pageScripts = ["/" + page.fileSlug + "/script.js" ] %}
-<!-- HEAD -->
+{% from "macros/clic.html" import clic with context %}
+
+{% set pageStylesheets = [
+  "/" + page.fileSlug + "/style.css",
+  "/css/studio.css"
+] %}
+
+{% set pageScripts = ["/js/studio.js"] %}
+
 {% block header %}
-<!-- HEADER -->
-{% include "partials/studio-head.html" %}
-<!-- END HEAD -->
-
+  <header class="split">
+    <a href="/" class="logo">
+      <img src="/images/cliquart-light.svg" alt="Clique art" class="logo"/>
+      {{ clic(32) }}
+    </a>
+    <input type="file" accept="svg" id="svg-file"/>
+  </header>
 {% endblock %}
-<!-- CONTENT -->
+
 {% block content %}
-
-<main class="studio-container">
-  {{ content | safe }}
-  <svg
-    class="canvas"
-    width="{{ width }}"
-    height="{{ height }}"
-    viewBox="0 0 {{ width }} {{ height }}"
-  >
-    <g></g>
-  </svg>
-  {{ studio(true) }}
-</main>
-
-{% endblock %} {% block footer %} {% include "partials/studio-foot.html" %} {%
-endblock %}
+  {% include "partials/studio.html" %}
+{% endblock %}
