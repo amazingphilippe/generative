@@ -24,7 +24,7 @@ const generative = () => {
       gulpEsbuild({
         outdir: "",
         bundle: true,
-        minify: true
+        minify: false
       })
     )
     .pipe(rename(function (path) {
