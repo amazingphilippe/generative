@@ -46,6 +46,7 @@ let palette;
 const perlin = quickNoise.create(() => random(0, 1));
 
 let feature;
+let diagrammeLayer, endsLayer;
 
 //-----------------------------------------
 
@@ -55,6 +56,12 @@ function generate() {
 
   // mask = svg.group().attr({ width: "100%", height: "100%", x: "0%", y: "0%" });
   // mask.rect(width, height).fill("black");
+
+  let bgLayer = svg.group().attr("id", "background");
+  let maskLayer = svg.group().attr("id", "masking");
+  let quadLayer = svg.group().attr("id", "quad")
+  diagrammeLayer = svg.group().attr("id", "diagramme");
+  endsLayer = svg.group().attr("id", "line-dots");
 
   feature = {
     maxIteration: random(20, 40, true),
@@ -82,7 +89,7 @@ function generate() {
   // Begin awesomeness
 
   let bg = random(palette.colorsCSS);
-  svg
+  bgLayer
     .rect(width, height)
     .fill(feature.shape === "rect" ? "var(--color-bg)" : bg);
 
@@ -104,7 +111,7 @@ function generate() {
   debug.circle(4).attr({ cx: quad.c.x, cy: quad.c.y });
   debug.circle(4).attr({ cx: quad.d.x, cy: quad.d.y });
 
-  svg
+  quadLayer
     .path(new paper.Path([quad.a, quad.b, quad.c, quad.d, quad.a]).pathData)
     .fill(
       feature.shape === "rect" && (feature.scaleType === 1 || 3)
@@ -153,7 +160,7 @@ function generate() {
       new paper.Point(width + 1, height + 1)
     );
     clip = clip.subtract(mask);
-    svg.path(clip.pathData).fill("var(--color-bg)");
+    maskLayer.path(clip.pathData).fill("var(--color-bg)");
     debug.path(mask.pathData).fill("none").stroke({ width: 1, color: "cyan" });
   }
 
@@ -309,7 +316,7 @@ function generator(start, end, iteration) {
         palette.colorsCSS[
         Math.min(palette.colorsCSS.length - 1, random(0, iteration * 2, true))
         ];
-      svg
+      diagrammeLayer
         .line(
           start.x - normal.multiply(1 + curvature).x,
           start.y - normal.multiply(1 + curvature).y,
@@ -323,14 +330,14 @@ function generator(start, end, iteration) {
         });
       switch (feature.ends) {
         case "dot":
-          svg
+          endsLayer
             .circle(4)
             .attr({
               cx: start.x - normal.multiply(1 + curvature).x,
               cy: start.y - normal.multiply(1 + curvature).y,
             })
             .fill(color);
-          svg
+          endsLayer
             .circle(4)
             .attr({
               cx: start.x + end.x - normal.multiply(1 - curvature).x,
@@ -347,7 +354,7 @@ function generator(start, end, iteration) {
 
       break;
     case "rect":
-      svg
+      diagrammeLayer
         .path(fillShape.pathData)
         .fill(color)
         .stroke({
@@ -370,7 +377,7 @@ function generator(start, end, iteration) {
       break;
   }
 
-  svg
+  diagrammeLayer
     .line(
       start.x + end.x * (1 - scale) - normal.multiply(1 + curvature).x,
       start.y + end.y * (1 - scale) - normal.multiply(1 + curvature).y,

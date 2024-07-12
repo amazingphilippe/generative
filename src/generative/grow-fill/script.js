@@ -69,6 +69,11 @@ function generate() {
   // let networkLayer = svg.group().attr("id", "network");
   // let rhizomeLayer = svg.group().attr("id", "rhizome");
   // let dotsLayer = svg.group().attr("id", "dots");
+  let colorLayers = [
+    svg.group().attr("id", "colorA"),
+    svg.group().attr("id", "colorB"),
+    svg.group().attr("id", "colorC")
+  ];
 
   // Features
   let grid = random(7, 11, true);
@@ -115,7 +120,8 @@ function generate() {
     let cellShape = new paper.Path(points);
 
     growFill(cellShape.pathData, variation).forEach((line) => {
-      svg
+      random(colorLayers)
+        // svg
         .path(line.pathData)
         .fill("none")
         .stroke({ width: variation.thickness, color: random(palette) });

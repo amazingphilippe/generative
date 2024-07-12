@@ -49,7 +49,17 @@ function generate() {
     numPoints: 5,
   });
 
-  svg
+  let bgLayer = svg.group().attr("id", "background");
+  let fillLayer = svg.group().attr("id", "fills");
+  let colorLayers = [
+    svg.group().attr("id", "colorA"),
+    svg.group().attr("id", "colorB"),
+    svg.group().attr("id", "colorC"),
+    svg.group().attr("id", "colorD"),
+    svg.group().attr("id", "colorE")
+  ];
+
+  bgLayer
     .rect(width, height)
     .fill(
       chroma(palette.colorsCSS[1]).set("lch.c", 15).set("lch.l", 100).hex()
@@ -92,7 +102,7 @@ function generate() {
         .attr({ x: x, y: y + 5, "text-anchor": "middle", class: "debug-text" });
 
     for (var j = size.count; j < size.count + 9; j++) {
-      svg
+      random(colorLayers)
         .circle(j * 4)
         .attr({ cx: x, cy: y })
         .fill("none")
@@ -103,12 +113,12 @@ function generate() {
         });
     }
 
-    svg
+    fillLayer
       .circle(random(0, 1) > 0.95 ? (size.count + 9) * 4 : 0)
       .attr({ cx: x, cy: y })
       .fill(random(palette.colorsCSS))
       .css("mix-blend-mode", "color-burn");
-    svg
+    fillLayer
       .circle(random(0, 1) > 0.95 ? Math.max(4 * (size.count - 1) + 1, 13) : 0)
       .attr({ cx: x, cy: y })
       .css("mix-blend-mode", "multiply")
