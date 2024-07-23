@@ -180,13 +180,13 @@ function getGCODE(layerControls = false) {
   svgString = svg.node.outerHTML;
   // Clear studio canvas and reset size based on svg viewbox
   paper.project.clear();
-  let { width, height } = svg.viewbox();
-
   // Import svg from string, expand shapes and apply transforms
   paper.project.importSVG(svgString, {
     expandShapes: true,
     applyMatrix: true,
   });
+
+  let { width, height } = svg.viewbox();
 
   // Create copy of viewbox, so we can keep track of the original size or the canvas
   let viewbox = new paper.Path.Rectangle(
