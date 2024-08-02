@@ -302,6 +302,7 @@ function getGCODE(layerControls = false) {
   paths.forEach((path, i) => {
     // Set tool color for path
     let tool = 0;
+    // If this finds a layer within the path's parent, then tool will be set to the layer's setting, otherwise stays 0
     if (layerMeta && path.parent.name !== null) {
       tool = layerMeta.find((layer) => layer.name === path.parent.name).tool;
     }

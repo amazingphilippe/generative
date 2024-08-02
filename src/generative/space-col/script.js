@@ -31,6 +31,13 @@ const fruitPalette = chroma.scale(['#EE964B', '#F95738']).mode('lch').colors(6)
 // const fruitPalette = chroma.scale(['#6A3937','#3B0D11']).mode('lch').colors(6)
 const palette = ["#F5F749", "#0C0F0A", "#dedee0"];
 const sunPalette = chroma.scale(['#fdfeba', '#fdee6a']).mode('lch').colors(4);
+let bgLayer,
+  treeLayer,
+  fruitLayer,
+  leafLayer;
+let features = {
+  fillIntensity: 20
+}
 
 const { width, height } = svg.viewbox();
 
@@ -45,6 +52,12 @@ let scale = random(10, 20, true);
 
 function generate() {
   svg.clear();
+
+  //Layers
+  bgLayer = svg.group().attr("id", "background");
+  treeLayer = svg.group().attr("id", "tree");
+  leafLayer = svg.group().attr("id", "leaf");
+  fruitLayer = svg.group().attr("id", "fruit");
 
   scale = random(10, 20, true);
   let tree = new Tree();
@@ -200,12 +213,12 @@ function Leaf(x, y) {
         fruitPoints[i] = [fruitThing.segments[i].point.x, fruitThing.segments[i].point.y]
       }
 
-      fill(fruitPoints, 250, { color: fruitPalette, width: 0.5 }, chroma(random(fruitPalette)).brighten(2).hex(), (g) => {
+      fill(fruitPoints, features.fillIntensity, { color: fruitPalette, width: 0.5 }, chroma(random(fruitPalette)).brighten(2).hex(), (g) => {
         g.transform({
           rotate: heading,
           origin: [branch.pos.x, branch.pos.y + size],
         });
-      });
+      }, fruitLayer);
 
       // svg
       //   .circle(size * 2)
@@ -216,7 +229,7 @@ function Leaf(x, y) {
       //     origin: [branch.pos.x, branch.pos.y + size],
       //   });
       //stem
-      svg
+      treeLayer
         .line(
           branch.pos.x,
           branch.pos.y,
@@ -273,12 +286,12 @@ function Leaf(x, y) {
         //     origin: [branch.pos.x, branch.pos.y],
         //   });
 
-        fill(points, 250, { color: leafPalette, width: 0.5 }, leafPalette[2], (g) => {
+        fill(points, features.fillIntensity, { color: leafPalette, width: 0.5 }, leafPalette[2], (g) => {
           g.transform({
             rotate: heading,
             origin: [branch.pos.x, branch.pos.y],
           });
-        });
+        }, leafLayer);
 
         //stem
         // svg
@@ -328,7 +341,7 @@ function Branch(parent, pos, dir) {
     //console.log("branch show", this);
     if (parent != null) {
       //console.log(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
-      svg
+      treeLayer
         .line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y)
         .stroke({ width: 0.5, color: palette[1] });
     }
@@ -339,8 +352,8 @@ function distance(a, b) {
   return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
 }
 
-function fill(points, iterations, stroke, fill = false, callback = false) {
-  let group = svg.group();
+function fill(points, iterations, stroke, fill = false, callback = false, layer = svg) {
+  let group = layer.group();
 
   if (fill) {
     group.polyline(points).fill(fill).stroke({ color: fill, width: 2 });
@@ -359,6 +372,9 @@ function fill(points, iterations, stroke, fill = false, callback = false) {
 
   if (callback) {
     callback(group);
+    group.ungroup();
+  } else {
+    group.ungroup()
   }
 }
 
@@ -389,7 +405,7 @@ function sun() {
     }
   }
 
-  let group = svg.group()
+  let group = fruitLayer.group()
 
   // points.push(points[0]);
   // let baseColor = chroma(random(palette)).brighten(2).hex();
