@@ -1,0 +1,5 @@
+(function(n,e){typeof exports=="object"&&typeof module<"u"?e(exports,require("vue")):typeof define=="function"&&define.amd?define(["exports","vue"],e):(n=typeof globalThis<"u"?globalThis:n||self,e(n.Studio={},n.Vue))})(this,function(n,e){"use strict";/*!
+ * pinia v2.3.1
+ * (c) 2025 Eduardo San Martin Morote
+ * @license MIT
+ */const a=Symbol();var p;(function(t){t.direct="direct",t.patchObject="patch object",t.patchFunction="patch function"})(p||(p={}));function u(){const t=e.effectScope(!0),s=t.run(()=>e.ref({}));let i=[],c=[];const r=e.markRaw({install(o){r._a=o,o.provide(a,r),o.config.globalProperties.$pinia=r,c.forEach(d=>i.push(d)),c=[]},use(o){return this._a?i.push(o):c.push(o),this},_p:i,_a:null,_e:t,_s:new Map,state:s});return r}const l={__name:"App",setup(t){const s=e.ref("Hello World!");return(i,c)=>(e.openBlock(),e.createElementBlock("h1",null,e.toDisplayString(s.value),1))}};function f(){const t=e.createApp(l);return t.use(u()),t}n.createStudioApp=f,Object.defineProperty(n,Symbol.toStringTag,{value:"Module"})});

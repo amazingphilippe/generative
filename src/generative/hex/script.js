@@ -160,10 +160,17 @@ function flower(posX, posY, size) {
   for (var a = random(0, Math.PI); a < (Math.PI * 2) * sizeVariation; a += Math.PI / 3) {
     let r = size - a;
 
+
+
     let x = r * Math.cos(a);
     let y = r * Math.sin(a);
 
-    points.push([x + posX, y + posY]);
+    if (r > size * 0.16667) {
+      console.log(r);
+
+      points.push([x + posX, y + posY]);
+
+    }
   }
 
   points.forEach(p => {

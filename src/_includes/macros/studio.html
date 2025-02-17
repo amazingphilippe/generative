@@ -1,49 +1,20 @@
-{% macro studio(open = false) %}
-  <details {{ open and "open" }}>
-    <summary>
-      Studio
-      <i class="ph-bold ph-eye on"></i>
-      <i class="ph-bold ph-eye-slash off"></i>
-    </summary>
-    <is-land on:visible="on:visible">
-      <template data-island="data-island">
-        <link rel="stylesheet" href="/css/studio.css"/>
-        <script type="module">
-          console.log("Hydrating!");
-        </script>
-        <script type="module" src="/js/studio.js"></script>
-        {% include "partials/studio.html" %}
-      </template>
-    </is-land>
-  </details>
-
-  {# Templates #}
-
-  <template id="layer-template">
-    <li>
-      <span class="layer-grab" tabindex="0" role="button">a</span>
-      <label class="toggle">
-        <span class="sr">Change pen</span>
-        <input id="toggle-layer-pause-a" type="checkbox" value="a"/>
-        <i class="ph-bold ph-pencil-simple on"></i>
-        <i class="ph-bold ph-arrow-arc-right off"></i>
-      </label>
-      <label class="toggle">
-        <span class="sr">Change pen</span>
-        <input id="toggle-layer-skip-a" type="checkbox" value="a"/>
-        <i class="ph-bold ph-eye on"></i>
-        <i class="ph-bold ph-eye-slash off"></i>
-      </label>
-    </li>
-  </template>
-
-  <template id="toggle-template">
-    <label class="toggle">
-      <span class="sr">Change pen</span>
-      <input id="toggle-layer-skip-a" type="checkbox" value="a"/>
-      <i class="ph-bold ph-eye on"></i>
-      <i class="ph-bold ph-eye-slash off"></i>
-    </label>
-  </template>
+{% macro studio(open = "") %}
+<details {{ open }}>
+  <summary>
+    Studio
+    <i class="ph-bold ph-eye on"></i>
+    <i class="ph-bold ph-eye-slash off"></i>
+  </summary>
+  <is-land on:visible="on:visible">
+    <div id="app" class="studio"></div>
+    <template data-island="data-island">
+      <link rel="stylesheet" href="/css/studio.css" />
+      <script type="module">
+        import { createStudioApp } from "/components/studio/studio.esm.js";
+        createStudioApp().mount("#app");
+      </script>
+    </template>
+  </is-land>
+</details>
 
 {% endmacro %}
