@@ -20,77 +20,30 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  travel: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const studio = ref(null)
-const { project, initializeProject } = usePaperProject()
-let originalBox
-let workAreaBox
-let workWidthLabel
-let workHeightLabel
+const { project, initializeProject, updateTravelLines } = usePaperProject()
 
-function updateViewbox() {
-  //console.log(project.value)
-  // Remove previous viewbox if it exists
-  // originalBox?.remove()
-  // workAreaBox?.remove()
-  // workWidthLabel?.remove()
-  // workHeightLabel?.remove()
-  // // Create new elements within the correct project scope
-  // project.value.uiLayer.activate() // Make sure we're in the right project scope
-  // originalBox = new paper.Path.Rectangle(
-  //   new paper.Point(0, 0),
-  //   new paper.Size(props.viewbox.width, props.viewbox.height),
-  // )
-  // originalBox.strokeColor = '#222'
-  // originalBox.dashArray = [3, 5]
-  // workAreaBox = new paper.Path.Rectangle(
-  //   new paper.Point(0, 0),
-  //   new paper.Size(props.settings.width, props.settings.height),
-  // )
-  // workAreaBox.strokeColor = '#2AA'
-  // workAreaBox.dashArray = [3, 5]
-  // originalBox.fitBounds(workAreaBox.bounds)
-  // workWidthLabel = new paper.PointText(
-  //   new paper.Point(workAreaBox.bounds.center.x, workAreaBox.bounds.y - 5),
-  // )
-  // workWidthLabel.justification = 'center'
-  // workWidthLabel.fillColor = '#222'
-  // workWidthLabel.content = workAreaBox.bounds.width.toFixed(2) + ' mm'
-  // workHeightLabel = new paper.PointText(
-  //   new paper.Point(workAreaBox.bounds.x - 5, workAreaBox.bounds.center.y),
-  // )
-  // workHeightLabel.justification = 'center'
-  // workHeightLabel.fillColor = '#222'
-  // workHeightLabel.rotation = -90
-  // workHeightLabel.content = workAreaBox.bounds.height.toFixed(2) + ' mm'
-  // if (paper.project.activeLayer) {
-  //   paper.project.activeLayer.position = paper.project.view.center
-  // }
-}
-
-// Watch for changes in viewbox
 watch(
-  [() => props.viewbox, () => props.settings],
-  () => {
-    if (project.value) {
-      updateViewbox()
-      // Center the view after resize
-      // if (paper.project.activeLayer) {
-      //   paper.project.activeLayer.position = paper.project.view.center
-      // }
+  () => props.travel,
+  (newTravel) => {
+    if (newTravel && newTravel.length > 0) {
+      updateTravelLines(newTravel)
     }
   },
-  { deep: true },
+  { deep: false },
 )
 
 onMounted(() => {
   // Initialize paper.js with the canvas
 
   initializeProject(studio.value)
-
-  // Initial setup of viewbox and elements
-  updateViewbox()
+  updateTravelLines(props.travel.value)
 
   project.value.activate()
 

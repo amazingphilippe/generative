@@ -7,7 +7,7 @@
  * - takes in a paper.js path
  */
 
-import { toRaw } from 'vue'
+//import { toRaw } from 'vue'
 import paper from 'paper'
 
 const toolPalette = [
@@ -38,6 +38,7 @@ export function transformForPlot(artwork, options) {
 
 export function updatePathColors(artwork, options) {
   const paths = getPaths(artwork)
+  console.log('Colorize:', paths)
   colorizePaths(paths, options)
 }
 
@@ -88,7 +89,7 @@ function expandDashed(paths) {
 }
 
 function expandCurves(paths) {
-  paths.forEach((path, i) => {
+  paths.forEach((path) => {
     // GCODE needs flat curves.
     // Flatten curves (0.25)
     path.flatten()
@@ -109,14 +110,19 @@ function colorizePaths(paths, { layers, viewbox }) {
     new paper.Size(viewbox.width, viewbox.height),
   )
 
-  paths.forEach((path, i) => {
-    // Set tool color for path
-    let tool = 0
+  paths.forEach((path) => {
+    // Get layer meta
+    let layer
     if (path.parent.name !== null) {
-      tool = layers.find((layer) => layer.name === path.parent.name).tool
+      layer = layers.find((layer) => layer.name === path.parent.name)
     }
-    console.log('tool:', Number(tool))
-    path.strokeColor = toolPalette[tool % toolPalette.length]
+    // Set if path should be hidden
+    path.visible = layer.visible
+
+    // Assign colour by tool
+    path.strokeColor = toolPalette[layer.tool % toolPalette.length]
+    path.strokeWidth = 1
+    path.fillColor = null
     // Deal with bounds
     if (!viewBoxBounds.contains(path.bounds)) {
       // Mark paths that are out of bounds

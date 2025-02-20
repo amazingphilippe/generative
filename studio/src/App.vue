@@ -27,6 +27,13 @@ let settings = ref({
   feedRate: 3000,
 })
 
+// Machine travel preview
+const travel = ref([])
+const updateTravel = (lines) => {
+  // console.log('Travel', lines)
+  travel.value = lines
+}
+
 // Add a ref for the observer
 const observer = ref(null)
 // Add a flag to prevent duplicate initialization
@@ -121,6 +128,9 @@ onMounted(async () => {
       subtree: true,
     })
 
+    // Set title from H1
+    settings.value.title = document.querySelector('h1').textContent
+
     // Initial setup
     await handleCanvasChange()
   } catch (error) {
@@ -143,9 +153,11 @@ watch(
     if (project.value && artLayer.value) {
       try {
         // Get the first child of the art layer
-        const artwork = artLayer.value.firstChild
+        const artwork = artLayer.value
 
         if (artwork && artwork instanceof paper.Group) {
+          console.log(artwork, newLayers)
+
           updatePathColors(artwork, {
             layers: newLayers,
             viewbox: viewbox.value,
@@ -164,7 +176,7 @@ watch(
 </script>
 
 <template>
-  <CanvasPreview :svgString :settings :viewbox />
+  <CanvasPreview :svgString :settings :viewbox :travel />
 
   <aside>
     <h2>Studio</h2>
@@ -180,7 +192,7 @@ watch(
     </div>
     <hr />
 
-    <DownloadControls :gcode="gcode" />
+    <DownloadControls :layers :settings :svgString @travel-updated="updateTravel" />
   </aside>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <label>Title<input type="number" v-model="localSettings.title" @change="updateSettings" /></label>
+  <label>Title<input type="text" v-model="localSettings.title" @change="updateSettings" /></label>
   <fieldset class="paired-values">
     <legend>Size (mm)</legend>
     <label>

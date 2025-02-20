@@ -68,7 +68,7 @@ export function usePaperProject() {
         // Undo previous scale
         artwork.scale(1 / artwork.data.previousScale) // Reset to original size
       } else {
-        console.log('No previous scale')
+        // console.log('No previous scale')
       }
 
       artwork.scale(scale) // Apply new absolute scale
@@ -134,6 +134,27 @@ export function usePaperProject() {
       })
     })
   }
+
+  // Add new function to handle travel lines
+  const updateTravelLines = (lines) => {
+    if (!project.value || !uiLayer.value) return
+    // console.log('lines', lines)
+    // Clear existing travel lines
+    //uiLayer.value.removeChildren()
+
+    // Activate travel layer
+    uiLayer.value.activate()
+
+    // Draw new travel lines
+    uiLayer.value.addChildren(lines)
+
+    // Update view
+    project.value.view.update()
+
+    // Reactivate art layer
+    artLayer.value.activate()
+  }
+
   return {
     project,
     uiLayer,
@@ -141,5 +162,6 @@ export function usePaperProject() {
     initializeProject,
     resizeCanvas,
     importArtwork,
+    updateTravelLines,
   }
 }
