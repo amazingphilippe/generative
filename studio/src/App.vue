@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch, onUnmounted, toRaw } from 'vue'
+import { ref, onMounted, watch, onUnmounted } from 'vue'
 import { SVG } from '@svgdotjs/svg.js'
 import paper from 'paper'
 import { usePaperProject } from './composables/usePaperProject.js'
@@ -14,8 +14,7 @@ import DownloadControls from './components/DownloadControls.vue'
 let svgString = ref('')
 let viewbox = ref({ width: 200, height: 200 })
 let layers = ref([])
-const { project, uiLayer, artLayer, initializeProject, resizeCanvas, importArtwork } =
-  usePaperProject()
+const { project, artLayer, initializeProject, resizeCanvas, importArtwork } = usePaperProject()
 
 // Controls
 let settings = ref({

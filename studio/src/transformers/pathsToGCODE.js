@@ -30,7 +30,7 @@ export function pathsToGCODE(layers, settings) {
     // console.log(layer)
     let paths = layer.data.children.filter((item) => item.className === 'Path')
     let pathsWithSegments = paths.filter((path) => path.segments.length > 0)
-    pathsWithSegments.forEach((path, i) => {
+    pathsWithSegments.forEach((path) => {
       // console.log('path', i, path)
       // Track start and end points.
       let start = path.firstSegment.point
@@ -118,7 +118,3 @@ export function pathsToGCODE(layers, settings) {
 
   return { gcode: gcode.join(JOINER), travel }
 }
-
-function drawLoop(segments, settings) {}
-
-function moveTo(point) {}
