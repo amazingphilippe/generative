@@ -1,12 +1,9 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
-import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
-import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
+// import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
+// import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
 
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import paper from "paper";
 
@@ -43,16 +40,15 @@ function generate() {
     .y(0)
     .fill(
       chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()
-    ).attr("data-depth", 0);
+    )
+    .attr("data-depth", 0);
 
   for (var i = 0; i < 4; i++) {
     svg.each(function (j, children) {
-      const stop = random(0, 1) > 0.5
+      const stop = random(0, 1) > 0.5;
       if (this.attr("data-depth") < i) {
         return;
       }
-
-
 
       //let poly = path.toPoly();
       let quad = this.array();
@@ -61,19 +57,26 @@ function generate() {
       let c = { x: quad[2][0], y: quad[2][1] };
       let d = { x: quad[3][0], y: quad[3][1] };
 
-
       let abc = new paper.Path({
-        segments: [[a.x, a.y], [b.x, b.y], [c.x, c.y]]
+        segments: [
+          [a.x, a.y],
+          [b.x, b.y],
+          [c.x, c.y],
+        ],
       });
 
       let cda = new paper.Path({
-        segments: [[c.x, c.y], [d.x, d.y], [a.x, a.y]]
+        segments: [
+          [c.x, c.y],
+          [d.x, d.y],
+          [a.x, a.y],
+        ],
       });
       abc.strokeColor = "cyan";
 
       cda.strokeColor = "red";
 
-      let r = random(0, 1)
+      let r = random(0, 1);
       let e = abc.getLocationAt(abc.length * r).point;
       let f = cda.getLocationAt(cda.length * r).point;
 
@@ -104,7 +107,6 @@ or
         new paper.Point(b.x, b.y)
       );
 
-
       let bc = new paper.Path.Line(
         new paper.Point(c.x, c.y),
         new paper.Point(b.x, b.y)
@@ -112,12 +114,44 @@ or
 
       if (line.intersects(ab)) {
         // AEFD and EBCF
-        svg.polyline([a.x, a.y, e.x, e.y, f.x, f.y, d.x, d.y, a.x, a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
-        svg.polyline([e.x, e.y, b.x, b.y, c.x, c.y, f.x, f.y, e.x, e.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg
+          .polyline([a.x, a.y, e.x, e.y, f.x, f.y, d.x, d.y, a.x, a.y])
+          .fill(
+            chroma
+              .average([random(palette), chroma.random()], "rgb", [10, 1])
+              .hex()
+          )
+          .attr("data-depth", i + 1)
+          .stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg
+          .polyline([e.x, e.y, b.x, b.y, c.x, c.y, f.x, f.y, e.x, e.y])
+          .fill(
+            chroma
+              .average([random(palette), chroma.random()], "rgb", [10, 1])
+              .hex()
+          )
+          .attr("data-depth", i + 1)
+          .stroke({ width: 1, color: chroma.random().luminance(0.02) });
       } else if (line.intersects(bc)) {
         // ABEF and FECD
-        svg.polyline([a.x, a.y, b.x, b.y, e.x, e.y, f.x, f.y, a.x, a.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
-        svg.polyline([f.x, f.y, e.x, e.y, c.x, c.y, d.x, d.y, f.x, f.y]).fill(chroma.average([random(palette), chroma.random()], "rgb", [10, 1]).hex()).attr("data-depth", i + 1).stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg
+          .polyline([a.x, a.y, b.x, b.y, e.x, e.y, f.x, f.y, a.x, a.y])
+          .fill(
+            chroma
+              .average([random(palette), chroma.random()], "rgb", [10, 1])
+              .hex()
+          )
+          .attr("data-depth", i + 1)
+          .stroke({ width: 1, color: chroma.random().luminance(0.02) });
+        svg
+          .polyline([f.x, f.y, e.x, e.y, c.x, c.y, d.x, d.y, f.x, f.y])
+          .fill(
+            chroma
+              .average([random(palette), chroma.random()], "rgb", [10, 1])
+              .hex()
+          )
+          .attr("data-depth", i + 1)
+          .stroke({ width: 1, color: chroma.random().luminance(0.02) });
       }
     });
   }

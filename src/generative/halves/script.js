@@ -1,12 +1,9 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
-import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
-import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
+// import "https://cdn.skypack.dev/@svgdotjs/svg.topath.js";
+// import "https://cdn.skypack.dev/@svgdotjs/svg.topoly.js";
 
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import paper from "paper";
 
