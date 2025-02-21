@@ -1,7 +1,6 @@
 .blog {
-
-  p+p,
-  h2+p {
+  p + p,
+  h2 + p {
     --flow-space: 2rem;
   }
 
@@ -24,11 +23,11 @@
     --flow-space: 4rem;
   }
 
-  figure+figure {
+  figure + figure {
     --flow-space: 0;
   }
 
-  figure {
+  figure:not(.img) {
     width: 100%;
     width: clamp(100% + 2rem, calc(100vw - 6rem), 150%);
     position: relative;
@@ -59,14 +58,19 @@
       border: none;
     }
 
-    img:nth-of-type(3n+1):not(.vertical) {
+    .img figcaption {
+      max-width: 30ch;
+      text-wrap: balance;
+    }
+
+    .img:nth-of-type(3n + 1):not(.vertical) {
       grid-column: span 3;
       grid-row: span 2;
       justify-self: end;
     }
 
-    img:only-of-type:not(.vertical) {
-      grid-column: span 4
+    .img:only-of-type:not(.vertical) {
+      grid-column: span 4;
     }
   }
 
@@ -154,7 +158,7 @@
       }
     }
 
-    >li+li {
+    > li + li {
       margin-top: 1rem;
     }
   }

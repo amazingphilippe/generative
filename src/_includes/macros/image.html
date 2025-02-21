@@ -1,28 +1,29 @@
-{% from "macros/generate.html" import generate with context %}
-
-{% macro image(slug, images, caption) %}
-  <figure>
-    {%- for image in images -%}
-      <img src="{{ image.src }}" alt="{{ image.alt }}"/>
-    {%- endfor -%}
-    <figcaption class="flow">
-      <div>{{ caption }}</div>
-      {%- if slug -%}
-        {{- generate(slug) -}}
-      {%- endif -%}
-    </figcaption>
+{% from "macros/generate.html" import generate with context %} {% macro
+image(slug, images, caption) %}
+<figure>
+  {%- for image in images -%}
+  <img src="{{ image.src }}" alt="{{ image.alt }}" />
+  {%- endfor -%}
+  <figcaption class="flow">
+    <div>{{ caption }}</div>
+    {%- if slug -%} {{- generate(slug) -}} {%- endif -%}
+  </figcaption>
+</figure>
+{% endmacro %} {% macro photo(images, layout = "default", caption = false) %}
+<figure class="layout-{{ layout }}">
+  {%- for image in images -%}
+  <figure
+    class="img {{ image.class }}"
+    style="grid-column: span {{ image.cols }};"
+  >
+    <img src="{{ image.src }}" alt="{{ image.alt }}" />
+    <figcaption class="flow">{{ image.source }}</figcaption>
   </figure>
-{% endmacro %}
 
-{% macro photo(images, layout = "default", caption = false) %}
-  <figure class="layout-{{ layout }}">
-    {%- for image in images -%}
-      <img class="{{ image.class }}" src="{{ image.src }}" alt="{{ image.alt }}"/>
-    {%- endfor -%}
-    {%- if caption -%}
-      <figcaption class="flow">
-        <div>{{ caption }}</div>
-      </figcaption>
-    {%- endif -%}
-  </figure>
+  {%- endfor -%} {%- if caption -%}
+  <figcaption class="flow">
+    <div>{{ caption }}</div>
+  </figcaption>
+  {%- endif -%}
+</figure>
 {% endmacro %}
