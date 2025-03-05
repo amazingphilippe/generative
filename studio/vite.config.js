@@ -9,8 +9,8 @@ export default defineConfig({
   plugins: [vue()],
   define: { 'process.env.NODE_ENV': '"production"' },
   build: {
-    minify: false,
-    outDir: '../dist/components/studio',
+    minify: true, // Set to false to debug locally
+    outDir: '../src/components/studio',
     lib: {
       entry: 'src/main.js', // Entry point of your Vue app
       name: 'Studio', // Name of your library
