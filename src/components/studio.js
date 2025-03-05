@@ -2,8 +2,7 @@ import paper from "paper";
 import { SVG } from "@svgdotjs/svg.js";
 import { el, mount } from "redom";
 import DragonDrop from "drag-on-drop";
-import { Layer } from "./layer"
-
+import { Layer } from "./layer";
 
 const JOINER = "\r\n";
 const PEN_UP = "M3S18";
@@ -30,7 +29,6 @@ document.getElementById("pen-up").value = PEN_UP;
 document.getElementById("pen-down").value = PEN_DOWN;
 document.getElementById("feed-rate").value = FEED_RATE;
 
-
 // Init paper project into the #studio canvas
 paper.setup(document.getElementById("studio"));
 document.getElementById("studio").style.cursor = "grab";
@@ -39,7 +37,6 @@ document.getElementById("studio").style.cursor = "grab";
 let svg, svgString;
 
 try {
-
   // Try finding canvas svg.
   svg = SVG(".canvas");
   svgString = svg.node.outerHTML;
@@ -61,42 +58,41 @@ try {
   // call `observe()` on that MutationObserver instance,
   // passing it the element to observe, and the options object
   observer.observe(elementToObserve, { subtree: true, childList: true });
-
 } catch (error) {
   console.log(error, "Studio mode. Waiting for file upload");
 }
 
-const fileInput = document.getElementById("svg-file")
+const fileInput = document.getElementById("svg-file");
 const reader = new FileReader();
 
 if (fileInput) {
   // Load file if it contains something. Like after a page refresh
   if (fileInput.files[0]) {
-    loadFileToCanvas(fileInput.files[0])
+    loadFileToCanvas(fileInput.files[0]);
   }
 
   // And also listen to changes
-  fileInput.addEventListener('change', (e) => {
+  fileInput.addEventListener("change", (e) => {
     let file = e.target.files[0];
 
     if (file) {
-      loadFileToCanvas(file)
+      loadFileToCanvas(file);
     }
-  })
+  });
 }
 
 function loadFileToCanvas(file) {
   reader.onload = (file) => {
-    svg = SVG(file.target.result)
+    svg = SVG(file.target.result);
     svgString = file.target.result;
 
     getGCODE();
     getSVG();
 
     makeLayers();
-  }
+  };
 
-  reader.readAsText(file)
+  reader.readAsText(file);
 }
 
 function getLayers() {
@@ -108,7 +104,7 @@ function getLayers() {
 }
 
 function makeLayers() {
-  let layers = getLayers()
+  let layers = getLayers();
 
   if (layers.length) {
     layers.forEach((layer) => {
@@ -135,9 +131,6 @@ function makeLayers() {
   });
 }
 
-
-
-
 // Hookup output controls
 const controls = document.querySelectorAll(".output-control input");
 
@@ -146,20 +139,17 @@ controls.forEach((control) => {
     validateSettings();
     getGCODE();
     getSVG();
-  })
-})
+  });
+});
 
 function validateSettings() {
   // Clamp feed rate to [0,3000]
   let feed = document.getElementById("feed-rate");
-  let value = parseInt(feed.value)
-  let min = parseInt(feed.min)
-  let max = parseInt(feed.max)
+  let value = parseInt(feed.value);
+  let min = parseInt(feed.min);
+  let max = parseInt(feed.max);
   feed.value = Math.min(Math.max(value, min), max);
-
-
 }
-
 
 // first pass at GCODE and SVG
 function getSVG() {
@@ -211,10 +201,12 @@ function getGCODE(layerControls = false) {
   let paths = getPaths(paper);
   let duplicatePaths = [];
   let layerMeta = false;
-  let layers = getLayers()
+  let layers = getLayers();
   console.log("layers made?", layerControls);
   if (layers && layerControls) {
+    // Start with first tool
     let tool = 0;
+    //For each layer, see if we need a pause for a tool change
     layerMeta = layers.map((layer) => {
       let changeTool = document.getElementById(
         `toggle-layer-pause-${layer.name}`
@@ -224,6 +216,7 @@ function getGCODE(layerControls = false) {
         tool++;
       }
 
+      // Return layer meta
       return {
         name: layer.name,
         ref: layer,
@@ -455,7 +448,7 @@ function getGCODE(layerControls = false) {
         if (
           lastKnownPosition !== null &&
           lastKnownPosition.getDistance(end) <
-          lastKnownPosition.getDistance(start)
+            lastKnownPosition.getDistance(start)
         ) {
           path.reverse();
           start = path.firstSegment.point;

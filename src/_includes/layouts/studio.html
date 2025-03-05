@@ -7,7 +7,7 @@
   "/css/studio.css"
 ] %}
 
-{% set pageScripts = ["/js/studio.js"] %}
+
 
 {% block header %}
   <header class="split">
@@ -20,5 +20,9 @@
 {% endblock %}
 
 {% block content %}
-  {% include "partials/studio.html" %}
+    <div id="app" class="studio"></div>
+    <script type="module">
+    import { createStudioApp } from "/components/studio/studio.esm.js";
+    createStudioApp().mount("#app");
+    </script>
 {% endblock %}

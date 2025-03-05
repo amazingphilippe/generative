@@ -1,3 +1,4 @@
+is-land .studio,
 .studio {
   width: 100%;
   margin: 0;
@@ -13,18 +14,18 @@
   // pointer-events: var(--toggle-studio, none);
   font-stretch: 75%;
 
-  //     --font-heading-large: 3.75rem/1.06666666667 "Bizzarrini V0.5 Headline";
+  //   --font-heading-large: 3.75rem/1.06666666667 "Bizzarrini V0.5 Headline";
   //   --font-heading-small: 2.1875rem/0.875 "Bizzarrini V0.5 Headline";
   //   --font-text: 1.1875rem/1.2631578947 "tt-norms";
   //   --font-paragraph: 1.1875rem/1.6842105263 "tt-norms";
 
   input:checked {
-    &~.on {
+    & ~ .on {
       display: inline-block;
       color: var(--color-accent-dark);
     }
 
-    &~.off {
+    & ~ .off {
       display: none;
     }
   }
@@ -53,7 +54,7 @@
     display: grid;
     place-items: center;
 
-    >* {
+    > * {
       grid-column: 1;
       grid-row: 1;
     }
