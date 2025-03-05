@@ -20,7 +20,7 @@ export function pathsToGCODE(layers, settings) {
 
   layers.forEach((layer) => {
     if (layer.tool !== currentTool) {
-      gcode.push(settings.penUp)
+      gcode.push(`${settings.penUp}; Pen UP`)
       gcode.push('G0 Z0; move to z-safe height')
       gcode.push(`M0; stop for tool (${layer.tool}) change (${layer.name})`)
       currentTool = layer.tool
@@ -36,10 +36,10 @@ export function pathsToGCODE(layers, settings) {
       let start = path.firstSegment.point
       let end = path.lastSegment.point
 
-      if (lastKnownPosition !== null && lastKnownPosition.getDistance(start) > 0.1) {
+      if (lastKnownPosition !== null && lastKnownPosition.getDistance(start) > 1) {
         // Path starts in new location
         // Tool up/off
-        gcode.push(settings.penUp)
+        gcode.push(`${settings.penUp}; Pen UP`)
         gcode.push(`G4 P${PEN_DELAY}; Tool OFF`)
         gcode.push('')
 
@@ -61,11 +61,11 @@ export function pathsToGCODE(layers, settings) {
         travel.push(
           new paper.Path.Line(
             new paper.Point(toRaw(lastKnownPosition)),
-            new paper.Point(toRaw(start)),
-          ),
+            new paper.Point(toRaw(start))
+          )
         )
         // Tool on
-        gcode.push(settings.penDown)
+        gcode.push(`${settings.penDown}; Pen DOWN`)
         gcode.push(`G4 P${PEN_DELAY}; Tool ON`)
         gcode.push('G1 F300 Z-0.1000')
       } else if (lastKnownPosition === null) {
@@ -76,12 +76,12 @@ export function pathsToGCODE(layers, settings) {
         travel.push(
           new paper.Path.Line(
             new paper.Point(toRaw(lastKnownPosition)),
-            new paper.Point(toRaw(start)),
-          ),
+            new paper.Point(toRaw(start))
+          )
         )
 
         // Tool on
-        gcode.push(settings.penDown)
+        gcode.push(`${settings.penDown}; Pen DOWN`)
         gcode.push(`G4 P${PEN_DELAY}; Tool ON (first)`)
         gcode.push('G1 F300 Z-0.1000')
       }
@@ -90,8 +90,8 @@ export function pathsToGCODE(layers, settings) {
       path.segments.forEach((segment) => {
         gcode.push(
           `G1 F${FEED_RATE} X${fix(segment.point.x)} Y${fix(
-            settings.height - segment.point.y,
-          )} Z-0.1000`,
+            settings.height - segment.point.y
+          )} Z-0.1000`
         )
       })
 
@@ -99,8 +99,8 @@ export function pathsToGCODE(layers, settings) {
       if (path.closed) {
         gcode.push(
           `G1 F${FEED_RATE} X${fix(path.segments[0].point.x)} Y${fix(
-            settings.height - path.segments[0].point.y,
-          )} Z-0.1000`,
+            settings.height - path.segments[0].point.y
+          )} Z-0.1000`
         )
         lastKnownPosition = start
       } else {
@@ -108,7 +108,7 @@ export function pathsToGCODE(layers, settings) {
       }
 
       // Tool up, done!
-      gcode.push(settings.penUp)
+      gcode.push(`${settings.penUp}; Pen UP`)
       gcode.push(`G4 P${PEN_DELAY}; Tool OFF. Job done. `)
       gcode.push('G0 Z0; retracting back to z-safe')
     })

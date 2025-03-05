@@ -33,6 +33,10 @@ const updateTravel = (lines) => {
   travel.value = lines
 }
 
+// Ref for file input
+let fileInput = ref(null)
+// Ref to track if studio or sketch
+let isStudio = ref(false)
 // Add a ref for the observer
 const observer = ref(null)
 // Add a flag to prevent duplicate initialization
@@ -103,6 +107,61 @@ const handleCanvasChange = async () => {
   }
 }
 
+// File handling function
+const handleFileUpload = async (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    try {
+      const reader = new FileReader()
+      reader.onload = async (e) => {
+        // Get the SVG string from the file
+        const uploadedSvgString = e.target.result
+
+        // Create a temporary container and insert the SVG
+        const container = document.createElement('div')
+        container.style.display = 'none'
+        container.innerHTML = uploadedSvgString
+
+        let svgContainer = container.querySelector('svg')
+        svgContainer.classList.add('canvas')
+
+        // Replace existing canvas content or append new one
+        const existingCanvas = document.querySelector('.canvas')
+        if (existingCanvas) {
+          existingCanvas.replaceWith(container)
+        } else {
+          document.body.appendChild(container)
+        }
+
+        // Setup observer for the new SVG
+        setupObserver()
+      }
+      reader.readAsText(file)
+    } catch (error) {
+      console.error('Error reading SVG file:', error)
+    }
+  }
+}
+
+// Function to check for canvas element
+const checkIsStudio = () => {
+  isStudio.value = !!document.querySelector('.canvas')
+}
+
+// Add a function to set up the observer
+const setupObserver = () => {
+  const canvasElement = document.querySelector('.canvas')
+  if (canvasElement && observer.value) {
+    observer.value.observe(canvasElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+    handleCanvasChange() // Initial processing
+  }
+}
+
 onMounted(async () => {
   try {
     if (isInitialized.value) return
@@ -116,22 +175,22 @@ onMounted(async () => {
     initializeProject(canvas)
     isInitialized.value = true
 
+    // Check for canvas element initially
+    checkIsStudio()
+
     // Set up the observer
     observer.value = new MutationObserver(() => {
       handleCanvasChange()
     })
 
-    // Start observing the canvas
-    observer.value.observe(document.querySelector('.canvas'), {
-      childList: true,
-      subtree: true,
-    })
+    // Try to get title from H1 if it exists
+    const h1 = document.querySelector('h1')
+    if (h1) {
+      settings.value.title = h1.textContent
+    }
 
-    // Set title from H1
-    settings.value.title = document.querySelector('h1').textContent
-
-    // Initial setup
-    await handleCanvasChange()
+    // Try to set up observer if canvas already exists
+    setupObserver()
   } catch (error) {
     console.log(error, 'Studio mode. Waiting for file upload')
   }
@@ -180,6 +239,14 @@ watch(
   <aside>
     <h2>Studio</h2>
     <form>
+      <input
+        v-if="!isStudio"
+        type="file"
+        ref="fileInput"
+        accept=".svg"
+        @change="handleFileUpload"
+        class="file-input"
+      />
       <OutputControls :settings @update:settings="updateSettings" />
     </form>
     <hr />
