@@ -1,10 +1,7 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import chroma from "chroma-js";
 
@@ -46,6 +43,11 @@ function generate() {
     numPoints: 5,
   });
   // console.log(palette.colorsCSS);
+  //
+  // Layers
+  let bgLayer = svg.group().attr("id", "bg");
+  let snowLayer = svg.group().attr("id", "snow");
+  let treeLayer = svg.group().attr("id", "tree");
 
   // sky
   // svg.rect(width, height).fill(chroma(palette.colorsCSS[6]).brighten(2).hex());
@@ -55,7 +57,7 @@ function generate() {
   for (var j = random(0, -10); j < height; j += random(2, 24, true)) {
     if (random(j, height) < height) {
       let noise = random(-map(j, 0, 500, 0, 5), map(j, 0, 500, 0, 5));
-      svg
+      bgLayer
         .line(-5, j + random(-noise * 40, noise * 40), width + 5, j + noise)
         .fill("none")
         .stroke({
@@ -67,7 +69,7 @@ function generate() {
         });
     }
   }
-  svg
+  snowLayer
     .polygon([
       [0, random(500, 550)],
       [width, random(500, 550)],
@@ -79,53 +81,54 @@ function generate() {
   // treee
   let origin = { x: random(100, width - 100), y: height - 20 };
   // shadow
-  svg.line(origin.x, origin.y, random(-300, -100), height).stroke({
+  treeLayer.line(origin.x, origin.y, random(-300, -100), height).stroke({
     width: 8,
     color: chroma(palette.colorsCSS[4]).saturate(-2).brighten(1.5).hex(),
     linecap: "square",
   });
 
   branch(origin, { x: 0, y: -80 }, 0);
-}
+  function branch(origin, len, i) {
+    treeLayer
+      .line(origin.x, origin.y, origin.x + len.x, origin.y + len.y)
+      .stroke({
+        width: Math.max(1, Math.abs(len.y) / 10),
+        color: chroma(palette.colorsCSS[Math.floor(map(len.y, -80, -10, 0, 3))])
+          .set("lch.h", `*${random(0.95, 1.05)}`)
+          .hex(),
+        linecap: "square",
+      });
 
-function branch(origin, len, i) {
-  svg.line(origin.x, origin.y, origin.x + len.x, origin.y + len.y).stroke({
-    width: Math.max(1, Math.abs(len.y) / 10),
-    color: chroma(palette.colorsCSS[Math.floor(map(len.y, -80, -10, 0, 3))])
-      .set("lch.h", `*${random(0.95, 1.05)}`)
-      .hex(),
-    linecap: "square",
-  });
+    let thickness = 16 / (i + 2);
 
-  let thickness = 16 / (i + 2);
+    // console.log(i);
 
-  // console.log(i);
-
-  // allow recursion
-  if (len.y < -10) {
-    // console.log(len.y);
-    branch(
-      {
-        x: origin.x + len.x,
-        y: origin.y + len.y,
-      },
-      {
-        x: random(-10, 10),
-        y: len.y * random(0.8, 0.9),
-      },
-      i + 1
-    );
-    branch(
-      {
-        x: origin.x + len.x,
-        y: origin.y + len.y,
-      },
-      {
-        x: random(-20, 20),
-        y: len.y * random(0.6, 0.8),
-      },
-      i + 1
-    );
+    // allow recursion
+    if (len.y < -10) {
+      // console.log(len.y);
+      branch(
+        {
+          x: origin.x + len.x,
+          y: origin.y + len.y,
+        },
+        {
+          x: random(-10, 10),
+          y: len.y * random(0.8, 0.9),
+        },
+        i + 1
+      );
+      branch(
+        {
+          x: origin.x + len.x,
+          y: origin.y + len.y,
+        },
+        {
+          x: random(-20, 20),
+          y: len.y * random(0.6, 0.8),
+        },
+        i + 1
+      );
+    }
   }
 }
 

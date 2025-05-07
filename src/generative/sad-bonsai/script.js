@@ -50,6 +50,9 @@ const max_dist = 100;
 
 let origin;
 
+//Init layers at this scope
+let treeLayer, fruitLayer;
+
 paper.setup(document.getElementById("shadow"));
 
 //-----------------------------------------
@@ -71,10 +74,16 @@ function generate() {
     numPoints: 5,
   });
 
+  // Layers
+  let bgLayer = svg.group().attr("id", "bg");
+  let snowLayer = svg.group().attr("id", "snow");
+  treeLayer = svg.group().attr("id", "tree");
+  fruitLayer = svg.group().attr("id", "fruit");
+
   for (var j = random(0, -10); j < height; j += random(2, 24, true)) {
     if (random(j, height) < height) {
       let noise = random(-map(j, 0, 500, 0, 5), map(j, 0, 500, 0, 5));
-      svg
+      bgLayer
         .line(-5, j + random(-noise * 40, noise * 40), width + 5, j + noise)
         .fill("none")
         .stroke({
@@ -87,7 +96,7 @@ function generate() {
     }
   }
 
-  svg
+  snowLayer
     .polygon([
       [0, random(500, 550)],
       [width, random(500, 550)],
@@ -97,7 +106,7 @@ function generate() {
     .fill(chroma(palette.colorsCSS[6]).brighten(5).hex());
 
   // shadow
-  svg.line(origin.x, origin.y, random(-300, -100), height).stroke({
+  snowLayer.line(origin.x, origin.y, random(-300, -100), height).stroke({
     width: 12,
     color: chroma(palette.colorsCSS[4]).saturate(-2).brighten(1.5).hex(),
     linecap: "square",
@@ -115,7 +124,7 @@ function generate() {
       tree.grow();
     }
 
-    tree.show();
+    tree.showOptimized();
   }
 }
 generate();
@@ -234,11 +243,70 @@ function Tree() {
   };
 
   this.show = function () {
+    console.log(this.branches);
     for (let i = 0; i < this.leaves.length; i++) {
       this.leaves[i].show();
     }
     for (var i = 0; i < this.branches.length; i++) {
       this.branches[i].show();
+    }
+  };
+
+  this.showOptimized = function () {
+    // First show leaves
+    for (let i = 0; i < this.leaves.length; i++) {
+      this.leaves[i].show();
+    }
+
+    // Sort branches by hierarchical order to minimize pen travel
+    // Process the tree using depth-first traversal
+    const visited = [];
+    this.drawBranchPath(this.branches[0], visited);
+
+    // Draw any remaining branches (though there shouldn't be any)
+    const unvisited = this.branches.filter((b) => !visited.includes(b));
+    if (unvisited.length > 0) {
+      console.log(`Drawing ${unvisited.length} remaining branches`);
+      for (const branch of unvisited) {
+        branch.show();
+      }
+    }
+  };
+
+  this.drawBranchPath = function (branch, visited) {
+    if (visited.includes(branch)) return;
+    visited.push(branch);
+
+    // Start at root [0]
+    // Show current branch
+    branch.show();
+    branch.visited = true;
+
+    // Find the right depth + the right parent
+    // depth = this depth +1 and parent = this branch
+
+    // Find all child branches of the current branch
+    const children = this.branches.filter(
+      (b) => b.parent === branch && b.depth === branch.depth + 1
+    );
+    //console.log("children", children);
+
+    // Recursively draw the next branch
+    if (children.length > 0) {
+      this.drawBranchPath(children[0], visited);
+    } else {
+      // Draw the next branch with the lowest depth.
+      let nextBranch = this.branches
+        .filter((b) => !visited.includes(b))
+        .sort((a, b) => {
+          // First sort by depth
+          if (a.depth !== b.depth) {
+            return a.depth - b.depth;
+          }
+        });
+      if (nextBranch.length > 0) {
+        this.drawBranchPath(nextBranch[0], visited);
+      }
     }
   };
 }
@@ -284,7 +352,7 @@ function Leaf(x, y) {
         let handle = new paper.Point(Math.cos(heading), Math.sin(heading));
         let curve = new paper.Curve(a, handle, handle, b);
         let path = new paper.Path([curve.segment1, curve.segment2]);
-        svg
+        fruitLayer
           .path(path.pathData)
           .fill("none")
           .stroke({ width: 1, color: random(palette.colorsCSS) });
@@ -323,7 +391,7 @@ function Branch(parent, pos, dir) {
     // console.log("branch show", this);
     if (parent != null) {
       //console.log(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y);
-      svg
+      treeLayer
         .line(this.pos.x, this.pos.y, this.parent.pos.x, this.parent.pos.y)
         .stroke({
           width: Math.max(1, 12 - this.depth * 0.3),
