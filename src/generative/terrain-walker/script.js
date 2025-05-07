@@ -79,6 +79,9 @@ function generate() {
   let bgLayer = svg.group().attr("id", "background");
   let gridLayer = svg.group().attr("id", "grid");
   let nodeLayer = svg.group().attr("id", "nodes");
+  let biomeLayers = Array.from({ length: palette.length }, (_, i) => {
+    return svg.group().attr("id", `biome-${i}`);
+  });
 
   // Features
   let grid = 50;
@@ -126,7 +129,7 @@ function generate() {
 
   while (dots.length < targetDots && walks < 50) {
     let maxAttemps = 100;
-    let color = random(palette);
+    let color = random(0, palette.length - 1, true);
     for (let walk = 0; walk < 80; walk++) {
       let x, y;
       if (center.x <= 0) {
@@ -151,7 +154,7 @@ function generate() {
         x: offset.x + x * ((width * size) / grid),
         y: offset.y + y * ((height * size) / grid),
         radius: variation.nodeSize / 2,
-        color: chroma(color).hex(),
+        color: color,
       };
       // If the new dot is distinct from other dots
       if (
@@ -200,13 +203,16 @@ function generate() {
 
   uniqueDots.forEach((dot) => {
     // let r = variation.nodeSize;
-    let color = random(palette);
+    let color = chroma(palette[dot.color]).hex();
 
-    nodeLayer
+    // Get layer by dot.color
+    let layer = biomeLayers[dot.color];
+
+    layer
       .circle(dot.radius * 2 - variation.beltWidth)
       .attr({ cx: dot.x, cy: dot.y })
-      .fill(dot.color)
-      .stroke({ color: dot.color, width: 0.5 });
+      .fill(color)
+      .stroke({ color: color, width: 0.5 });
   });
 
   // Helper function to check if a dot has available space around it
