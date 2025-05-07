@@ -9,15 +9,14 @@
 
 <script setup>
 import { computed } from 'vue'
+import { usePlotterSettingsStore } from '../stores/plotterSettings'
 import { pathsToGCODE } from '../transformers/pathsToGCODE'
+
+const settings = usePlotterSettingsStore()
 
 const props = defineProps({
   layers: {
     type: Array,
-    required: true,
-  },
-  settings: {
-    type: Object,
     required: true,
   },
   svgString: {
@@ -29,8 +28,8 @@ const props = defineProps({
 const emit = defineEmits(['travel-updated'])
 
 const gcodeBlobUrl = computed(() => {
-  if (!props.layers || !props.settings) return ''
-  const { gcode, travel } = pathsToGCODE(props.layers, props.settings)
+  if (!props.layers || !settings) return ''
+  const { gcode, travel } = pathsToGCODE(props.layers, settings)
   const blob = new Blob([gcode], { type: 'text/plain' })
   // console.log('GCODE', blob)
   // console.log('TRAVEL', travel)
@@ -39,13 +38,13 @@ const gcodeBlobUrl = computed(() => {
 })
 
 const svgBlobUrl = computed(() => {
-  if (!props.layers || !props.settings) return ''
+  if (!props.layers || !settings) return ''
   const blob = new Blob([props.svgString], { type: 'image/svg+xml' })
   // console.log('SVG', blob)
   return URL.createObjectURL(blob)
 })
 
 const filename = computed(() => {
-  return `${props.settings.title}`
+  return `${settings.title}`
 })
 </script>

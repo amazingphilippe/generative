@@ -5,6 +5,7 @@ import paper from 'paper'
 import { usePaperProject } from './composables/usePaperProject.js'
 import { getLayers } from './utils/layers.js'
 import { transformForPlot, updatePathColors } from './transformers/paths.js'
+import { usePlotterSettingsStore } from './stores/plotterSettings'
 import CanvasPreview from './components/CanvasPreview.vue'
 import OutputControls from './components/OutputControls.vue'
 import LayerControls from './components/LayerControls.vue'
@@ -17,14 +18,7 @@ let layers = ref([])
 const { project, artLayer, initializeProject, resizeCanvas, importArtwork } = usePaperProject()
 
 // Controls
-let settings = ref({
-  title: 'Untitled',
-  width: 200,
-  height: 200,
-  penUp: 'M3S18',
-  penDown: 'M3S26',
-  feedRate: 3000,
-})
+const settingsStore = usePlotterSettingsStore()
 
 // Machine travel preview
 const travel = ref([])
@@ -42,10 +36,6 @@ const observer = ref(null)
 // Add a flag to prevent duplicate initialization
 const isInitialized = ref(false)
 
-const updateSettings = (newSettings) => {
-  settings.value = newSettings
-}
-
 const updateLayers = (newLayers) => {
   try {
     layers.value = newLayers
@@ -56,7 +46,7 @@ const updateLayers = (newLayers) => {
 
 // Watch for changes in settings dimensions
 watch(
-  () => [settings.value.width, settings.value.height],
+  () => [settingsStore.width, settingsStore.height],
   ([newWidth, newHeight]) => {
     if (project.value && newWidth && newHeight) {
       resizeCanvas(newWidth, newHeight, viewbox.value)
@@ -86,19 +76,26 @@ const handleCanvasChange = async () => {
     const svg = SVG('.canvas')
     // Set SVG and data
     svgString.value = svg.node.outerHTML
+    // Store the current viewbox dimensions
     viewbox.value = {
       width: svg.node.viewBox.baseVal.width,
       height: svg.node.viewBox.baseVal.height,
     }
     // Set default controls
-    settings.value.width = svg.node.viewBox.baseVal.width
-    settings.value.height = svg.node.viewBox.baseVal.height
+    // Only set default controls if they haven't been customized yet
+    // or if this is the first load
+    if (!settingsStore.userModified) {
+      settingsStore.updateSettings({
+        width: svg.node.viewBox.baseVal.width,
+        height: svg.node.viewBox.baseVal.height,
+      })
+    }
 
     // Import SVG
     await importArtworkAndTransform(svgString.value)
 
     // Resize canvas after import
-    resizeCanvas(settings.value.width, settings.value.height, viewbox.value)
+    resizeCanvas(settingsStore.width, settingsStore.height, viewbox.value)
 
     // Update layers after import
     // layers.value = getLayers(project.value)
@@ -186,7 +183,7 @@ onMounted(async () => {
     // Try to get title from H1 if it exists
     const h1 = document.querySelector('h1')
     if (h1) {
-      settings.value.title = h1.textContent
+      settingsStore.title = h1.textContent
     }
 
     // Try to set up observer if canvas already exists

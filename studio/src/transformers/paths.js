@@ -92,7 +92,7 @@ function expandCurves(paths) {
   paths.forEach((path) => {
     // GCODE needs flat curves.
     // Flatten curves (0.25)
-    path.flatten()
+    path.flatten(0.05)
     // Remove fill color
     path.fillColor = null
     // Uniform stroke color and width

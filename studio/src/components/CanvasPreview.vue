@@ -8,10 +8,6 @@ import paper from 'paper'
 import { usePaperProject } from '../composables/usePaperProject'
 
 const props = defineProps({
-  settings: {
-    type: Object,
-    required: true,
-  },
   viewbox: {
     type: Object,
     required: true,

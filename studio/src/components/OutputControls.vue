@@ -1,63 +1,56 @@
 <template>
-  <label>Title<input type="text" v-model="localSettings.title" @change="updateSettings" /></label>
+  <label>Title<input type="text" v-model="title" @change="updateTitle" /></label>
   <fieldset class="paired-values">
     <legend>Size (mm)</legend>
     <label>
       Width
-      <input
-        class="output-control"
-        type="number"
-        v-model="localSettings.width"
-        @change="updateSettings"
-      />
+      <input class="output-control" type="number" v-model="width" @change="updateWidth" />
     </label>
     <label>
       Height
-      <input
-        class="output-control"
-        type="number"
-        v-model="localSettings.height"
-        @change="updateSettings"
-      />
+      <input class="output-control" type="number" v-model="height" @change="updateHeight" />
     </label>
   </fieldset>
   <fieldset class="paired-values">
     <legend>Tool</legend>
-    <label>Up<input type="text" v-model="localSettings.penUp" @change="updateSettings" /></label>
-    <label
-      >Down<input type="text" v-model="localSettings.penDown" @change="updateSettings"
-    /></label>
+    <label>
+      Up
+      <input type="number" v-model="penUpValue" @change="updatePenUp" min="0" max="1000" step="1" />
+    </label>
+    <label>
+      Down
+      <input
+        type="number"
+        v-model="penDownValue"
+        @change="updatePenDown"
+        min="0"
+        max="1000"
+        step="1"
+      />
+    </label>
   </fieldset>
-  <label
-    >Feed Rate<input type="number" v-model="localSettings.feedRate" @change="updateSettings"
-  /></label>
+  <label>Feed Rate<input type="number" v-model="feedRate" @change="updateFeedRate" /></label>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
+import { usePlotterSettingsStore } from '../stores/plotterSettings'
+import { storeToRefs } from 'pinia'
 
-const props = defineProps({
-  settings: {
-    type: Object,
-    required: true,
-  },
-})
+const store = usePlotterSettingsStore()
 
-const emit = defineEmits(['update:settings'])
+// Reactive state using storeToRefs
+const { title, width, height, feedRate } = storeToRefs(store)
 
-// Create a local copy of settings
-const localSettings = ref({ ...props.settings })
+// Computed pen values
+const penUpValue = ref(store.penUpValue)
+const penDownValue = ref(store.penDownValue)
+// Methods
+const updateTitle = () => store.updateSettings({ title: title.value })
+const updateWidth = () => store.updateSettings({ width: width.value })
+const updateHeight = () => store.updateSettings({ height: height.value })
+const updateFeedRate = () => store.updateSettings({ feedRate: feedRate.value })
 
-// Watch for changes in props
-watch(
-  () => props.settings,
-  (newSettings) => {
-    localSettings.value = { ...newSettings }
-  },
-  { deep: true },
-)
-
-const updateSettings = () => {
-  emit('update:settings', { ...localSettings.value })
-}
+const updatePenUp = () => store.updatePenUp(penUpValue.value)
+const updatePenDown = () => store.updatePenDown(penDownValue.value)
 </script>

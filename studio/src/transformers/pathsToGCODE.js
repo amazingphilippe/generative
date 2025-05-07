@@ -19,6 +19,9 @@ export function pathsToGCODE(layers, settings) {
   let travel = []
 
   layers.forEach((layer) => {
+    // Skip when layer is hidden
+    if (!layer.visible) return
+
     if (layer.tool !== currentTool) {
       gcode.push(`${settings.penUp}; Pen UP`)
       gcode.push('G0 Z0; move to z-safe height')
@@ -61,8 +64,8 @@ export function pathsToGCODE(layers, settings) {
         travel.push(
           new paper.Path.Line(
             new paper.Point(toRaw(lastKnownPosition)),
-            new paper.Point(toRaw(start))
-          )
+            new paper.Point(toRaw(start)),
+          ),
         )
         // Tool on
         gcode.push(`${settings.penDown}; Pen DOWN`)
@@ -76,8 +79,8 @@ export function pathsToGCODE(layers, settings) {
         travel.push(
           new paper.Path.Line(
             new paper.Point(toRaw(lastKnownPosition)),
-            new paper.Point(toRaw(start))
-          )
+            new paper.Point(toRaw(start)),
+          ),
         )
 
         // Tool on
@@ -90,8 +93,8 @@ export function pathsToGCODE(layers, settings) {
       path.segments.forEach((segment) => {
         gcode.push(
           `G1 F${FEED_RATE} X${fix(segment.point.x)} Y${fix(
-            settings.height - segment.point.y
-          )} Z-0.1000`
+            settings.height - segment.point.y,
+          )} Z-0.1000`,
         )
       })
 
@@ -99,19 +102,18 @@ export function pathsToGCODE(layers, settings) {
       if (path.closed) {
         gcode.push(
           `G1 F${FEED_RATE} X${fix(path.segments[0].point.x)} Y${fix(
-            settings.height - path.segments[0].point.y
-          )} Z-0.1000`
+            settings.height - path.segments[0].point.y,
+          )} Z-0.1000`,
         )
         lastKnownPosition = start
       } else {
         lastKnownPosition = end
       }
-
-      // Tool up, done!
-      gcode.push(`${settings.penUp}; Pen UP`)
-      gcode.push(`G4 P${PEN_DELAY}; Tool OFF. Job done. `)
-      gcode.push('G0 Z0; retracting back to z-safe')
     })
+    // Tool up, done!
+    gcode.push(`${settings.penUp}; Pen UP`)
+    gcode.push(`G4 P${PEN_DELAY}; Tool OFF. Job done. `)
+    gcode.push('G0 Z0; retracting back to z-safe')
   })
 
   //console.log([gcode.join(JOINER)])
