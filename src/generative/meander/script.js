@@ -7,9 +7,7 @@ import {
   map,
 } from "@georgedoescode/generative-utils";
 
-import {
-  roundCorners,
-} from "svg-round-corners";
+import { roundCorners } from "svg-round-corners";
 
 import paper from "paper";
 
@@ -31,7 +29,14 @@ document.addEventListener("keyup", (e) => {
 paper.setup(document.getElementById("shadow"));
 
 // const palette = ["#f2af29", "#533e2d", "#058c42", "#9ee493"];
-const palette = ["#f1f7ed", "#243e36", "#7ca982", "#e0eec6", "#c2a83e", "#D5573B"];
+const palette = [
+  "#f1f7ed",
+  "#243e36",
+  "#7ca982",
+  "#e0eec6",
+  "#c2a83e",
+  "#D5573B",
+];
 // const palette = ["#8C1C13", "#FFD400", "#34623F", "#2C497F"]
 const { width, height } = svg.viewbox();
 
@@ -40,6 +45,12 @@ const { width, height } = svg.viewbox();
 function generate() {
   svg.clear();
   let density = random(2000, 4000, true);
+
+  // Layers
+  let bgLayer = svg.group().attr("id", "background");
+  let meanderLayer = svg.group().attr("id", "meander");
+  let dotLayer = svg.group().attr("id", "dot");
+
   console.log("Density: ", density);
   let tessellation = createVoronoiTessellation({
     width: width,
@@ -52,7 +63,6 @@ function generate() {
     }),
     relaxIterations: 2,
   });
-
 
   // Find the average distance to the closest point for every point.
   let averageDistance = 0;
@@ -81,8 +91,8 @@ function generate() {
   let polyline = [root];
 
   //Layers
-  let lines = svg.group();
-  let ends = svg.group();
+  let lines = meanderLayer;
+  let ends = dotLayer;
 
   while (!stuck) {
     let candidates = [];
@@ -118,7 +128,7 @@ function generate() {
             color: color,
             width: map(chroma(color).luminance(), 0, 1, 3, 6),
             linecap: "round",
-            linejoin: "round"
+            linejoin: "round",
           });
 
         // Find new root
@@ -156,6 +166,6 @@ generate();
 function distance(a, b) {
   return Math.sqrt(
     (b.centroid.x - a.centroid.x) * (b.centroid.x - a.centroid.x) +
-    (b.centroid.y - a.centroid.y) * (b.centroid.y - a.centroid.y)
+      (b.centroid.y - a.centroid.y) * (b.centroid.y - a.centroid.y)
   );
 }

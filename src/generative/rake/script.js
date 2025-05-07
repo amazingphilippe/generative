@@ -1,11 +1,7 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
-import {
-  random,
-  map,
-  spline,
-} from "@georgedoescode/generative-utils";
+import { random, map, spline } from "@georgedoescode/generative-utils";
 
 import chroma from "chroma-js";
 
@@ -45,6 +41,8 @@ function generate() {
   let poly = new paper.Path(spline(points));
   poly.flatten(0);
 
+  let brushLayer = svg.group().attr({ id: "brush" });
+
   let brush = [];
 
   for (var i = 0; i < poly.segments.length; i++) {
@@ -74,7 +72,7 @@ function generate() {
       segment.pos.x + segment.dir.x * i + random(-1, 1),
       segment.pos.y + segment.dir.y * i + random(-1, 1),
     ]);
-    svg
+    brushLayer
       .polyline(polyline)
       .fill("none")
       // .css({ "mix-blend-mode": "multiply" })

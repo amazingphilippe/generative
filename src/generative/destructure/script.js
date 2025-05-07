@@ -5,10 +5,7 @@ import { SVG } from "@svgdotjs/svg.js";
 import paper from "paper";
 
 // Some utils
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import { roundCorners } from "svg-round-corners";
 
@@ -52,6 +49,9 @@ function generate() {
 
   //Layers
   let bg = svg.group().attr("id", "background");
+  let boxesLayer = Array.from({ length: 6 }, (_, i) => {
+    return svg.group().attr("id", `box-${i}`);
+  });
 
   let res = random([20, 25, 40]);
   let maxCols = width / res;
@@ -182,10 +182,11 @@ function generate() {
       bg.attr("data-feature", "rect");
       let color = random(palette);
       for (let i = 0; i < map(noise, 0, 1, 1, 30); i++) {
-        bg.rect(
-          map(cells[i].state, 0, 1, 0, 0.8 * res),
-          map(cells[i].state, 0, 1, 0, 0.8 * res)
-        )
+        random(boxesLayer)
+          .rect(
+            map(cells[i].state, 0, 1, 0, 0.8 * res),
+            map(cells[i].state, 0, 1, 0, 0.8 * res)
+          )
           .attr({ x: col * res + res / 2, y: row * res + res / 2 })
           .fill("none")
           .stroke({
@@ -194,14 +195,15 @@ function generate() {
             color: chroma(color).set("lch.c", random(60, 80)).hex(),
           })
           .attr({
-            transform: `rotate(${random(-15, 15, true)} ${col * res + res} ${row * res + res
-              }) skewX(${map(noise, 0, 1, -3, i)}) skewY(${map(
-                noise,
-                0,
-                1,
-                -i,
-                3
-              )})`,
+            transform: `rotate(${random(-15, 15, true)} ${col * res + res} ${
+              row * res + res
+            }) skewX(${map(noise, 0, 1, -3, i)}) skewY(${map(
+              noise,
+              0,
+              1,
+              -i,
+              3
+            )})`,
           })
           .css({ "mix-blend-mode": "multiply" });
       }

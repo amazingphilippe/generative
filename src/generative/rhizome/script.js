@@ -5,10 +5,7 @@ import { SVG } from "@svgdotjs/svg.js";
 import paper from "paper";
 
 // Some utils
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 import quickNoise from "quick-perlin-noise-js";
 import { roundCorners } from "svg-round-corners";
 
@@ -160,7 +157,7 @@ function generate() {
           })
           .fill(random(palette));
 
-        for (var a = 0; a < Math.PI * 2; a += Math.PI / 10) {
+        for (var a = 0; a < Math.PI; a += Math.PI / 10) {
           let x = r * Math.cos(a);
           let y = r * Math.sin(a);
           let x2 = -r * Math.cos(a);

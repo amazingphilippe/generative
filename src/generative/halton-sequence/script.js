@@ -1,10 +1,7 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import chroma from "chroma-js";
 
@@ -49,7 +46,15 @@ function generate() {
     numPoints: 5,
   });
 
-  svg
+  // Layers
+  let bgLayer = svg.group().attr("id", "bg");
+  let fillLayer = svg.group().attr("id", "fill");
+  let ringLayers = Array.from({ length: palette.colorsCSS.length }, (_, i) => {
+    return svg.group().attr("id", `ring-${i}`);
+  });
+  console.log(ringLayers);
+
+  bgLayer
     .rect(width, height)
     .fill(
       chroma(palette.colorsCSS[1]).set("lch.c", 15).set("lch.l", 100).hex()
@@ -92,23 +97,26 @@ function generate() {
         .attr({ x: x, y: y + 5, "text-anchor": "middle", class: "debug-text" });
 
     for (var j = size.count; j < size.count + 9; j++) {
-      svg
+      let layer = random(ringLayers);
+      let color = ringLayers.indexOf(layer);
+      console.log(color);
+      random(ringLayers)
         .circle(j * 4)
         .attr({ cx: x, cy: y })
         .fill("none")
         .stroke({
           width: 1,
-          color: random(palette.colorsCSS),
+          color: palette.colorsCSS[color],
           // dasharray: 2 * Math.PI * j * 2 * (random(0, 3, true) / 3),
         });
     }
 
-    svg
+    fillLayer
       .circle(random(0, 1) > 0.95 ? (size.count + 9) * 4 : 0)
       .attr({ cx: x, cy: y })
       .fill(random(palette.colorsCSS))
       .css("mix-blend-mode", "color-burn");
-    svg
+    fillLayer
       .circle(random(0, 1) > 0.95 ? Math.max(4 * (size.count - 1) + 1, 13) : 0)
       .attr({ cx: x, cy: y })
       .css("mix-blend-mode", "multiply")
