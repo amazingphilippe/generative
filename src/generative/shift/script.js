@@ -1,10 +1,7 @@
 import { SVG } from "@svgdotjs/svg.js";
 // plugins for svg dot js
 
-import {
-  random,
-  map,
-} from "@georgedoescode/generative-utils";
+import { random, map } from "@georgedoescode/generative-utils";
 
 import chroma from "chroma-js";
 
@@ -121,7 +118,7 @@ function fill(width, height, x, y) {
   // For 1 to 3 iteration, draw a bunch of lines.
 
   for (let p = 0; p < random(1, 3); p++) {
-    let group = svg.group();
+    let group = svg.group().attr("id", `lines-${p}-area-${width}-${height}`);
     let groupW = width;
     let groupH = height;
 

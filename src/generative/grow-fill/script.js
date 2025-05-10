@@ -66,6 +66,7 @@ function generate() {
 
   // Layers
   let bgLayer = svg.group().attr("id", "background");
+  let fillLayer = svg.group().attr("id", "fill");
   // let networkLayer = svg.group().attr("id", "network");
   // let rhizomeLayer = svg.group().attr("id", "rhizome");
   // let dotsLayer = svg.group().attr("id", "dots");
@@ -115,7 +116,7 @@ function generate() {
     let cellShape = new paper.Path(points);
 
     growFill(cellShape.pathData, variation).forEach((line) => {
-      svg
+      fillLayer
         .path(line.pathData)
         .fill("none")
         .stroke({ width: variation.thickness, color: random(palette) });
