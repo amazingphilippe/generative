@@ -13,3 +13,6 @@ On a fixed grid, Set up a random walk. For each step, make sure the grid cell ha
 For each group of steps (a walk) draw the convex polygon around all steps.
 
 Fill the convex polygons with a zig-zagging line.
+
+---
+*Cette Œuvre a été réalisée dans le cadre d’une résidence au Centre de production DAÏMÔN*
